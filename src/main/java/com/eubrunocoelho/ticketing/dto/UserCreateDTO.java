@@ -20,7 +20,5 @@ public record UserCreateDTO(
         @Size(min = 8, message = "O valor para \"password\" deve ter no mínimo 8 caracteres.")
         @Size(max = 32, message = "O valor para \"password\" deve ter no máximo 32 caracteres.")
         String password
-
-//        , String confirm_password
 ) {
 }
