@@ -7,6 +7,7 @@ import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,11 @@ public class UserService {
         return user.orElseThrow(() -> new ObjectNotFoundException(
                 "Usuário não encontrado. {id}: " + id
         ));
+    }
+
+    public Users findByUsername(String username) {
+        List<Users> users = userRepository.findByUsername(username);
+
+        return users.isEmpty() ? null : users.get(0);
     }
 }

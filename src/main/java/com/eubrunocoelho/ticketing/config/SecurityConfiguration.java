@@ -30,7 +30,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .securityMatcher("/")
                 .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/api/users").permitAll();
+//                    request.requestMatchers("/users").permitAll();
                     request.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(
