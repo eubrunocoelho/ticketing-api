@@ -27,7 +27,7 @@ public class UserService {
 
     public Users findById(Long id) {
         Optional<Users> user = userRepository.findById(id);
-        
+
         return user.orElseThrow(() -> new ObjectNotFoundException(
                 "Usuário não encontrado. {id}: " + id
         ));
