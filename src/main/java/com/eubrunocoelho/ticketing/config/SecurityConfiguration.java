@@ -28,9 +28,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain basicAuthSecurityFilterChain(HttpSecurity httpSecurity)
             throws Exception {
         return httpSecurity
-                .securityMatcher("/")
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> {
-//                    request.requestMatchers("/users").permitAll();
+                    request.requestMatchers("/auth/**").permitAll();
                     request.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(
