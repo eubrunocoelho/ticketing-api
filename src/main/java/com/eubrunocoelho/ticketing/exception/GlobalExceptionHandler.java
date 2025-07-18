@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.exception;
 
+import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -85,6 +86,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
 
         return buildErrorResponse(exception, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<Object> handleObjectNotFoundException(
+            ObjectNotFoundException exception,
+            WebRequest request
+    ) {
+        logger.error("Recurso não encontrado: " + exception.getMessage(), exception);
+
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.NOT_FOUND
+        );
     }
 
     private ResponseEntity<Object> buildErrorResponse(

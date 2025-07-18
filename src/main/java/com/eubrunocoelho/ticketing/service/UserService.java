@@ -3,8 +3,11 @@ package com.eubrunocoelho.ticketing.service;
 import com.eubrunocoelho.ticketing.dto.UserCreateDTO;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
+import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,5 +23,13 @@ public class UserService {
         user.setRole(Users.Role.ROLE_USER);
 
         return userRepository.save(user);
+    }
+
+    public Users findById(Long id) {
+        Optional<Users> user = userRepository.findById(id);
+        
+        return user.orElseThrow(() -> new ObjectNotFoundException(
+                "Usuário não encontrado. {id}: " + id
+        ));
     }
 }

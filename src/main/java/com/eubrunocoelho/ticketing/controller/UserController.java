@@ -8,10 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -27,7 +24,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserResponseDTO> store(@RequestBody @Valid UserCreateDTO userDTO) {
+    public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserCreateDTO userDTO) {
         Users createdUser = userService.createUser(userDTO);
 
         URI location = ServletUriComponentsBuilder
@@ -43,5 +40,21 @@ public class UserController {
         );
 
         return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping(
+            value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable long id) {
+        Users user = userService.findById(id);
+
+        UserResponseDTO response = new UserResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail()
+        );
+
+        return ResponseEntity.ok().body(response);
     }
 }
