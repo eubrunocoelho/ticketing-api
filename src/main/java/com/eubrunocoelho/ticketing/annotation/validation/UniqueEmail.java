@@ -1,8 +1,8 @@
-package com.eubrunocoelho.ticketing.validation;
+package com.eubrunocoelho.ticketing.annotation.validation;
 
+import com.eubrunocoelho.ticketing.validation.UniqueEmailValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.hibernate.validator.internal.constraintvalidators.hv.UniqueElementsValidator;
 
 import java.lang.annotation.*;
 
