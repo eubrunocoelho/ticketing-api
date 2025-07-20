@@ -2,7 +2,6 @@ package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.service.exception.CredentialsInvalidException;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER")
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -53,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         final String errorMessage = "Ocorreu um erro desconhecido.";
 
-        logger.error(errorMessage);
+        logger.error(errorMessage, exception);
 
         return buildErrorResponse(exception, errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -96,7 +94,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             AuthenticationException exception,
             WebRequest request
     ) {
-        logger.error("Erro de autenticação.", exception);
+        logger.error(
+                "Erro de autenticação.",
+                exception
+        );
 
         return buildErrorResponse(
                 exception,
@@ -111,7 +112,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             CredentialsInvalidException exception,
             WebRequest request
     ) {
-        logger.error("Credenciais inválidas: " + exception.getMessage(), exception);
+        logger.error(
+                "Credenciais inválidas: " + exception.getMessage(),
+                exception
+        );
 
         return buildErrorResponse(
                 exception,
@@ -126,7 +130,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             ObjectNotFoundException exception,
             WebRequest request
     ) {
-        logger.error("Recurso não encontrado: " + exception.getMessage(), exception);
+        logger.error(
+                "Recurso não encontrado: " + exception.getMessage(),
+                exception
+        );
 
         return buildErrorResponse(
                 exception,

@@ -26,14 +26,13 @@ public class AuthService {
         }
 
         Map<String, String> claims = new HashMap<>();
+        claims.put("role", user.getRole().name());
 
         String authToken = jwtUtilityService.generateToken(
                 claims,
                 user.getUsername(),
                 1000 * 60 * 60 * 24
         );
-
-        claims.put("role", user.getRole().name());
 
         Map<String, String> payload = Map.of(
                 "authToken", authToken,

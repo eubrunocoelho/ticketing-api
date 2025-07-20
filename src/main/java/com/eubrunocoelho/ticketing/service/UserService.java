@@ -5,9 +5,10 @@ import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,15 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Users createUser(UserCreateDto userDTO) {
-        Users user = new Users();
-        user.setEmail(userDTO.email());
-        user.setUsername(userDTO.username());
-        user.setPassword(userDTO.password());
-        user.setRole(Users.Role.ROLE_USER);
-
-        return userRepository.save(user);
-    }
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Users findById(Long id) {
         Optional<Users> user = userRepository.findById(id);
@@ -35,8 +28,21 @@ public class UserService {
     }
 
     public Users findByUsername(String username) {
-        List<Users> users = userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).orElse(null);
+    }
 
-        return users.isEmpty() ? null : users.get(0);
+    public Users createUser(UserCreateDto userDTO) {
+        Users user = new Users();
+
+        user.setEmail(userDTO.email());
+        user.setUsername(userDTO.username());
+        user.setPassword(userDTO.password());
+        user.setRole(Users.Role.ROLE_USER);
+
+        Users createdUser = userRepository.save(user);
+
+        logger.info("Usuário cadastrado. {id}: " + createdUser.getId());
+
+        return createdUser;
     }
 }

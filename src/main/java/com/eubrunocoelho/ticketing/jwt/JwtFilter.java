@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -19,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -28,7 +28,6 @@ public class JwtFilter extends OncePerRequestFilter {
     private final LoginUtilityService loginUtilityService;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
-    // DEBUG
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -52,43 +51,25 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private void processToken(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
+        extractToken(request)
+                .filter(token -> !jwtUtilityService.isTokenExpired(token))
+                .map(jwtUtilityService::getUsername)
+                .filter(username -> !isAlreadyAuthenticated())
+                .ifPresent(username -> authenticateUser(username, request));
+    }
 
-        logger.info("Authorization Header: {}", authHeader);
+    private Optional<String> extractToken(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader("Authorization"))
+                .filter(header -> header.startsWith("Bearer "))
+                .map(header -> header.substring(7));
+    }
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            logger.info("No Bearer Header, skip processing");
+    private boolean isAlreadyAuthenticated() {
+        return SecurityContextHolder.getContext().getAuthentication() != null;
+    }
 
-            return;
-        }
-
-        final String jwtToken = authHeader.substring(7);
-
-        if (jwtUtilityService.isTokenExpired(jwtToken)) {
-            logger.info("Token validity expired");
-
-            return;
-        }
-
-        String username = jwtUtilityService.getUsername(jwtToken);
-
-        if (username == null) {
-            logger.info("No username found in JWT Token");
-
-            return;
-        }
-
-        logger.info("Username found in JWT: " + username);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null) {
-            logger.info("Already loggedin: " + username);
-
-            return;
-        }
-
-        logger.info("Create authentication instance for {}", username);
+    private void authenticateUser(String username, HttpServletRequest request) {
+        logger.info("Autenticando usuário: {}", username);
 
         UserDetails userDetails = loginUtilityService.findMatch(username);
 
@@ -98,9 +79,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 userDetails.getAuthorities()
         );
 
-        authToken.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
