@@ -51,8 +51,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         final String errorMessage = "Ocorreu um erro desconhecido.";
 
-        logger.error(errorMessage, exception);
-
         return buildErrorResponse(exception, errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -62,11 +60,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             DataIntegrityViolationException exception,
             WebRequest request
     ) {
-        logger.error(
-                "Violação de integridade: " + exception.getMostSpecificCause().getMessage(),
-                exception
-        );
-
         return buildErrorResponse(
                 exception,
                 exception.getMostSpecificCause().getMessage(),
@@ -80,11 +73,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             ConstraintViolationException exception,
             WebRequest request
     ) {
-        logger.error(
-                "Violação de restrição.",
-                exception
-        );
-
         return buildErrorResponse(exception, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
@@ -94,11 +82,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             AuthenticationException exception,
             WebRequest request
     ) {
-        logger.error(
-                "Erro de autenticação.",
-                exception
-        );
-
         return buildErrorResponse(
                 exception,
                 exception.getMessage(),
@@ -112,11 +95,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             CredentialsInvalidException exception,
             WebRequest request
     ) {
-        logger.error(
-                "Credenciais inválidas: " + exception.getMessage(),
-                exception
-        );
-
         return buildErrorResponse(
                 exception,
                 exception.getMessage(),
@@ -130,11 +108,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             ObjectNotFoundException exception,
             WebRequest request
     ) {
-        logger.error(
-                "Recurso não encontrado: " + exception.getMessage(),
-                exception
-        );
-
         return buildErrorResponse(
                 exception,
                 exception.getMessage(),

@@ -5,8 +5,6 @@ import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,8 +14,6 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Users findById(Long id) {
         Optional<Users> user = userRepository.findById(id);
@@ -40,8 +36,6 @@ public class UserService {
         user.setRole(Users.Role.ROLE_USER);
 
         Users createdUser = userRepository.save(user);
-
-        logger.info("Usuário cadastrado. {id}: " + createdUser.getId());
 
         return createdUser;
     }

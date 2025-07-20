@@ -19,6 +19,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
+
     private final AuthService authService;
 
     @PostMapping(
@@ -26,9 +28,16 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<AuthResponseDto> authenticate(@RequestBody @Valid AuthDto authDto) {
+        String label = String.format(
+                SCREEN_LABEL,
+                "AUTH",
+                ""
+        );
+
         Map<String, String> authenticate = authService.authenticate(authDto);
 
         AuthResponseDto response = new AuthResponseDto(
+                label,
                 authenticate.get("authToken"),
                 authenticate.get("username"),
                 authenticate.get("role")
