@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.exception;
 
+import com.eubrunocoelho.ticketing.service.exception.CredentialsInvalidException;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -86,6 +88,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
 
         return buildErrorResponse(exception, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleAuthenticationException(
+            AuthenticationException exception,
+            WebRequest request
+    ) {
+        logger.error("Erro de autenticação.", exception);
+
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(CredentialsInvalidException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleCredentialsInvalidException(
+            CredentialsInvalidException exception,
+            WebRequest request
+    ) {
+        logger.error("Credenciais inválidas: " + exception.getMessage(), exception);
+
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNAUTHORIZED
+        );
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)
