@@ -2,7 +2,7 @@ package com.eubrunocoelho.ticketing.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record AuthenticationDTO(
+public record AuthDto(
 
         @NotBlank(message = "username")
         String username,

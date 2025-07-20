@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UserCreateDTO(
+public record UserCreateDto(
 
         @NotBlank(message = "O valor para \"email\" é obrigatório.")
         @Email(message = "O valor para \"email\" deve ser um endereço de e-mail válido.")

@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.dto;
 
-public record UserResponseDTO(
+public record UserResponseDto(
 
         Long id,
 

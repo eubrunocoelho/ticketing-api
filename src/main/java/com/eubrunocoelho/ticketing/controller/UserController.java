@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.dto.UserCreateDTO;
-import com.eubrunocoelho.ticketing.dto.UserResponseDTO;
+import com.eubrunocoelho.ticketing.dto.UserCreateDto;
+import com.eubrunocoelho.ticketing.dto.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.service.UserService;
 import jakarta.validation.Valid;
@@ -24,7 +24,7 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserResponseDTO> create(@RequestBody @Valid UserCreateDTO userDTO) {
+    public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserCreateDto userDTO) {
         Users createdUser = userService.createUser(userDTO);
 
         URI location = ServletUriComponentsBuilder
@@ -33,7 +33,7 @@ public class UserController {
                 .buildAndExpand(createdUser.getId())
                 .toUri();
 
-        UserResponseDTO response = new UserResponseDTO(
+        UserResponseDto response = new UserResponseDto(
                 createdUser.getId(),
                 createdUser.getUsername(),
                 createdUser.getEmail()
@@ -46,10 +46,10 @@ public class UserController {
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserResponseDTO> findById(@PathVariable long id) {
+    public ResponseEntity<UserResponseDto> findById(@PathVariable long id) {
         Users user = userService.findById(id);
 
-        UserResponseDTO response = new UserResponseDTO(
+        UserResponseDto response = new UserResponseDto(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail()

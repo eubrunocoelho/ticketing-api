@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.dto.AuthenticationDTO;
+import com.eubrunocoelho.ticketing.dto.AuthDto;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.service.JwtUtilityService;
 import com.eubrunocoelho.ticketing.service.UserService;
@@ -21,15 +21,12 @@ import java.util.Map;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    /**
-     * I WILL REFACTOR IN THE FUTURE
-     */
 
     private final UserService userService;
     private final JwtUtilityService jwtUtilityService;
 
     @PostMapping()
-    public ResponseEntity<?> authenticate (@RequestBody @Valid AuthenticationDTO authenticationDTO) {
+    public ResponseEntity<?> authenticate (@RequestBody @Valid AuthDto authenticationDTO) {
         Users user = userService.findByUsername(authenticationDTO.username());
 
         if (user == null || !user.getPassword().equalsIgnoreCase(authenticationDTO.password())) {
