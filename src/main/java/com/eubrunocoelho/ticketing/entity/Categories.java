@@ -20,6 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Categories {
 
+    // Eu quero validar se o ENUM de Priority é válido para esses registros
     public static enum Priority {
         LOW, MEDIUM, HIGH
     }
@@ -35,6 +36,6 @@ public class Categories {
     String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "priority", nullable = true)
+    @Column(name = "priority", nullable = false)
     Priority priority;
 }

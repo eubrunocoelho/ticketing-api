@@ -6,6 +6,8 @@ import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrNull;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -17,7 +19,9 @@ public class CategoryService {
 
         category.setName(categoryCreateDTO.name());
         category.setDescription(categoryCreateDTO.description());
-        category.setPriority(Categories.Priority.LOW);
+        category.setPriority(
+                getEnumValueOrNull(Categories.Priority.class, categoryCreateDTO.priority())
+        );
 
         return categoryRepository.save(category);
     }
