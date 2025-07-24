@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.dto.AuthDto;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.service.exception.CredentialsInvalidException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,12 +16,13 @@ public class AuthService {
 
     private final UserService userService;
     private final JwtUtilityService jwtUtilityService;
+    private final PasswordEncoder passwordEncoder;
 
     public Map<String, String> authenticate(AuthDto authDto) {
         Users user = userService.findByUsername(authDto.username());
 
         if (user == null
-                || !user.getPassword().equalsIgnoreCase(authDto.password())
+                || !passwordEncoder.matches(authDto.password(), user.getPassword())
         ) {
             throw new CredentialsInvalidException("\"username\" ou \"password\" inválidos.");
         }
@@ -34,12 +36,12 @@ public class AuthService {
                 1000 * 60 * 60 * 24
         );
 
-        Map<String, String> payload = Map.of(
+        Map<String, String> response = Map.of(
                 "authToken", authToken,
                 "username", user.getUsername(),
                 "role", user.getRole().name()
         );
 
-        return payload;
+        return response;
     }
 }

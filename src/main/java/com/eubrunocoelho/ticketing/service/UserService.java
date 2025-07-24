@@ -5,6 +5,7 @@ import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Users findById(Long id) {
         Optional<Users> user = userRepository.findById(id);
@@ -29,14 +31,13 @@ public class UserService {
 
     public Users createUser(UserCreateDto userDTO) {
         Users user = new Users();
+        String encryptedPassword = passwordEncoder.encode(userDTO.password());
 
         user.setEmail(userDTO.email());
         user.setUsername(userDTO.username());
-        user.setPassword(userDTO.password());
+        user.setPassword(encryptedPassword);
         user.setRole(Users.Role.ROLE_USER);
 
-        Users createdUser = userRepository.save(user);
-
-        return createdUser;
+        return userRepository.save(user);
     }
 }
