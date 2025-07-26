@@ -5,7 +5,7 @@ import com.eubrunocoelho.ticketing.entity.Categories;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record CategoryCreateDTO(
+public record CategoryCreateDto(
         @NotBlank(message = "O valor para \"name\" é obrigatório.")
         @Size(min = 16, message = "O valor para \"name\" deve ter no mínimo 16 caracteres.")
         @Size(max = 255, message = "O valor para \"name\" deve ter no máximo 255 caracteres.")

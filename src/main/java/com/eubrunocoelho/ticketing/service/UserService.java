@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.dto.UserCreateDto;
+import com.eubrunocoelho.ticketing.dto.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
@@ -8,29 +9,54 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    private static final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
+
     private final UserRepository userRepository;
+    private final LoginUtilityService loginUtilityService;
     private final PasswordEncoder passwordEncoder;
 
-    public Users findById(Long id) {
-        Optional<Users> user = userRepository.findById(id);
+    public UserResponseDto findById(Long id) {
+        String label = String.format(
+                SCREEN_LABEL,
+                "",
+                ""
+        );
 
-        return user.orElseThrow(() -> new ObjectNotFoundException(
-                "Usuário não encontrado. {id}: " + id
-        ));
+        Users user = userRepository.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException("Usuário não encontrado. {id}: " + id)
+        );
+
+        UserResponseDto responseDto = new UserResponseDto(
+                label,
+                user.getId(),
+                user.getUsername(),
+                user.getEmail()
+        );
+
+        return responseDto;
     }
 
     public Users findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        Users user = userRepository.findByUsername(username).orElseThrow(() ->
+            new ObjectNotFoundException("Usuário não encontrado. {username}: " + username)
+        );
+
+        return user;
     }
 
-    public Users createUser(UserCreateDto userDTO) {
+    public UserResponseDto createUser(UserCreateDto userDTO) {
+        String label = String.format(
+                SCREEN_LABEL,
+                "",
+                ""
+        );
+
         Users user = new Users();
+
         String encryptedPassword = passwordEncoder.encode(userDTO.password());
 
         user.setEmail(userDTO.email());
@@ -38,6 +64,15 @@ public class UserService {
         user.setPassword(encryptedPassword);
         user.setRole(Users.Role.ROLE_USER);
 
-        return userRepository.save(user);
+        Users newUser = userRepository.save(user);
+
+        UserResponseDto responseDto = new UserResponseDto(
+                label,
+                newUser.getId(),
+                newUser.getUsername(),
+                newUser.getEmail()
+        );
+
+        return responseDto;
     }
 }

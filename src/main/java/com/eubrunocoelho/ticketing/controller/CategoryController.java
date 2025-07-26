@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.dto.CategoryCreateDTO;
-import com.eubrunocoelho.ticketing.entity.Categories;
+import com.eubrunocoelho.ticketing.dto.CategoryCreateDto;
+import com.eubrunocoelho.ticketing.dto.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/tickets/categories")
@@ -20,12 +23,20 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping(
-//            consumes = MediaType.APPLICATION_JSON_VALUE,
-//            produces = MediaType.APPLICATION_JSON_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Void> create(@RequestBody @Valid CategoryCreateDTO categoryCreateDTO) {
-        Categories createdCategory = categoryService.createCategory(categoryCreateDTO);
+    public ResponseEntity<CategoryResponseDto> create(@RequestBody @Valid CategoryCreateDto categoryCreateDTO) {
+        CategoryResponseDto responseDto = categoryService.createCategory(categoryCreateDTO);
 
-        return ResponseEntity.ok().body(null);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(
+                        responseDto.id()
+                )
+                .toUri();
+
+        return ResponseEntity.created(location).body(responseDto);
     }
 }

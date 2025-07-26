@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.service;
 
-import com.eubrunocoelho.ticketing.dto.CategoryCreateDTO;
+import com.eubrunocoelho.ticketing.dto.CategoryCreateDto;
+import com.eubrunocoelho.ticketing.dto.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.entity.Categories;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,18 @@ import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrNull;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private final CategoryRepository categoryRepository;
+    private static final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
 
-    public Categories createCategory(CategoryCreateDTO categoryCreateDTO) {
+    private final CategoryRepository categoryRepository;
+    private final LoginUtilityService loginUtilityService;
+
+    public CategoryResponseDto createCategory(CategoryCreateDto categoryCreateDTO) {
+        String label = String.format(
+                SCREEN_LABEL,
+                "",
+                ""
+        );
+
         Categories category = new Categories();
 
         category.setName(categoryCreateDTO.name());
@@ -23,6 +33,16 @@ public class CategoryService {
                 getEnumValueOrNull(Categories.Priority.class, categoryCreateDTO.priority())
         );
 
-        return categoryRepository.save(category);
+        Categories newCategory = categoryRepository.save(category);
+
+        CategoryResponseDto responseDto = new CategoryResponseDto(
+                label,
+                newCategory.getId(),
+                newCategory.getName(),
+                newCategory.getDescription(),
+                newCategory.getPriority().name()
+        );
+
+        return responseDto;
     }
 }

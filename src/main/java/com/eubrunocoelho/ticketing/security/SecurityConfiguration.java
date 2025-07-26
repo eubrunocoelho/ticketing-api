@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.config;
+package com.eubrunocoelho.ticketing.security;
 
 import com.eubrunocoelho.ticketing.jwt.JwtFilter;
 import com.eubrunocoelho.ticketing.service.LoginUtilityService;
@@ -31,7 +31,8 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/auth/**").permitAll();
-                    request.requestMatchers("/tickets/categories").permitAll();
+                    request.requestMatchers("/users/**").permitAll();
+                    request.requestMatchers("/tickets/**").permitAll();
                     request.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(

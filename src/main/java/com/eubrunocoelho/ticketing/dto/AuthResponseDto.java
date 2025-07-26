@@ -11,5 +11,5 @@ public record AuthResponseDto(
         String username,
 
         String role
-) implements ResponseDtoInterface {
+) {
 }

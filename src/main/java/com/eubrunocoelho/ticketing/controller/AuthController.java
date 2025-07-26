@@ -12,15 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-
-    private final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
-
     private final AuthService authService;
 
     @PostMapping(
@@ -28,21 +23,8 @@ public class AuthController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<AuthResponseDto> authenticate(@RequestBody @Valid AuthDto authDto) {
-        String label = String.format(
-                SCREEN_LABEL,
-                "AUTH",
-                ""
-        );
-
-        Map<String, String> authenticate = authService.authenticate(authDto);
-
-        AuthResponseDto response = new AuthResponseDto(
-                label,
-                authenticate.get("authToken"),
-                authenticate.get("username"),
-                authenticate.get("role")
-        );
-
-        return ResponseEntity.ok().body(response);
+        AuthResponseDto responseDto = authService.authenticate(authDto);
+        
+        return ResponseEntity.ok().body(responseDto);
     }
 }
