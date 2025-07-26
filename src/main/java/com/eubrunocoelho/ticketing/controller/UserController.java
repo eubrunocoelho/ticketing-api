@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.controller;
 
 import com.eubrunocoelho.ticketing.dto.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.UserResponseDto;
+import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.service.LoginUtilityService;
 import com.eubrunocoelho.ticketing.service.UserService;
 import jakarta.validation.Valid;
@@ -18,6 +19,8 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class UserController {
 
+    private static final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
+
     private final UserService userService;
 
     @PostMapping(
@@ -25,15 +28,26 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<UserResponseDto> create(@RequestBody @Valid UserCreateDto userCreateDto) {
-        UserResponseDto responseDto = userService.createUser(userCreateDto);
+        Users user = userService.createUser(userCreateDto);
+
+        String label = String.format(
+                SCREEN_LABEL, "", ""
+        );
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(
-                        responseDto.id()
+                        user.getId()
                 )
                 .toUri();
+
+        UserResponseDto responseDto = new UserResponseDto(
+                label,
+                user.getId(),
+                user.getUsername(),
+                user.getRole().name()
+        );
 
         return ResponseEntity.created(location).body(responseDto);
     }
@@ -43,7 +57,18 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<UserResponseDto> findById(@PathVariable long id) {
-        UserResponseDto responseDto = userService.findById(id);
+        Users user = userService.findById(id);
+
+        String label = String.format(
+                SCREEN_LABEL, "", ""
+        );
+
+        UserResponseDto responseDto = new UserResponseDto(
+                label,
+                user.getId(),
+                user.getEmail(),
+                user.getRole().name()
+        );
 
         return ResponseEntity.ok().body(responseDto);
     }

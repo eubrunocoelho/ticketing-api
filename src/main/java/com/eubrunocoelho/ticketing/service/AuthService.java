@@ -1,7 +1,6 @@
 package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.dto.AuthDto;
-import com.eubrunocoelho.ticketing.dto.AuthResponseDto;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.service.exception.CredentialsInvalidException;
 import lombok.RequiredArgsConstructor;
@@ -15,19 +14,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private static final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
-
     private final UserService userService;
     private final JwtUtilityService jwtUtilityService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthResponseDto authenticate(AuthDto authDto) {
-        String label = String.format(
-                SCREEN_LABEL,
-                "",
-                ""
-        );
-
+    public Map<String, String> authenticate(AuthDto authDto) {
         Users user = userService.findByUsername(authDto.username());
 
         if (user == null
@@ -45,13 +36,10 @@ public class AuthService {
                 1000 * 60 * 60 * 24
         );
 
-        AuthResponseDto responseDto = new AuthResponseDto(
-                label,
-                authToken,
-                user.getUsername(),
-                user.getRole().name()
+        return Map.of(
+                "authToken", authToken,
+                "username", user.getUsername(),
+                "role", user.getRole().name()
         );
-
-        return responseDto;
     }
 }

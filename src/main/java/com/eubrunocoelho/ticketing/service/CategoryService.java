@@ -31,12 +31,6 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public Categories findById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() ->
-                new ObjectNotFoundException("Categoria não encontrada. {id}: " + id)
-        );
-    }
-
     public Categories updateCategory(Long id, CategoryUpdateDto categoryUpdateDto) {
         Categories category = findById(id);
 
@@ -49,5 +43,11 @@ public class CategoryService {
         }
 
         return categoryRepository.save(category);
+    }
+
+    public Categories findById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(() ->
+                new ObjectNotFoundException("Categoria não encontrada. {id}: " + id)
+        );
     }
 }
