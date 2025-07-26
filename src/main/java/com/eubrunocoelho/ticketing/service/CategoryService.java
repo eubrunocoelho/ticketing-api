@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.dto.CategoryCreateDto;
+import com.eubrunocoelho.ticketing.dto.CategoryListDto;
 import com.eubrunocoelho.ticketing.dto.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Categories;
@@ -9,6 +10,9 @@ import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrNull;
 
@@ -43,6 +47,22 @@ public class CategoryService {
         }
 
         return categoryRepository.save(category);
+    }
+
+    public List<CategoryListDto> findAll() {
+        List<Categories> categories = categoryRepository.findAll();
+
+        return categories
+                .stream()
+                .map(category ->
+                        new CategoryListDto(
+                                category.getId(),
+                                category.getName(),
+                                category.getDescription(),
+                                category.getPriority().name()
+                        )
+                )
+                .toList();
     }
 
     public Categories findById(Long id) {

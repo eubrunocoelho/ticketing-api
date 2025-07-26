@@ -1,6 +1,8 @@
 package com.eubrunocoelho.ticketing.controller;
 
+import com.eubrunocoelho.ticketing.dto.CategoriesResponseDto;
 import com.eubrunocoelho.ticketing.dto.CategoryCreateDto;
+import com.eubrunocoelho.ticketing.dto.CategoryListDto;
 import com.eubrunocoelho.ticketing.dto.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Categories;
@@ -9,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tickets/categories")
@@ -57,6 +61,25 @@ public class CategoryController {
 
         return ResponseEntity.created(location).body(responseDto);
     }
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CategoriesResponseDto> findAll() {
+        List<CategoryListDto> categories = categoryService.findAll();
+
+        String label = String.format(
+                SCREEN_LABEL, "", ""
+        );
+
+        CategoriesResponseDto responseDto = new CategoriesResponseDto(
+                label,
+                categories
+        );
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
 
     @PatchMapping(
             value = "/{id}",

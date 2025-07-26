@@ -11,8 +11,8 @@ public record CategoryCreateDto(
         @Size(max = 255, message = "O valor para \"name\" deve ter no máximo 255 caracteres.")
         String name,
 
-        @Size(min = 16, message = "O valor para \"name\" deve ter no mínimo 16 caracteres.")
-        @Size(max = 255, message = "O valor para \"name\" deve ter no máximo 255 caracteres.")
+        @Size(min = 16, message = "O valor para \"description\" deve ter no mínimo 16 caracteres.")
+        @Size(max = 255, message = "O valor para \"description\" deve ter no máximo 255 caracteres.")
         String description,
 
         @NotBlank(message = "O valor para \"priority\" é obrigatório.")
