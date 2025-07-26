@@ -32,7 +32,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/auth/**").permitAll();
                     request.requestMatchers("/users/**").permitAll();
-                    request.requestMatchers("/tickets/**").permitAll();
                     request.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(
