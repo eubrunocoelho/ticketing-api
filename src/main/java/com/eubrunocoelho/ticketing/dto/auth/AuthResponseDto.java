@@ -1,6 +1,4 @@
-package com.eubrunocoelho.ticketing.dto;
-
-import com.eubrunocoelho.ticketing.dto.contract.ResponseDtoInterface;
+package com.eubrunocoelho.ticketing.dto.auth;
 
 public record AuthResponseDto(
 

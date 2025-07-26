@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.dto;
+package com.eubrunocoelho.ticketing.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 

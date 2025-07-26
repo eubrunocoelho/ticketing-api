@@ -1,9 +1,8 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.dto.UserCreateDto;
-import com.eubrunocoelho.ticketing.dto.UserResponseDto;
+import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Users;
-import com.eubrunocoelho.ticketing.service.LoginUtilityService;
 import com.eubrunocoelho.ticketing.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.dto;
+package com.eubrunocoelho.ticketing.dto.user;
 
 import com.eubrunocoelho.ticketing.annotation.validation.UniqueEmail;
 import com.eubrunocoelho.ticketing.annotation.validation.UniqueUsername;

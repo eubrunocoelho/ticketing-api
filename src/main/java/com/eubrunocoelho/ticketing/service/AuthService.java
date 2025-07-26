@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.service;
 
-import com.eubrunocoelho.ticketing.dto.AuthDto;
+import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.service.exception.CredentialsInvalidException;
 import lombok.RequiredArgsConstructor;

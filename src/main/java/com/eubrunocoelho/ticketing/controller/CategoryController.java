@@ -1,10 +1,10 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.dto.CategoriesResponseDto;
-import com.eubrunocoelho.ticketing.dto.CategoryCreateDto;
-import com.eubrunocoelho.ticketing.dto.CategoryListDto;
-import com.eubrunocoelho.ticketing.dto.CategoryResponseDto;
-import com.eubrunocoelho.ticketing.dto.CategoryUpdateDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoriesResponseDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryListDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Categories;
 import com.eubrunocoelho.ticketing.service.CategoryService;
 import jakarta.validation.Valid;

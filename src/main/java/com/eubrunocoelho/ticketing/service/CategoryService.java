@@ -1,9 +1,8 @@
 package com.eubrunocoelho.ticketing.service;
 
-import com.eubrunocoelho.ticketing.dto.CategoryCreateDto;
-import com.eubrunocoelho.ticketing.dto.CategoryListDto;
-import com.eubrunocoelho.ticketing.dto.CategoryResponseDto;
-import com.eubrunocoelho.ticketing.dto.CategoryUpdateDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryListDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Categories;
 import com.eubrunocoelho.ticketing.mapper.CategoryMapper;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrNull;
 

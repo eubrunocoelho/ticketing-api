@@ -1,17 +1,15 @@
-package com.eubrunocoelho.ticketing.dto;
+package com.eubrunocoelho.ticketing.dto.user;
 
 import com.eubrunocoelho.ticketing.dto.contract.ResponseDtoInterface;
 
-public record CategoryResponseDto(
+public record UserResponseDto(
 
         String label,
 
         Long id,
 
-        String name,
+        String username,
 
-        String description,
-
-        String priority
+        String email
 ) implements ResponseDtoInterface {
 }

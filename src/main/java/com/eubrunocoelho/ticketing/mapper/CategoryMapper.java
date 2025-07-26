@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.mapper;
 
-import com.eubrunocoelho.ticketing.dto.CategoryUpdateDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Categories;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

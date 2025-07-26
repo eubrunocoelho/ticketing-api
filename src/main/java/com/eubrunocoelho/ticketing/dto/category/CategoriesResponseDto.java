@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.dto;
+package com.eubrunocoelho.ticketing.dto.category;
 
 import com.eubrunocoelho.ticketing.dto.contract.ResponseDtoInterface;
 

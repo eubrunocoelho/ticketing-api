@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.service;
 
-import com.eubrunocoelho.ticketing.dto.UserCreateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.entity.Users;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
