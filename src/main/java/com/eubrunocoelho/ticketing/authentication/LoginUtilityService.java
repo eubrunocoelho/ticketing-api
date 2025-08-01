@@ -1,6 +1,5 @@
-package com.eubrunocoelho.ticketing.service;
+package com.eubrunocoelho.ticketing.authentication;
 
-import com.eubrunocoelho.ticketing.authentication.AuthenticatedUser;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

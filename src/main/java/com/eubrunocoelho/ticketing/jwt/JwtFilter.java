@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.jwt;
 
-import com.eubrunocoelho.ticketing.service.LoginUtilityService;
+import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

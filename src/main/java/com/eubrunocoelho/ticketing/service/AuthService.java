@@ -31,7 +31,6 @@ public class AuthService {
 
         Map<String, String> claims = new HashMap<>();
         claims.put("role", user.getRole().name());
-
         String authToken = jwtUtilityService.generateToken(
                 claims,
                 user.getUsername(),
