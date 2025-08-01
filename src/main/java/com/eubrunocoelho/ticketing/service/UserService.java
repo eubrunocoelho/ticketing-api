@@ -1,9 +1,11 @@
 package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
-import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
+import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,18 +15,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public Users createUser(UserCreateDto userDTO) {
-        Users user = new Users();
-        String encryptedPassword = passwordEncoder.encode(userDTO.password());
+    public UserResponseDto createUser(UserCreateDto userDTO) {
+        Users user = userMapper.toEntity(userDTO, passwordEncoder);
+        Users createdUser = userRepository.save(user);
 
-        user.setEmail(userDTO.email());
-        user.setUsername(userDTO.username());
-        user.setPassword(encryptedPassword);
-        user.setRole(Users.Role.ROLE_USER);
-
-        return userRepository.save(user);
+        return userMapper.toDto(createdUser);
     }
 
     public Users findById(Long id) {

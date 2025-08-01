@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.controller;
 
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
+import com.eubrunocoelho.ticketing.dto.response.ResponseDto;
 import com.eubrunocoelho.ticketing.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
-
-    private static final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
+public class AuthController extends AbstractController {
 
     private final AuthService authService;
 
@@ -27,21 +24,17 @@ public class AuthController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<AuthResponseDto> authenticate(@RequestBody @Valid AuthDto authDto) {
-        Map<String, String> authenticate = authService.authenticate(authDto);
+    public ResponseEntity<ResponseDto<AuthResponseDto>> authenticate(
+            @RequestBody @Valid AuthDto authDto
+    ) {
+        AuthResponseDto authResponseDto = authService.authenticate(authDto);
 
-        String label = String.format(
-                SCREEN_LABEL, "", ""
+        ResponseDto<AuthResponseDto> responseDto = new ResponseDto<>(
+                getScreenLabel(false),
+                authResponseDto
         );
 
-        AuthResponseDto responseDto = new AuthResponseDto(
-                label,
-                authenticate.get("authToken"),
-                authenticate.get("username"),
-                authenticate.get("role")
-        );
-
-        String authorization = "Bearer " + responseDto.authToken();
+        String authorization = "Bearer " + responseDto.data().authToken();
 
         return ResponseEntity
                 .ok()

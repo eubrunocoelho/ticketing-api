@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.exception;
+package com.eubrunocoelho.ticketing.exception.entity;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;

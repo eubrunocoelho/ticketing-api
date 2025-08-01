@@ -1,18 +1,16 @@
 package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
-import com.eubrunocoelho.ticketing.dto.category.CategoryListDto;
+import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Categories;
 import com.eubrunocoelho.ticketing.mapper.CategoryMapper;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
-import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
+import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrNull;
 
 @Service
 @RequiredArgsConstructor
@@ -21,45 +19,27 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public Categories createCategory(CategoryCreateDto categoryCreateDTO) {
-        Categories category = new Categories();
+    public CategoryResponseDto createCategory(CategoryCreateDto categoryCreateDTO) {
+        Categories category = categoryMapper.toEntity(categoryCreateDTO);
+        Categories createdCategory = categoryRepository.save(category);
 
-        category.setName(categoryCreateDTO.name());
-        category.setDescription(categoryCreateDTO.description());
-        category.setPriority(
-                getEnumValueOrNull(Categories.Priority.class, categoryCreateDTO.priority())
-        );
-
-        return categoryRepository.save(category);
+        return categoryMapper.toDto(createdCategory);
     }
 
-    public Categories updateCategory(Long id, CategoryUpdateDto categoryUpdateDto) {
+    public CategoryResponseDto updateCategory(Long id, CategoryUpdateDto categoryUpdateDto) {
         Categories category = findById(id);
 
         categoryMapper.updateCategoryFromDto(categoryUpdateDto, category);
+        Categories updatedCategory = categoryRepository.save(category);
 
-        if (categoryUpdateDto.priority() != null) {
-            category.setPriority(
-                    getEnumValueOrNull(Categories.Priority.class, categoryUpdateDto.priority())
-            );
-        }
-
-        return categoryRepository.save(category);
+        return categoryMapper.toDto(updatedCategory);
     }
 
-    public List<CategoryListDto> findAll() {
-        List<Categories> categories = categoryRepository.findAll();
-
-        return categories
+    public List<CategoryResponseDto> findAll() {
+        return categoryRepository
+                .findAll()
                 .stream()
-                .map(category ->
-                        new CategoryListDto(
-                                category.getId(),
-                                category.getName(),
-                                category.getDescription(),
-                                category.getPriority().name()
-                        )
-                )
+                .map(categoryMapper::toDto)
                 .toList();
     }
 

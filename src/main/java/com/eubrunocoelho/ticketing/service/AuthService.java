@@ -1,8 +1,9 @@
 package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
+import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.entity.Users;
-import com.eubrunocoelho.ticketing.service.exception.CredentialsInvalidException;
+import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,13 @@ public class AuthService {
     private final JwtUtilityService jwtUtilityService;
     private final PasswordEncoder passwordEncoder;
 
-    public Map<String, String> authenticate(AuthDto authDto) {
+    public AuthResponseDto authenticate(AuthDto authDto) {
         Users user = userService.findByUsername(authDto.username());
 
         if (user == null
                 || !passwordEncoder.matches(authDto.password(), user.getPassword())
         ) {
-            throw new CredentialsInvalidException("\"username\" ou \"password\" inválidos.");
+            throw new InvalidCredentialsException("\"username\" ou \"password\" inválidos.");
         }
 
         Map<String, String> claims = new HashMap<>();
@@ -36,10 +37,10 @@ public class AuthService {
                 1000 * 60 * 60 * 24
         );
 
-        return Map.of(
-                "authToken", authToken,
-                "username", user.getUsername(),
-                "role", user.getRole().name()
+        return new AuthResponseDto(
+                authToken,
+                user.getUsername(),
+                user.getRole().name()
         );
     }
 }

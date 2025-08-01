@@ -1,8 +1,12 @@
 package com.eubrunocoelho.ticketing.exception;
 
-import com.eubrunocoelho.ticketing.service.exception.CredentialsInvalidException;
-import com.eubrunocoelho.ticketing.service.exception.ObjectNotFoundException;
+import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
+import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
+import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +23,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Value("${server.error.include-stacktrace:NEVER}")
+    private ErrorProperties.IncludeAttribute includeStackTrace;
 
     @Override
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -89,19 +96,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler(CredentialsInvalidException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<Object> handleCredentialsInvalidException(
-            CredentialsInvalidException exception,
-            WebRequest request
-    ) {
-        return buildErrorResponse(
-                exception,
-                exception.getMessage(),
-                HttpStatus.UNAUTHORIZED
-        );
-    }
-
     @ExceptionHandler(ObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleObjectNotFoundException(
@@ -112,6 +106,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 exception,
                 exception.getMessage(),
                 HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(InvalidEnumValueException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<Object> handleInvalidEnumValueException(
+            InvalidEnumValueException exception,
+            WebRequest request
+    ) {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNPROCESSABLE_ENTITY
+        );
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleCredentialsInvalidException(
+            InvalidCredentialsException exception,
+            WebRequest request
+    ) {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNAUTHORIZED
         );
     }
 
@@ -135,6 +155,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 httpStatus.value(),
                 message
         );
+
+        if (includeStackTrace == ErrorProperties.IncludeAttribute.ALWAYS) {
+            errorResponse.setStackTrace(ExceptionUtils.getStackTrace(exception));
+        }
 
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }

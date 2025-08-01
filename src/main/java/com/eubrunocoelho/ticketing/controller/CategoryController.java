@@ -1,11 +1,9 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.dto.category.CategoriesResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
-import com.eubrunocoelho.ticketing.dto.category.CategoryListDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
-import com.eubrunocoelho.ticketing.entity.Categories;
+import com.eubrunocoelho.ticketing.dto.response.ResponseDto;
 import com.eubrunocoelho.ticketing.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +22,9 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tickets/categories")
+@RequestMapping("/categories")
 @RequiredArgsConstructor
-public class CategoryController {
-
-    private static final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
+public class CategoryController extends AbstractController {
 
     private final CategoryService categoryService;
 
@@ -36,27 +32,24 @@ public class CategoryController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody @Valid CategoryCreateDto categoryCreateDTO) {
-        Categories category = categoryService.createCategory(categoryCreateDTO);
-
-        String label = String.format(
-                SCREEN_LABEL, "", ""
+    public ResponseEntity<ResponseDto<CategoryResponseDto>> createCategory(
+            @RequestBody @Valid CategoryCreateDto categoryCreateDTO
+    ) {
+        CategoryResponseDto categoryResponseDto = categoryService.createCategory(
+                categoryCreateDTO
         );
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(
-                        category.getId()
+                        categoryResponseDto.id()
                 )
                 .toUri();
 
-        CategoryResponseDto responseDto = new CategoryResponseDto(
-                label,
-                category.getId(),
-                category.getName(),
-                category.getDescription(),
-                category.getPriority().name()
+        ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                categoryResponseDto
         );
 
         return ResponseEntity.created(location).body(responseDto);
@@ -65,16 +58,12 @@ public class CategoryController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CategoriesResponseDto> findAll() {
-        List<CategoryListDto> categories = categoryService.findAll();
+    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAll() {
+        List<CategoryResponseDto> listCategoryResponseDto = categoryService.findAll();
 
-        String label = String.format(
-                SCREEN_LABEL, "", ""
-        );
-
-        CategoriesResponseDto responseDto = new CategoriesResponseDto(
-                label,
-                categories
+        ResponseDto<List<CategoryResponseDto>> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                listCategoryResponseDto
         );
 
         return ResponseEntity.ok().body(responseDto);
@@ -86,19 +75,17 @@ public class CategoryController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CategoryResponseDto> updateCategory(@PathVariable long id, @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
-        Categories category = categoryService.updateCategory(id, categoryUpdateDto);
-
-        String label = String.format(
-                SCREEN_LABEL, "", ""
+    public ResponseEntity<ResponseDto<CategoryResponseDto>> updateCategory(
+            @PathVariable long id, @RequestBody @Valid CategoryUpdateDto categoryUpdateDto
+    ) {
+        CategoryResponseDto categoryResponseDto = categoryService.updateCategory(
+                id,
+                categoryUpdateDto
         );
 
-        CategoryResponseDto responseDto = new CategoryResponseDto(
-                label,
-                category.getId(),
-                category.getName(),
-                category.getDescription(),
-                category.getPriority().name()
+        ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                categoryResponseDto
         );
 
         return ResponseEntity.ok().body(responseDto);
