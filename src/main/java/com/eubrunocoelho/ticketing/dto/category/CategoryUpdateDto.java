@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.dto.category;
 
 import com.eubrunocoelho.ticketing.annotation.validation.ValidEnum;
-import com.eubrunocoelho.ticketing.entity.Categories;
+import com.eubrunocoelho.ticketing.entity.Category;
 import jakarta.validation.constraints.Size;
 
 public record CategoryUpdateDto(
@@ -13,7 +13,7 @@ public record CategoryUpdateDto(
         @Size(max = 255, message = "O valor para \"description\" deve ter no máximo 255 caracteres.")
         String description,
 
-        @ValidEnum(enumClass = Categories.Priority.class, message = "O valor de \"priority\" deve ser LOW, MEDIUM ou HIGH.")
+        @ValidEnum(enumClass = Category.Priority.class, message = "O valor de \"priority\" deve ser LOW, MEDIUM ou HIGH.")
         String priority
 ) {
 }

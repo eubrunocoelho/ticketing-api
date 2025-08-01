@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Builder
 @Table(name = "categories")
 @EntityListeners(AuditingEntityListener.class)
-public class Categories {
+public class Category {
     
     public static enum Priority {
         LOW, MEDIUM, HIGH

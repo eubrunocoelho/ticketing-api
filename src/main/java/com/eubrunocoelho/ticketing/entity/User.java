@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-public class Users {
+public class User {
 
     public static enum Role {
         ROLE_ADMIN, ROLE_STAFF, ROLE_USER;

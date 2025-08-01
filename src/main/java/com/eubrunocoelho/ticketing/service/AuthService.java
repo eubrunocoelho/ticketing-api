@@ -2,8 +2,9 @@ package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
-import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
+import com.eubrunocoelho.ticketing.jwt.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,11 @@ import java.util.Map;
 public class AuthService {
 
     private final UserService userService;
-    private final JwtUtilityService jwtUtilityService;
+    private final JwtUtility jwtUtilityService;
     private final PasswordEncoder passwordEncoder;
 
     public AuthResponseDto authenticate(AuthDto authDto) {
-        Users user = userService.findByUsername(authDto.username());
+        User user = userService.findByUsername(authDto.username());
 
         if (user == null
                 || !passwordEncoder.matches(authDto.password(), user.getPassword())

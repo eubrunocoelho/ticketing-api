@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.validation;
+package com.eubrunocoelho.ticketing.validator;
 
 import com.eubrunocoelho.ticketing.annotation.validation.UniqueEmail;
 import com.eubrunocoelho.ticketing.repository.UserRepository;

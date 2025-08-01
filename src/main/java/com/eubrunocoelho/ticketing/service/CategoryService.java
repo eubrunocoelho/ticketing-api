@@ -3,7 +3,7 @@ package com.eubrunocoelho.ticketing.service;
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
-import com.eubrunocoelho.ticketing.entity.Categories;
+import com.eubrunocoelho.ticketing.entity.Category;
 import com.eubrunocoelho.ticketing.mapper.CategoryMapper;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
@@ -20,17 +20,17 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public CategoryResponseDto createCategory(CategoryCreateDto categoryCreateDTO) {
-        Categories category = categoryMapper.toEntity(categoryCreateDTO);
-        Categories createdCategory = categoryRepository.save(category);
+        Category category = categoryMapper.toEntity(categoryCreateDTO);
+        Category createdCategory = categoryRepository.save(category);
 
         return categoryMapper.toDto(createdCategory);
     }
 
     public CategoryResponseDto updateCategory(Long id, CategoryUpdateDto categoryUpdateDto) {
-        Categories category = findById(id);
+        Category category = findById(id);
 
         categoryMapper.updateCategoryFromDto(categoryUpdateDto, category);
-        Categories updatedCategory = categoryRepository.save(category);
+        Category updatedCategory = categoryRepository.save(category);
 
         return categoryMapper.toDto(updatedCategory);
     }
@@ -43,7 +43,7 @@ public class CategoryService {
                 .toList();
     }
 
-    public Categories findById(Long id) {
+    public Category findById(Long id) {
         return categoryRepository.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException("Categoria não encontrada. {id}: " + id)
         );

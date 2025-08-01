@@ -1,23 +1,22 @@
 package com.eubrunocoelho.ticketing.authentication;
 
-import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.entity.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-public class AuthenticatedUser extends User {
+public class AuthenticatedUser extends org.springframework.security.core.userdetails.User {
 
-    private Users user;
+    private User user;
 
-    public AuthenticatedUser(Users user, Collection<? extends GrantedAuthority> authorities) {
+    public AuthenticatedUser(User user, Collection<? extends GrantedAuthority> authorities) {
         super(user.getUsername(), user.getPassword(), authorities);
 
         this.user = user;
     }
 
     public AuthenticatedUser(
-            Users user,
+            User user,
             boolean enabled,
             boolean accountNonExpired,
             boolean credentialsNonExpired,
@@ -35,7 +34,7 @@ public class AuthenticatedUser extends User {
         );
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 }

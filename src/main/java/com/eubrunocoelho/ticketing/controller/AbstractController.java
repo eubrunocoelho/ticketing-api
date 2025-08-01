@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.service.LoginUtilityService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public abstract class AbstractController {
     }
 
     protected String getLoggedUser() {
-        Users loggedUser = loginUtilityService.getLoggedInUser();
+        User loggedUser = loginUtilityService.getLoggedInUser();
 
         return String.format("%s|%s", loggedUser.getUsername(), loggedUser.getRole().name());
     }

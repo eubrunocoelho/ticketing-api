@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service;
+package com.eubrunocoelho.ticketing.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-public class JwtUtilityService {
+public class JwtUtility {
 
     @Value("${com.eubrunocoelho.ticketing.jwt.secret}")
     private String SECRET_KEY;

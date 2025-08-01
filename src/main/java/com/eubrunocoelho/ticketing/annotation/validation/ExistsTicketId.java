@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.annotation.validation;
 
-import com.eubrunocoelho.ticketing.validation.ExistsTicketIdValidator;
+import com.eubrunocoelho.ticketing.validator.ExistsTicketIdValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

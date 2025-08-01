@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.service;
 
 import com.eubrunocoelho.ticketing.authentication.AuthenticatedUser;
-import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -20,7 +20,7 @@ public class LoginUtilityService {
     private final UserRepository userRepository;
 
     public AuthenticatedUser findMatch(String username) {
-        Users user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "Usuário não encontrado. {username}: " + username
                 ));
@@ -32,7 +32,7 @@ public class LoginUtilityService {
         return new AuthenticatedUser(user, authorities);
     }
 
-    public Users getLoggedInUser() {
+    public User getLoggedInUser() {
         return Optional.ofNullable(
                         SecurityContextHolder.getContext().getAuthentication()
                 )

@@ -4,9 +4,9 @@ import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
-import com.eubrunocoelho.ticketing.entity.Categories;
-import com.eubrunocoelho.ticketing.entity.Tickets;
-import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.entity.Category;
+import com.eubrunocoelho.ticketing.entity.Ticket;
+import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,18 +21,18 @@ public class TicketService {
     private final CategoryService categoryService;
 
     public TicketResponseDto createTicket(TicketCreateDto ticketCreateDto) {
-        Users loggedUser = loginUtilityService.getLoggedInUser();
-        Categories category = categoryService.findById(ticketCreateDto.category());
+        User loggedUser = loginUtilityService.getLoggedInUser();
+        Category category = categoryService.findById(ticketCreateDto.category());
 
-        Tickets ticket = new Tickets();
+        Ticket ticket = new Ticket();
 
         ticket.setUser(loggedUser);
         ticket.setTitle(ticketCreateDto.title());
         ticket.setContent(ticketCreateDto.content());
-        ticket.setStatus(Tickets.Status.OPEN);
+        ticket.setStatus(Ticket.Status.OPEN);
         ticket.setCategory(category);
 
-        Tickets createdTicket = ticketRepository.save(ticket);
+        Ticket createdTicket = ticketRepository.save(ticket);
 
         UserResponseDto userResponseDto = new UserResponseDto(
                 createdTicket.getUser().getId(),
@@ -58,7 +58,7 @@ public class TicketService {
         );
     }
 
-    public Tickets findById(Long id) {
+    public Ticket findById(Long id) {
         return ticketRepository.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException("Ticket não encontrado. {id}: " + id)
         );

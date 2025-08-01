@@ -3,7 +3,7 @@ package com.eubrunocoelho.ticketing.controller;
 import com.eubrunocoelho.ticketing.dto.response.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
-import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.service.UserService;
 import jakarta.validation.Valid;
@@ -53,7 +53,7 @@ public class UserController extends AbstractController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<UserResponseDto>> findById(@PathVariable long id) {
-        Users user = userService.findById(id);
+        User user = userService.findById(id);
         UserResponseDto userResponseDto = userMapper.toDto(user);
 
         ResponseDto<UserResponseDto> responseDto = new ResponseDto<>(

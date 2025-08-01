@@ -5,9 +5,9 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.reply.TicketReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.reply.TicketReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
-import com.eubrunocoelho.ticketing.entity.TicketReplies;
-import com.eubrunocoelho.ticketing.entity.Tickets;
-import com.eubrunocoelho.ticketing.entity.Users;
+import com.eubrunocoelho.ticketing.entity.TicketReply;
+import com.eubrunocoelho.ticketing.entity.Ticket;
+import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.TicketReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,10 +24,10 @@ public class TicketReplyService {
     private final LoginUtilityService loginUtilityService;
 
     public TicketReplyResponseDto createTicketReply(Long id, TicketReplyCreateDto ticketReplyCreateDto) {
-        Users loggedUser = loginUtilityService.getLoggedInUser();
-        Tickets ticket = ticketService.findById(id);
+        User loggedUser = loginUtilityService.getLoggedInUser();
+        Ticket ticket = ticketService.findById(id);
 
-        TicketReplies ticketReply = new TicketReplies();
+        TicketReply ticketReply = new TicketReply();
 
         ticketReply.setTicket(ticket);
         ticketReply.setCreatedUser(ticket.getUser());
@@ -35,7 +35,7 @@ public class TicketReplyService {
         ticketReply.setParent(null);
         ticketReply.setContent(ticketReplyCreateDto.content());
 
-        TicketReplies createdTicketReply = ticketReplyRepository.save(ticketReply);
+        TicketReply createdTicketReply = ticketReplyRepository.save(ticketReply);
 
         UserResponseDto createdUserResponseDto = new UserResponseDto(
                 createdTicketReply.getCreatedUser().getId(),

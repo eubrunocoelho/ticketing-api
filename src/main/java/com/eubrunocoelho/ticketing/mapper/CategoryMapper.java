@@ -3,7 +3,7 @@ package com.eubrunocoelho.ticketing.mapper;
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
-import com.eubrunocoelho.ticketing.entity.Categories;
+import com.eubrunocoelho.ticketing.entity.Category;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,16 +17,16 @@ import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrThrow;
 public interface CategoryMapper {
 
     @Mapping(target = "priority", source = "priority", qualifiedByName = "mapPriority")
-    Categories toEntity(CategoryCreateDto dto);
+    Category toEntity(CategoryCreateDto dto);
 
-    CategoryResponseDto toDto(Categories entity);
+    CategoryResponseDto toDto(Category entity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "priority", source = "priority", qualifiedByName = "mapPriority")
-    void updateCategoryFromDto(CategoryUpdateDto categoryUpdateDto, @MappingTarget Categories category);
+    void updateCategoryFromDto(CategoryUpdateDto categoryUpdateDto, @MappingTarget Category category);
 
     @Named("mapPriority")
-    default Categories.Priority mapPriority(String priority) {
-        return getEnumValueOrThrow(priority, Categories.Priority.class);
+    default Category.Priority mapPriority(String priority) {
+        return getEnumValueOrThrow(priority, Category.Priority.class);
     }
 }

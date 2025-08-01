@@ -1,6 +1,5 @@
 package com.eubrunocoelho.ticketing.jwt;
 
-import com.eubrunocoelho.ticketing.service.JwtUtilityService;
 import com.eubrunocoelho.ticketing.service.LoginUtilityService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtUtilityService jwtUtilityService;
+    private final JwtUtility jwtUtilityService;
     private final LoginUtilityService loginUtilityService;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
