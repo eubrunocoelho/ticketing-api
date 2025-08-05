@@ -30,9 +30,9 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Table(name = "ticket_replies")
+@Table(name = "replies")
 @EntityListeners(AuditingEntityListener.class)
-public class TicketReply {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,10 +53,10 @@ public class TicketReply {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", nullable = true)
-    private TicketReply parent;
+    private Reply parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TicketReply> replies;
+    private List<Reply> replies;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;
