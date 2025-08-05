@@ -17,21 +17,37 @@ public class ReplyService {
     private final TicketService ticketService;
     private final LoginUtilityService loginUtilityService;
 
-    public void createReply(Long id, ReplyCreateDto replyCreateDto) {
+    public void createReply(Long ticketId, ReplyCreateDto replyCreateDto) {
         User loggedUser = loginUtilityService.getLoggedInUser();
-        Ticket ticket = ticketService.findById(id);
+        Ticket ticket = ticketService.findById(ticketId);
 
         Reply reply = new Reply();
+        reply.setTicket(ticket);
+        reply.setContent(replyCreateDto.content());
+        reply.setCreatedUser(loggedUser);
 
         if (!hasReplies(ticket.getId())) {
-            reply.setTicket(ticket);
-            reply.setCreatedUser(ticket.getUser());
-            reply.setRespondedToUser(loggedUser);
-            reply.setParent(null);
-            reply.setContent(replyCreateDto.content());
+            if (loggedUser.getId().equals(ticket.getUser().getId())) {
+                throw new IllegalArgumentException("loggedUser == respondedToUser");
+            }
 
-            Reply createdReply = replyRepository.save(reply);
+            reply.setParent(null);
+            reply.setRespondedToUser(ticket.getUser());
+        } else {
+            Reply lastReply = replyRepository.findTopByTicketIdOrderByCreatedAtDesc(ticketId)
+                    .orElseThrow(() -> new IllegalStateException("Not found."));
+
+            User lastReplyAuthor = lastReply.getCreatedUser();
+
+            if (loggedUser.getId().equals(lastReplyAuthor.getId())) {
+                throw new IllegalArgumentException("loggedUser == respondedToUser");
+            }
+
+            reply.setParent(lastReply);
+            reply.setRespondedToUser(lastReplyAuthor);
         }
+
+        replyRepository.save(reply);
     }
 
     public boolean hasReplies(Long ticketId) {
