@@ -2,9 +2,11 @@ package com.eubrunocoelho.ticketing.service.reply;
 
 import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
+import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
+import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
@@ -20,15 +22,17 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final ReplyFactory replyFactory;
     private final ReplyValidationService replyValidationService;
+    private final ReplyMapper replyMapper;
 
-    public void createReply(Long ticketId, ReplyCreateDto dto) {
+    public ReplyResponseDto createReply(Long ticketId, ReplyCreateDto dto) {
         User loggedUser = loginUtilityService.getLoggedInUser();
         Ticket ticket = ticketService.findById(ticketId);
 
         Reply reply = replyFactory.buildReply(ticketId, dto, loggedUser, ticket);
-
         replyValidationService.validate(reply, loggedUser);
 
-        replyRepository.save(reply);
+        Reply createdReply = replyRepository.save(reply);
+
+        return replyMapper.toDto(createdReply);
     }
 }

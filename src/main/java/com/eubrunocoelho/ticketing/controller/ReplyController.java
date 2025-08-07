@@ -1,6 +1,8 @@
 package com.eubrunocoelho.ticketing.controller;
 
+import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
+import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.service.reply.ReplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +26,18 @@ public class ReplyController extends AbstractController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Void> createTicketReply(
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> createTicketReply(
             @PathVariable Long ticketId,
             @RequestBody @Valid ReplyCreateDto replyCreateDto
     ) {
-        replyService.createReply(ticketId, replyCreateDto);
+        ReplyResponseDto replyResponseDto = replyService.createReply(ticketId, replyCreateDto);
 
-        return ResponseEntity.ok(null);
+        ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                replyResponseDto
+        );
+
+        return ResponseEntity.ok().body(responseDto);
 
     }
 }

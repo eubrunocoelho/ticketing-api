@@ -8,21 +8,26 @@ import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {TicketMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class})
 public interface ReplyMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "ticket", source = "ticket")
-    @Mapping(target = "createdUser", source = "createdUser")
-    @Mapping(target = "parent", source = "parent")
-    Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser, Reply parent);
+    @Mapping(target = "parent", ignore = true)
+    @Mapping(target = "respondedToUser", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "content", source = "dto.content")
+    Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser);
 
-    @Mapping(target = "createdUser", expression = "java(toCreatedUserDto(reply.getCreatedUser()))")
-    @Mapping(target = "parent", expression = "java(toParentDto(reply.getParent()))")
+    @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapCreatedUser")
+    @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapRespondedToUser")
+    @Mapping(target = "parent", source = "parent", qualifiedByName = "mapParentReply")
     ReplyResponseDto toDto(Reply reply);
 
-    default UserResponseDto toCreatedUserDto(User createdUser) {
+    @Named("mapCreatedUser")
+    default UserResponseDto mapCreatedUser(User createdUser) {
         return new UserResponseDto(
                 null,
                 createdUser.getUsername(),
@@ -31,9 +36,21 @@ public interface ReplyMapper {
         );
     }
 
-    default ReplyResponseDto toParentDto(Reply parent) {
-        return (parent.getParent() == null) ? null : new ReplyResponseDto(
+    @Named("mapRespondedToUser")
+    default UserResponseDto mapRespondedToUser(User respondedToUser) {
+        return new UserResponseDto(
+                null,
+                respondedToUser.getUsername(),
+                respondedToUser.getEmail(),
+                null
+        );
+    }
+
+    @Named("mapParentReply")
+    default ReplyResponseDto mapParentReply(Reply parent) {
+        return (parent == null) ? null : new ReplyResponseDto(
                 parent.getId(),
+                null,
                 null,
                 null,
                 null,

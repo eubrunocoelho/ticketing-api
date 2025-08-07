@@ -11,6 +11,8 @@ public record ReplyResponseDto(
 
         UserResponseDto createdUser,
 
+        UserResponseDto respondedToUser,
+
         ReplyResponseDto parent,
 
         String content
