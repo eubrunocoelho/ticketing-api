@@ -6,6 +6,7 @@ import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
+import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

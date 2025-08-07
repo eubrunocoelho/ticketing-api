@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.reply;
+package com.eubrunocoelho.ticketing.service.reply.validation;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.User;
