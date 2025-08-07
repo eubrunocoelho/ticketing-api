@@ -5,7 +5,7 @@ import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.mapper.UserMapper;
-import com.eubrunocoelho.ticketing.service.UserService;
+import com.eubrunocoelho.ticketing.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

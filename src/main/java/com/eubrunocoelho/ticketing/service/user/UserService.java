@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service;
+package com.eubrunocoelho.ticketing.service.user;
 
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;

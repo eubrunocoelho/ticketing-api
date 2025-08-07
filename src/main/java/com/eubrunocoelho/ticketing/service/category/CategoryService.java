@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service;
+package com.eubrunocoelho.ticketing.service.category;
 
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;

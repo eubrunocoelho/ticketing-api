@@ -1,10 +1,11 @@
-package com.eubrunocoelho.ticketing.service;
+package com.eubrunocoelho.ticketing.service.auth;
 
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
 import com.eubrunocoelho.ticketing.jwt.JwtUtility;
+import com.eubrunocoelho.ticketing.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

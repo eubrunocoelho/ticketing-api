@@ -3,7 +3,7 @@ package com.eubrunocoelho.ticketing.controller;
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.dto.response.ResponseDto;
-import com.eubrunocoelho.ticketing.service.AuthService;
+import com.eubrunocoelho.ticketing.service.auth.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

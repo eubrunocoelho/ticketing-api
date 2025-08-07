@@ -4,7 +4,7 @@ import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.dto.response.ResponseDto;
-import com.eubrunocoelho.ticketing.service.CategoryService;
+import com.eubrunocoelho.ticketing.service.category.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

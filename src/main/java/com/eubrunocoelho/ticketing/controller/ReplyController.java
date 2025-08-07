@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.controller;
 
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
-import com.eubrunocoelho.ticketing.service.ReplyService;
+import com.eubrunocoelho.ticketing.service.reply.ReplyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

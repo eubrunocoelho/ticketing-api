@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service;
+package com.eubrunocoelho.ticketing.service.ticket;
 
 import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
@@ -9,6 +9,7 @@ import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.mapper.TicketMapper;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
+import com.eubrunocoelho.ticketing.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
