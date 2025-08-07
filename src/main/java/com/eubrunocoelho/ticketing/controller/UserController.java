@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.controller;
 
-import com.eubrunocoelho.ticketing.dto.response.ResponseDto;
+import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;

@@ -2,7 +2,7 @@ package com.eubrunocoelho.ticketing.controller;
 
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
-import com.eubrunocoelho.ticketing.dto.response.ResponseDto;
+import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.auth.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

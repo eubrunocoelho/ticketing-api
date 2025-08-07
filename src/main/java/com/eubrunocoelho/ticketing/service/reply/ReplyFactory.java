@@ -16,6 +16,7 @@ public class ReplyFactory {
 
     public Reply buildReply(Long ticketId, ReplyCreateDto dto, User loggedUser, Ticket ticket) {
         Reply reply = new Reply();
+
         reply.setTicket(ticket);
         reply.setContent(dto.content());
         reply.setCreatedUser(loggedUser);

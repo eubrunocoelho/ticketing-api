@@ -51,12 +51,9 @@ public class Reply {
     @JoinColumn(name = "responded_to_user_id", nullable = false)
     private User respondedToUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "parent_id", nullable = true)
     private Reply parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reply> replies;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;
