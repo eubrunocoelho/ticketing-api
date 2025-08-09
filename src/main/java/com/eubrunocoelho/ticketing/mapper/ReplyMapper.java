@@ -2,15 +2,19 @@ package com.eubrunocoelho.ticketing.mapper;
 
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
+import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ReplyMapper {
 
     @Mapping(target = "id", ignore = true)
@@ -25,6 +29,9 @@ public interface ReplyMapper {
     @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapRespondedToUser")
     @Mapping(target = "parent", source = "parent", qualifiedByName = "mapParentReply")
     ReplyResponseDto toDto(Reply reply);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateReplyFromDto(ReplyUpdateDto replyUpdateDto, @MappingTarget Reply reply);
 
     @Named("mapCreatedUser")
     default UserResponseDto mapCreatedUser(User createdUser) {

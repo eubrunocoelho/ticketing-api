@@ -3,6 +3,7 @@ package com.eubrunocoelho.ticketing.service.reply;
 import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
+import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
@@ -35,6 +36,15 @@ public class ReplyService {
         Reply createdReply = replyRepository.save(reply);
 
         return replyMapper.toDto(createdReply);
+    }
+
+    public ReplyResponseDto updateReply(Long ticketId, Long replyId, ReplyUpdateDto replyUpdateDto) {
+        Reply reply = findByTicketIdAndId(ticketId, replyId);
+
+        replyMapper.updateReplyFromDto(replyUpdateDto, reply);
+        Reply updatedReply = replyRepository.save(reply);
+
+        return replyMapper.toDto(updatedReply);
     }
 
     public Reply findByTicketIdAndId(Long ticketId, Long replyId) {

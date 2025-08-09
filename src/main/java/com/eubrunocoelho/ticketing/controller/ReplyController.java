@@ -3,6 +3,7 @@ package com.eubrunocoelho.ticketing.controller;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
+import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,6 +66,24 @@ public class ReplyController extends AbstractController {
     public ResponseEntity<ResponseDto<ReplyResponseDto>> findById(@PathVariable Long ticketId, @PathVariable Long replyId) {
         Reply reply = replyService.findByTicketIdAndId(ticketId, replyId);
         ReplyResponseDto replyResponseDto = replyMapper.toDto(reply);
+
+        ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                replyResponseDto
+        );
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @PatchMapping(
+            value = "/{ticketId}/reply/{replyId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> updateReply(
+            @PathVariable Long ticketId, @PathVariable Long replyId, @RequestBody ReplyUpdateDto replyUpdateDto
+    ) {
+        ReplyResponseDto replyResponseDto = replyService.updateReply(ticketId, replyId, replyUpdateDto);
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
