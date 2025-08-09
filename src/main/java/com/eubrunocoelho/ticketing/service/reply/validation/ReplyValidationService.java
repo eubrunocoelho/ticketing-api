@@ -11,7 +11,7 @@ public class ReplyValidationService {
         User respondedTo = reply.getRespondedToUser();
 
         if (respondedTo != null && loggedUser.getId().equals(respondedTo.getId())) {
-            throw new IllegalArgumentException("loggedUser == respondedToUser");
+            throw new IllegalArgumentException("Não é possível responder a própria resposta.");
         }
     }
 }

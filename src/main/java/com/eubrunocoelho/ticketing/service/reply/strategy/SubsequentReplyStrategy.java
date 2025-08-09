@@ -19,8 +19,11 @@ public class SubsequentReplyStrategy implements ReplyStrategy {
 
     @Override
     public void configure(Reply reply, Long ticketId, Ticket ticket) {
-        Reply lastReply = replyRepository.findTopByTicketIdOrderByCreatedAtDesc(ticketId)
-                .orElseThrow(() -> new IllegalStateException("Not found"));
+        Reply lastReply = replyRepository
+                .findTopByTicketIdOrderByCreatedAtDesc(ticketId)
+                .orElseThrow(
+                        () -> new IllegalStateException("Resposta não encontrada.")
+                );
 
         reply.setParent(lastReply);
         reply.setRespondedToUser(lastReply.getCreatedUser());

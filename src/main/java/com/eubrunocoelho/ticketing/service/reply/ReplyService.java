@@ -38,8 +38,21 @@ public class ReplyService {
         return replyMapper.toDto(createdReply);
     }
 
-    public ReplyResponseDto updateReply(Long ticketId, Long replyId, ReplyUpdateDto replyUpdateDto) {
-        Reply reply = findByTicketIdAndId(ticketId, replyId);
+    public ReplyResponseDto updateReply(
+            Long ticketId,
+            Long replyId,
+            ReplyUpdateDto replyUpdateDto
+    ) {
+        Reply reply = replyRepository
+                .findByTicketIdAndId(ticketId, replyId)
+                .orElseThrow(() ->
+                        new ObjectNotFoundException(
+                                "Resposta não encontrada. {ticketId}: "
+                                        + ticketId
+                                        + ", {replyId}: "
+                                        + replyId
+                        )
+                );
 
         replyMapper.updateReplyFromDto(replyUpdateDto, reply);
         Reply updatedReply = replyRepository.save(reply);
@@ -47,14 +60,18 @@ public class ReplyService {
         return replyMapper.toDto(updatedReply);
     }
 
-    public Reply findByTicketIdAndId(Long ticketId, Long replyId) {
-        return replyRepository.findByTicketIdAndId(ticketId, replyId).orElseThrow(() ->
-                new ObjectNotFoundException(
-                        "Resposta não encontrada. {ticketId}: "
-                                + ticketId
-                                + ", {replyId}: "
-                                + replyId
-                )
-        );
+    public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
+        Reply reply = replyRepository
+                .findByTicketIdAndId(ticketId, replyId)
+                .orElseThrow(() ->
+                        new ObjectNotFoundException(
+                                "Resposta não encontrada. {ticketId}: "
+                                        + ticketId
+                                        + ", {replyId}: "
+                                        + replyId
+                        )
+                );
+
+        return replyMapper.toDto(reply);
     }
 }

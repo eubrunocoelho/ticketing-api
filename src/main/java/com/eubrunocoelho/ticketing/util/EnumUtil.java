@@ -4,7 +4,10 @@ import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueExceptio
 
 public class EnumUtil {
 
-    public static <T extends Enum<T>> T getEnumValueOrThrow(String value, Class<T> enumType) {
+    public static <T extends Enum<T>> T getEnumValueOrThrow(
+            String value,
+            Class<T> enumType
+    ) {
         try {
             return Enum.valueOf(enumType, value.toUpperCase());
         } catch (IllegalArgumentException | NullPointerException ex) {

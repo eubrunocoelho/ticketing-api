@@ -17,11 +17,10 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ReplyMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "parent", ignore = true)
-    @Mapping(target = "respondedToUser", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
+
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "ticket", source = "ticket")
+    @Mapping(target = "createdUser", source = "createdUser")
     @Mapping(target = "content", source = "dto.content")
     Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser);
 

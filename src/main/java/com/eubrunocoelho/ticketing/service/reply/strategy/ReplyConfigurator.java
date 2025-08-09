@@ -17,7 +17,7 @@ public class ReplyConfigurator {
         strategies.stream()
                 .filter(strategy -> strategy.applies(ticketId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("No strategy found"))
+                .orElseThrow(() -> new IllegalStateException("Estratégia não encontrada."))
                 .configure(reply, ticketId, ticket);
     }
 }

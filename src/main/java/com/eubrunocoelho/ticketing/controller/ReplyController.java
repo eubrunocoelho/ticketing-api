@@ -4,11 +4,8 @@ import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
-import com.eubrunocoelho.ticketing.entity.Reply;
-import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
 import com.eubrunocoelho.ticketing.service.reply.ReplyService;
-import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -41,7 +38,10 @@ public class ReplyController extends AbstractController {
             @PathVariable Long ticketId,
             @RequestBody @Valid ReplyCreateDto replyCreateDto
     ) {
-        ReplyResponseDto replyResponseDto = replyService.createReply(ticketId, replyCreateDto);
+        ReplyResponseDto replyResponseDto = replyService.createReply(
+                ticketId,
+                replyCreateDto
+        );
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -63,9 +63,14 @@ public class ReplyController extends AbstractController {
             value = "/{ticketId}/reply/{replyId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<ReplyResponseDto>> findById(@PathVariable Long ticketId, @PathVariable Long replyId) {
-        Reply reply = replyService.findByTicketIdAndId(ticketId, replyId);
-        ReplyResponseDto replyResponseDto = replyMapper.toDto(reply);
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> findReply(
+            @PathVariable Long ticketId,
+            @PathVariable Long replyId
+    ) {
+        ReplyResponseDto replyResponseDto = replyService.findByTicketIdAndReplyId(
+                ticketId,
+                replyId
+        );
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
@@ -81,9 +86,15 @@ public class ReplyController extends AbstractController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> updateReply(
-            @PathVariable Long ticketId, @PathVariable Long replyId, @RequestBody ReplyUpdateDto replyUpdateDto
+            @PathVariable Long ticketId,
+            @PathVariable Long replyId,
+            @RequestBody ReplyUpdateDto replyUpdateDto
     ) {
-        ReplyResponseDto replyResponseDto = replyService.updateReply(ticketId, replyId, replyUpdateDto);
+        ReplyResponseDto replyResponseDto = replyService.updateReply(
+                ticketId,
+                replyId,
+                replyUpdateDto
+        );
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
