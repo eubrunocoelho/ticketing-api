@@ -52,7 +52,7 @@ public class UserController extends AbstractController {
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<UserResponseDto>> findById(@PathVariable long id) {
+    public ResponseEntity<ResponseDto<UserResponseDto>> findById(@PathVariable Long id) {
         User user = userService.findById(id);
         UserResponseDto userResponseDto = userMapper.toDto(user);
 

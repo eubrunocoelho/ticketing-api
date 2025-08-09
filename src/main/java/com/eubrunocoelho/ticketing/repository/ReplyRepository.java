@@ -9,5 +9,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     boolean existsByTicketId(Long ticketId);
 
-    Optional<Reply> findTopByTicketIdOrderByCreatedAtDesc(long ticketId);
+    Optional<Reply> findByTicketIdAndId(Long ticketId, Long id);
+
+    Optional<Reply> findTopByTicketIdOrderByCreatedAtDesc(Long ticketId);
 }

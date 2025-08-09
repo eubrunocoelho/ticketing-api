@@ -6,6 +6,7 @@ import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
+import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
@@ -34,5 +35,16 @@ public class ReplyService {
         Reply createdReply = replyRepository.save(reply);
 
         return replyMapper.toDto(createdReply);
+    }
+
+    public Reply findByTicketIdAndId(Long ticketId, Long replyId) {
+        return replyRepository.findByTicketIdAndId(ticketId, replyId).orElseThrow(() ->
+                new ObjectNotFoundException(
+                        "Resposta não encontrada. {ticketId}: "
+                                + ticketId
+                                + ", {replyId}: "
+                                + replyId
+                )
+        );
     }
 }

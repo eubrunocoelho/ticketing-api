@@ -3,6 +3,8 @@ package com.eubrunocoelho.ticketing.dto.reply;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 
+import java.time.LocalDateTime;
+
 public record ReplyResponseDto(
 
         Long id,
@@ -15,5 +17,9 @@ public record ReplyResponseDto(
 
         ReplyResponseDto parent,
 
-        String content
+        String content,
+
+        LocalDateTime createdAt,
+
+        LocalDateTime updatedAt
 ) {}

@@ -76,7 +76,7 @@ public class CategoryController extends AbstractController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> updateCategory(
-            @PathVariable long id, @RequestBody @Valid CategoryUpdateDto categoryUpdateDto
+            @PathVariable Long id, @RequestBody @Valid CategoryUpdateDto categoryUpdateDto
     ) {
         CategoryResponseDto categoryResponseDto = categoryService.updateCategory(
                 id,

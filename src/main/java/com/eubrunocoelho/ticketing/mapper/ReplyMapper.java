@@ -54,7 +54,9 @@ public interface ReplyMapper {
                 null,
                 null,
                 null,
-                parent.getContent()
+                parent.getContent(),
+                parent.getCreatedAt(),
+                parent.getUpdatedAt()
         );
     }
 }
