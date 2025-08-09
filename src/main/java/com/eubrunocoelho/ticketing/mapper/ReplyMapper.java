@@ -14,7 +14,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class})
 public interface ReplyMapper {
 
 
@@ -24,12 +24,12 @@ public interface ReplyMapper {
     @Mapping(target = "content", source = "dto.content")
     Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser);
 
+    @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapCreatedUser")
     @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapRespondedToUser")
     @Mapping(target = "parent", source = "parent", qualifiedByName = "mapParentReply")
     ReplyResponseDto toDto(Reply reply);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateReplyFromDto(ReplyUpdateDto replyUpdateDto, @MappingTarget Reply reply);
 
     @Named("mapCreatedUser")

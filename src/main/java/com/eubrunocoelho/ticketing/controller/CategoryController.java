@@ -55,20 +55,6 @@ public class CategoryController extends AbstractController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
-    @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAll() {
-        List<CategoryResponseDto> listCategoryResponseDto = categoryService.findAll();
-
-        ResponseDto<List<CategoryResponseDto>> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                listCategoryResponseDto
-        );
-
-        return ResponseEntity.ok().body(responseDto);
-    }
-
 
     @PatchMapping(
             value = "/{id}",
@@ -86,6 +72,35 @@ public class CategoryController extends AbstractController {
         ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
                 categoryResponseDto
+        );
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @GetMapping(
+            value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<CategoryResponseDto>> findCategory(@PathVariable Long id) {
+        CategoryResponseDto categoryResponseDto = categoryService.findById(id);
+
+        ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                categoryResponseDto
+        );
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategory() {
+        List<CategoryResponseDto> listCategoryResponseDto = categoryService.findAll();
+
+        ResponseDto<List<CategoryResponseDto>> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                listCategoryResponseDto
         );
 
         return ResponseEntity.ok().body(responseDto);

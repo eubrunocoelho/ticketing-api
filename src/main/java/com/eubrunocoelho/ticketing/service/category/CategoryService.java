@@ -26,8 +26,19 @@ public class CategoryService {
         return categoryMapper.toDto(createdCategory);
     }
 
-    public CategoryResponseDto updateCategory(Long id, CategoryUpdateDto categoryUpdateDto) {
-        Category category = findById(id);
+    public CategoryResponseDto updateCategory(
+            Long id,
+            CategoryUpdateDto categoryUpdateDto
+    ) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Categoria não encontrada. {id}: "
+                                                + id
+                                )
+                );
 
         categoryMapper.updateCategoryFromDto(categoryUpdateDto, category);
         Category updatedCategory = categoryRepository.save(category);
@@ -43,9 +54,17 @@ public class CategoryService {
                 .toList();
     }
 
-    public Category findById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() ->
-                new ObjectNotFoundException("Categoria não encontrada. {id}: " + id)
-        );
+    public CategoryResponseDto findById(Long id) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Categoria não encontrada. {id}: "
+                                                + id
+                                )
+                );
+
+        return categoryMapper.toDto(category);
     }
 }

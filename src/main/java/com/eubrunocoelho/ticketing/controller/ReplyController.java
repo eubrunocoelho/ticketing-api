@@ -59,17 +59,20 @@ public class ReplyController extends AbstractController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
-    @GetMapping(
+    @PatchMapping(
             value = "/{ticketId}/reply/{replyId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<ReplyResponseDto>> findReply(
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> updateTicketReply(
             @PathVariable Long ticketId,
-            @PathVariable Long replyId
+            @PathVariable Long replyId,
+            @RequestBody ReplyUpdateDto replyUpdateDto
     ) {
-        ReplyResponseDto replyResponseDto = replyService.findByTicketIdAndReplyId(
+        ReplyResponseDto replyResponseDto = replyService.updateReply(
                 ticketId,
-                replyId
+                replyId,
+                replyUpdateDto
         );
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
@@ -80,20 +83,17 @@ public class ReplyController extends AbstractController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-    @PatchMapping(
+    @GetMapping(
             value = "/{ticketId}/reply/{replyId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<ReplyResponseDto>> updateReply(
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> findTicketReply(
             @PathVariable Long ticketId,
-            @PathVariable Long replyId,
-            @RequestBody ReplyUpdateDto replyUpdateDto
+            @PathVariable Long replyId
     ) {
-        ReplyResponseDto replyResponseDto = replyService.updateReply(
+        ReplyResponseDto replyResponseDto = replyService.findByTicketIdAndReplyId(
                 ticketId,
-                replyId,
-                replyUpdateDto
+                replyId
         );
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(

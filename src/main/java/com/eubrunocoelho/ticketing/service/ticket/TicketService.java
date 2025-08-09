@@ -22,15 +22,15 @@ public class TicketService {
     private final CategoryService categoryService;
     private final TicketMapper ticketMapper;
 
-    public TicketResponseDto createTicket(TicketCreateDto ticketCreateDto) {
-        User loggedUser = loginUtilityService.getLoggedInUser();
-        Category category = categoryService.findById(ticketCreateDto.category());
-
-        Ticket ticket = ticketMapper.toEntity(ticketCreateDto, loggedUser, category);
-        Ticket createdTicket = ticketRepository.save(ticket);
-
-        return ticketMapper.toDto(createdTicket);
-    }
+//    public TicketResponseDto createTicket(TicketCreateDto ticketCreateDto) {
+//        User loggedUser = loginUtilityService.getLoggedInUser();
+//        Category category = categoryService.findById(ticketCreateDto.category());
+//
+//        Ticket ticket = ticketMapper.toEntity(ticketCreateDto, loggedUser, category);
+//        Ticket createdTicket = ticketRepository.save(ticket);
+//
+//        return ticketMapper.toDto(createdTicket);
+//    }
 
     public Ticket findById(Long id) {
         return ticketRepository.findById(id).orElseThrow(() ->

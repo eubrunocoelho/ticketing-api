@@ -45,13 +45,14 @@ public class ReplyService {
     ) {
         Reply reply = replyRepository
                 .findByTicketIdAndId(ticketId, replyId)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException(
-                                "Resposta não encontrada. {ticketId}: "
-                                        + ticketId
-                                        + ", {replyId}: "
-                                        + replyId
-                        )
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Resposta não encontrada. {ticketId}: "
+                                                + ticketId
+                                                + ", {replyId}: "
+                                                + replyId
+                                )
                 );
 
         replyMapper.updateReplyFromDto(replyUpdateDto, reply);
@@ -63,13 +64,14 @@ public class ReplyService {
     public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
         Reply reply = replyRepository
                 .findByTicketIdAndId(ticketId, replyId)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException(
-                                "Resposta não encontrada. {ticketId}: "
-                                        + ticketId
-                                        + ", {replyId}: "
-                                        + replyId
-                        )
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Resposta não encontrada. {ticketId}: "
+                                                + ticketId
+                                                + ", {replyId}: "
+                                                + replyId
+                                )
                 );
 
         return replyMapper.toDto(reply);
