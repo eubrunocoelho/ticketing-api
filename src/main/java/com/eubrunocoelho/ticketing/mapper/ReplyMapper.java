@@ -7,24 +7,25 @@ import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, TicketMapper.class})
+@Mapper(
+        config = CentralMapperConfig.class,
+        uses = {UserMapper.class, TicketMapper.class}
+)
 public interface ReplyMapper {
 
-
-    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "ticket", source = "ticket")
     @Mapping(target = "createdUser", source = "createdUser")
     @Mapping(target = "content", source = "dto.content")
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser);
 
-    @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapCreatedUser")
     @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapRespondedToUser")
     @Mapping(target = "parent", source = "parent", qualifiedByName = "mapParentReply")
