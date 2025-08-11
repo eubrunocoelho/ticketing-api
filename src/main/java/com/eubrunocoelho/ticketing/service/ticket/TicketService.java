@@ -64,6 +64,14 @@ public class TicketService {
         return ticketMapper.toDto(updateTicket);
     }
 
+    public List<TicketResponseDto> findAll() {
+        return ticketRepository
+                .findAll()
+                .stream()
+                .map(ticketMapper::toDto)
+                .toList();
+    }
+
     public TicketResponseDto findById(Long id) {
         Ticket ticket = ticketRepository
                 .findById(id)

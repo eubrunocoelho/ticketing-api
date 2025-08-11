@@ -1,7 +1,6 @@
 package com.eubrunocoelho.ticketing.controller;
 
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
-import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
@@ -65,6 +65,20 @@ public class TicketController extends AbstractController {
         ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
                 ticketResponseDto
+        );
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAll() {
+        List<TicketResponseDto> listTicketResponseDto = ticketService.findAll();
+
+        ResponseDto<List<TicketResponseDto>> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                listTicketResponseDto
         );
 
         return ResponseEntity.ok().body(responseDto);
