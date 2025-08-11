@@ -14,5 +14,5 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     Optional<Reply> findTopByTicketIdOrderByCreatedAtDesc(Long ticketId);
 
-    List<Reply> findByTicketIdOrderByCreatedAtDesc(long ticketId);
+    List<Reply> findByTicketIdOrderByCreatedAtDesc(Long ticketId);
 }

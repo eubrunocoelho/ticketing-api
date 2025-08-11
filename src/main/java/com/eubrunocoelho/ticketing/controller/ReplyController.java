@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
@@ -27,7 +28,6 @@ import java.net.URI;
 public class ReplyController extends AbstractController {
 
     private final ReplyService replyService;
-    private final ReplyMapper replyMapper;
 
     @PostMapping(
             value = "/{ticketId}/reply",
@@ -78,6 +78,23 @@ public class ReplyController extends AbstractController {
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
                 replyResponseDto
+        );
+
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @GetMapping(
+            value = "/{ticketId}/reply",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<List<ReplyResponseDto>>> findAllReplyByTicket(
+            @PathVariable Long ticketId
+    ) {
+        List<ReplyResponseDto> listReplyResponseDto = replyService.findAllByTicketId(ticketId);
+
+        ResponseDto<List<ReplyResponseDto>> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                listReplyResponseDto
         );
 
         return ResponseEntity.ok().body(responseDto);

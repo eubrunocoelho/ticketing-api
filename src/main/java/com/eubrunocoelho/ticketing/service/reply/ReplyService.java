@@ -12,9 +12,10 @@ import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
-import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -67,6 +68,23 @@ public class ReplyService {
         Reply updatedReply = replyRepository.save(reply);
 
         return replyMapper.toDto(updatedReply);
+    }
+
+    public List<ReplyResponseDto> findAllByTicketId(Long ticketId) {
+        Ticket ticket = ticketRepository
+                .findById(ticketId)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Ticket não encontrado. {id}: " + ticketId
+                                )
+                );
+
+        return replyRepository
+                .findByTicketIdOrderByCreatedAtDesc(ticket.getId())
+                .stream()
+                .map(replyMapper::toDto)
+                .toList();
     }
 
     public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
