@@ -8,7 +8,10 @@ import com.eubrunocoelho.ticketing.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, CategoryMapper.class})
+@Mapper(
+        config = CentralMapperConfig.class,
+        uses = {UserMapper.class, CategoryMapper.class, ReplyMapper.class}
+)
 public interface TicketMapper {
 
     @Mapping(target = "id", ignore = true)
@@ -16,8 +19,6 @@ public interface TicketMapper {
     @Mapping(target = "category", source = "category")
     @Mapping(target = "status", expression = "java(defaultStatus())")
     Ticket toEntity(TicketCreateDto dto, User user, Category category);
-
-    TicketResponseDto toDto(Ticket entity);
 
     default Ticket.Status defaultStatus() {
         return Ticket.Status.OPEN;

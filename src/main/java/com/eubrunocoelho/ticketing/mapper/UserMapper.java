@@ -9,7 +9,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Mapper(componentModel = "spring")
+@Mapper(
+        config = CentralMapperConfig.class
+)
 public interface UserMapper {
 
     @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")

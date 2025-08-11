@@ -10,6 +10,7 @@ import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
+import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReplyService {
 
-    private final TicketService ticketService;
+    private final TicketRepository ticketRepository;
     private final LoginUtilityService loginUtilityService;
     private final ReplyRepository replyRepository;
     private final ReplyFactory replyFactory;
@@ -28,7 +29,14 @@ public class ReplyService {
 
     public ReplyResponseDto createReply(Long ticketId, ReplyCreateDto dto) {
         User loggedUser = loginUtilityService.getLoggedInUser();
-        Ticket ticket = ticketService.findById(ticketId);
+        Ticket ticket = ticketRepository
+                .findById(ticketId)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Ticket não encontrado. {id}: " + ticketId
+                                )
+                );
 
         Reply reply = replyFactory.buildReply(ticketId, dto, loggedUser, ticket);
         replyValidationService.validate(reply, loggedUser);

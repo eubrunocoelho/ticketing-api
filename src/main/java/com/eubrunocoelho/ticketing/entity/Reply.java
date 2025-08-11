@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -38,6 +39,7 @@ public class Reply {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ticket_id", nullable = false)
+    @JsonBackReference
     private Ticket ticket;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
