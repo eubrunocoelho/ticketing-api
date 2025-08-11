@@ -3,6 +3,7 @@ package com.eubrunocoelho.ticketing.service.ticket;
 import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
+import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Category;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
@@ -42,6 +43,25 @@ public class TicketService {
         Ticket createdTicket = ticketRepository.save(ticket);
 
         return ticketMapper.toDto(createdTicket);
+    }
+
+    public TicketResponseDto updateTicket(
+            Long id,
+            TicketUpdateDto ticketUpdateDto
+    ) {
+        Ticket ticket = ticketRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Ticket não encontrado. {id}: " + id
+                                )
+                );
+
+        ticketMapper.updateTicketFromDto(ticketUpdateDto, ticket);
+        Ticket updateTicket = ticketRepository.save(ticket);
+
+        return ticketMapper.toDto(updateTicket);
     }
 
     public TicketResponseDto findById(Long id) {
