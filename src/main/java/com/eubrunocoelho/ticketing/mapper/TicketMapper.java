@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(
         config = CentralMapperConfig.class,
-        uses = {UserMapper.class, CategoryMapper.class, ReplyMapper.class}
+        uses = {UserMapper.class, CategoryMapper.class}
 )
 public interface TicketMapper {
 
@@ -19,6 +19,9 @@ public interface TicketMapper {
     @Mapping(target = "category", source = "category")
     @Mapping(target = "status", expression = "java(defaultStatus())")
     Ticket toEntity(TicketCreateDto dto, User user, Category category);
+
+    @Mapping(target = "replies", expression = "java(null)")
+    TicketResponseDto toDto(Ticket ticket);
 
     default Ticket.Status defaultStatus() {
         return Ticket.Status.OPEN;

@@ -1,10 +1,8 @@
 package com.eubrunocoelho.ticketing.service.ticket;
 
 import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
-import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
-import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Category;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
@@ -19,10 +17,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TicketService {
 
+    private final LoginUtilityService loginUtilityService;
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;
     private final CategoryRepository categoryRepository;
-    private final LoginUtilityService loginUtilityService;
 
     public TicketResponseDto createTicket(TicketCreateDto ticketCreateDto) {
         User loggedUser = loginUtilityService.getLoggedInUser();
@@ -38,31 +36,6 @@ public class TicketService {
         Ticket ticket = ticketMapper.toEntity(ticketCreateDto, loggedUser, category);
         Ticket createdTicket = ticketRepository.save(ticket);
 
-        // REFACTOR IN FUTURE
-        UserResponseDto userResponse = new UserResponseDto(
-                createdTicket.getUser().getId(),
-                createdTicket.getUser().getUsername(),
-                createdTicket.getUser().getEmail(),
-                createdTicket.getUser().getRole().name()
-        );
-
-        CategoryResponseDto categoryResponse = new CategoryResponseDto(
-                createdTicket.getCategory().getId(),
-                createdTicket.getCategory().getName(),
-                createdTicket.getCategory().getDescription(),
-                createdTicket.getCategory().getPriority().name()
-        );
-
-        return new TicketResponseDto(
-                createdTicket.getId(),
-                userResponse,
-                categoryResponse,
-                createdTicket.getTitle(),
-                createdTicket.getContent(),
-                createdTicket.getStatus().name(),
-                null,
-                createdTicket.getCreatedAt(),
-                createdTicket.getUpdatedAt()
-        );
+        return ticketMapper.toDto(createdTicket);
     }
 }
