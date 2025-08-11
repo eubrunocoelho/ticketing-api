@@ -38,4 +38,17 @@ public class TicketService {
 
         return ticketMapper.toDto(createdTicket);
     }
+
+    public TicketResponseDto findById(Long id) {
+        Ticket ticket = ticketRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Ticket não encontrado. {id}: " + id
+                                )
+                );
+
+        return ticketMapper.toDtoWithReplies(ticket);
+    }
 }

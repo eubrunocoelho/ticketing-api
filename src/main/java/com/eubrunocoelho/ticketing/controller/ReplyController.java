@@ -34,7 +34,7 @@ public class ReplyController extends AbstractController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<ReplyResponseDto>> createTicketReply(
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> createReply(
             @PathVariable Long ticketId,
             @RequestBody @Valid ReplyCreateDto replyCreateDto
     ) {
@@ -64,7 +64,7 @@ public class ReplyController extends AbstractController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<ReplyResponseDto>> updateTicketReply(
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> updateReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId,
             @RequestBody ReplyUpdateDto replyUpdateDto
@@ -87,7 +87,7 @@ public class ReplyController extends AbstractController {
             value = "/{ticketId}/reply/{replyId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<ReplyResponseDto>> findTicketReply(
+    public ResponseEntity<ResponseDto<ReplyResponseDto>> findReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId
     ) {

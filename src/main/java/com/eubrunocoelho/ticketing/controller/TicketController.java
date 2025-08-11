@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,5 +46,22 @@ public class TicketController extends AbstractController {
         );
 
         return ResponseEntity.created(location).body(responseDto);
+    }
+
+    @GetMapping(
+            value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<TicketResponseDto>> findTicket(
+            @PathVariable Long id
+    ) {
+        TicketResponseDto ticketResponseDto = ticketService.findById(id);
+
+        ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
+                getScreenLabel(true),
+                ticketResponseDto
+        );
+
+        return ResponseEntity.ok().body(responseDto);
     }
 }

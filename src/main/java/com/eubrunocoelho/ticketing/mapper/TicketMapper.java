@@ -7,6 +7,7 @@ import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(
         config = CentralMapperConfig.class,
@@ -20,8 +21,12 @@ public interface TicketMapper {
     @Mapping(target = "status", expression = "java(defaultStatus())")
     Ticket toEntity(TicketCreateDto dto, User user, Category category);
 
+    @Named("ticketWithoutReplies")
     @Mapping(target = "replies", expression = "java(null)")
     TicketResponseDto toDto(Ticket ticket);
+
+    @Named("ticketWithReplies")
+    TicketResponseDto toDtoWithReplies(Ticket ticket);
 
     default Ticket.Status defaultStatus() {
         return Ticket.Status.OPEN;

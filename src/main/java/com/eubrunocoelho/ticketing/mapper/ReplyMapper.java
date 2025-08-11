@@ -26,6 +26,7 @@ public interface ReplyMapper {
     @Mapping(target = "updatedAt", ignore = true)
     Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser);
 
+    @Mapping(target = "ticket", source = "ticket", qualifiedByName = "ticketWithoutReplies")
     @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapCreatedUser")
     @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapRespondedToUser")
     @Mapping(target = "parent", source = "parent", qualifiedByName = "mapParentReply")
