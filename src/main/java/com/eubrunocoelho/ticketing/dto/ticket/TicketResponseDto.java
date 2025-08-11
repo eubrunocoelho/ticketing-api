@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.dto.ticket;
 
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
-import com.eubrunocoelho.ticketing.dto.ticket.replies.RepliesResponseDto;
+import com.eubrunocoelho.ticketing.dto.ticket.replies.TicketRepliesResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 
 import java.time.LocalDateTime;
@@ -21,10 +21,10 @@ public record TicketResponseDto(
 
         String status,
 
-        List<RepliesResponseDto> replies,
-
         LocalDateTime createdAt,
 
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+
+        List<TicketRepliesResponseDto> replies
 ) {
 }
