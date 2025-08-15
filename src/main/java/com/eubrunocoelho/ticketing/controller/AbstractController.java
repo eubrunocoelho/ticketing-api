@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.controller;
 
 import com.eubrunocoelho.ticketing.entity.User;
-import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
+import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

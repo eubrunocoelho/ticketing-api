@@ -1,6 +1,6 @@
-package com.eubrunocoelho.ticketing.annotation.validation;
+package com.eubrunocoelho.ticketing.validation.annotation;
 
-import com.eubrunocoelho.ticketing.validator.UniqueUsernameValidator;
+import com.eubrunocoelho.ticketing.validation.validator.UniqueUsernameValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

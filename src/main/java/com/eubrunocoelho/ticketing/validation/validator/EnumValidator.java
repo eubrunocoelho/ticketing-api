@@ -1,6 +1,6 @@
-package com.eubrunocoelho.ticketing.validator;
+package com.eubrunocoelho.ticketing.validation.validator;
 
-import com.eubrunocoelho.ticketing.annotation.validation.ValidEnum;
+import com.eubrunocoelho.ticketing.validation.annotation.ValidEnum;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

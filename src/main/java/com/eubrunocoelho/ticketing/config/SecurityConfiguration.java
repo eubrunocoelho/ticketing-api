@@ -1,7 +1,7 @@
-package com.eubrunocoelho.ticketing.security;
+package com.eubrunocoelho.ticketing.config;
 
 import com.eubrunocoelho.ticketing.jwt.JwtFilter;
-import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
+import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

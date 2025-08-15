@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.dto.user;
 
-import com.eubrunocoelho.ticketing.annotation.validation.UniqueEmail;
-import com.eubrunocoelho.ticketing.annotation.validation.UniqueUsername;
+import com.eubrunocoelho.ticketing.validation.annotation.UniqueEmail;
+import com.eubrunocoelho.ticketing.validation.annotation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

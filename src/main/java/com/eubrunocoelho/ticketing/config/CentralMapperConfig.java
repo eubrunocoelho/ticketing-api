@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.mapper;
+package com.eubrunocoelho.ticketing.config;
 
 import org.mapstruct.MapperConfig;
 

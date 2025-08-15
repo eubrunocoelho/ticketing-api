@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.service.reply;
 
-import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
+import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;

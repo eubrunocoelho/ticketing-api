@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.authentication;
+package com.eubrunocoelho.ticketing.service.user;
 
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.UserRepository;

@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.service.ticket;
 
-import com.eubrunocoelho.ticketing.authentication.LoginUtilityService;
+import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;

@@ -1,6 +1,6 @@
-package com.eubrunocoelho.ticketing.validator;
+package com.eubrunocoelho.ticketing.validation.validator;
 
-import com.eubrunocoelho.ticketing.annotation.validation.UniqueEmail;
+import com.eubrunocoelho.ticketing.validation.annotation.UniqueEmail;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

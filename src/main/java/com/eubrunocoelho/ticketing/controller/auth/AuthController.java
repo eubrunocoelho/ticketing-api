@@ -1,5 +1,6 @@
-package com.eubrunocoelho.ticketing.controller;
+package com.eubrunocoelho.ticketing.controller.auth;
 
+import com.eubrunocoelho.ticketing.controller.AbstractController;
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;

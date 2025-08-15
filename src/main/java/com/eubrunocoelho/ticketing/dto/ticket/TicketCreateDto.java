@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.dto.ticket;
 
-import com.eubrunocoelho.ticketing.annotation.validation.ExistsCategoryId;
+import com.eubrunocoelho.ticketing.validation.annotation.ExistsCategoryId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

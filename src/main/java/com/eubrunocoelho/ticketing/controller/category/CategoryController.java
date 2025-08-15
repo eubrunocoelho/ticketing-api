@@ -1,5 +1,6 @@
-package com.eubrunocoelho.ticketing.controller;
+package com.eubrunocoelho.ticketing.controller.category;
 
+import com.eubrunocoelho.ticketing.controller.AbstractController;
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;

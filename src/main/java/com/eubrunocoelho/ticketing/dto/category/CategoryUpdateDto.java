@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.dto.category;
 
-import com.eubrunocoelho.ticketing.annotation.validation.ValidEnum;
+import com.eubrunocoelho.ticketing.validation.annotation.ValidEnum;
 import com.eubrunocoelho.ticketing.entity.Category;
 import jakarta.validation.constraints.Size;
 
