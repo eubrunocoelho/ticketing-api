@@ -1,11 +1,14 @@
 package com.eubrunocoelho.ticketing.mapper;
 
 import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
+import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
+import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.replies.TicketRepliesResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
+import com.eubrunocoelho.ticketing.entity.Category;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
@@ -28,7 +31,7 @@ public interface ReplyMapper {
     @Mapping(target = "updatedAt", ignore = true)
     Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser);
 
-    @Mapping(target = "ticket", ignore = true)
+    @Mapping(target = "ticket", source = "ticket", qualifiedByName = "mapReplyTicket")
     @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapUserResponse")
     @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapUserResponse")
     @Mapping(target = "parent", source = "parent", qualifiedByName = "mapParentReply")
@@ -61,6 +64,34 @@ public interface ReplyMapper {
                 parent.getContent(),
                 parent.getCreatedAt(),
                 parent.getUpdatedAt()
+        );
+    }
+
+    private CategoryResponseDto mapReplyTicketCategory(Category category) {
+        return new CategoryResponseDto(
+                null,
+                category.getName(),
+                category.getDescription(),
+                category.getPriority().name()
+        );
+    }
+
+    @Named("mapReplyTicket")
+    default TicketResponseDto mapReplyTicket(Ticket ticket) {
+        return (ticket == null) ? null : new TicketResponseDto(
+                ticket.getId(),
+                mapUserResponse(
+                        ticket.getUser()
+                ),
+                mapReplyTicketCategory(
+                        ticket.getCategory()
+                ),
+                ticket.getTitle(),
+                ticket.getContent(),
+                ticket.getStatus().name(),
+                ticket.getCreatedAt(),
+                ticket.getUpdatedAt(),
+                null
         );
     }
 }
