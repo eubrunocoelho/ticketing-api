@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.mapper;
 
 import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
+import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
@@ -16,7 +17,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
         config = CentralMapperConfig.class,
-        uses = {UserMapper.class, CategoryMapper.class}
+        uses = {UserMapper.class, CategoryMapper.class, ReplyMapper.class}
 )
 public interface TicketMapper {
 
@@ -26,11 +27,12 @@ public interface TicketMapper {
     @Mapping(target = "status", expression = "java(defaultStatus())")
     Ticket toEntity(TicketCreateDto dto, User user, Category category);
 
-    @Named("ticketWithoutReplies")
+    @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
     @Mapping(target = "replies", expression = "java(null)")
     TicketResponseDto toDto(Ticket ticket);
 
-    @Named("ticketWithReplies")
+    @Mapping(target = "category", source = "category", qualifiedByName = "mapCategory")
+    @Mapping(target = "replies", source = "replies")
     TicketResponseDto toDtoWithReplies(Ticket ticket);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -38,5 +40,15 @@ public interface TicketMapper {
 
     default Ticket.Status defaultStatus() {
         return Ticket.Status.OPEN;
+    }
+
+    @Named("mapCategory")
+    default CategoryResponseDto mapCategory(Category category) {
+        return new CategoryResponseDto(
+                null,
+                category.getName(),
+                category.getDescription(),
+                category.getPriority().name()
+        );
     }
 }

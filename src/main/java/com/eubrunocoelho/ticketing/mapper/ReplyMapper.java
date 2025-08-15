@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
+import com.eubrunocoelho.ticketing.dto.ticket.replies.TicketRepliesResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
@@ -15,7 +16,7 @@ import org.mapstruct.Named;
 
 @Mapper(
         config = CentralMapperConfig.class,
-        uses = {UserMapper.class, TicketMapper.class}
+        uses = {UserMapper.class}
 )
 public interface ReplyMapper {
 
@@ -27,30 +28,24 @@ public interface ReplyMapper {
     @Mapping(target = "updatedAt", ignore = true)
     Reply toEntity(ReplyCreateDto dto, Ticket ticket, User createdUser);
 
-    @Mapping(target = "ticket", source = "ticket", qualifiedByName = "ticketWithoutReplies")
-    @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapCreatedUser")
-    @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapRespondedToUser")
+    @Mapping(target = "ticket", ignore = true)
+    @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapUserResponse")
+    @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapUserResponse")
     @Mapping(target = "parent", source = "parent", qualifiedByName = "mapParentReply")
     ReplyResponseDto toDto(Reply reply);
 
+    @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapUserResponse")
+    @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapUserResponse")
+    TicketRepliesResponseDto toTicketRepliesDto(Reply reply);
+
     void updateReplyFromDto(ReplyUpdateDto replyUpdateDto, @MappingTarget Reply reply);
 
-    @Named("mapCreatedUser")
-    default UserResponseDto mapCreatedUser(User createdUser) {
+    @Named("mapUserResponse")
+    default UserResponseDto mapUserResponse(User createdUser) {
         return new UserResponseDto(
                 null,
                 createdUser.getUsername(),
                 createdUser.getEmail(),
-                null
-        );
-    }
-
-    @Named("mapRespondedToUser")
-    default UserResponseDto mapRespondedToUser(User respondedToUser) {
-        return new UserResponseDto(
-                null,
-                respondedToUser.getUsername(),
-                respondedToUser.getEmail(),
                 null
         );
     }
