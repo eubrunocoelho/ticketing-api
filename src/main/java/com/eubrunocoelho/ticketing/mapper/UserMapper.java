@@ -19,11 +19,22 @@ public interface UserMapper {
     @Mapping(target = "role", expression = "java(defaultRole())")
     User toEntity(UserCreateDto dto, @Context PasswordEncoder encoder);
 
+    @Named("userToDto")
     UserResponseDto toDto(User entity);
 
     @Named("encodePassword")
     default String encodePassword(String password, @Context PasswordEncoder encoder) {
         return encoder.encode(password);
+    }
+
+    @Named("mapUserForReply")
+    default UserResponseDto mapUserForReply(User user) {
+        return new UserResponseDto(
+                null,
+                user.getUsername(),
+                user.getEmail(),
+                null
+        );
     }
 
     default User.Role defaultRole() {

@@ -23,6 +23,7 @@ public interface CategoryMapper {
     @Mapping(target = "priority", source = "priority", qualifiedByName = "mapPriority")
     Category toEntity(CategoryCreateDto dto);
 
+    @Named("categoryToDto")
     CategoryResponseDto toDto(Category entity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -32,5 +33,15 @@ public interface CategoryMapper {
     @Named("mapPriority")
     default Category.Priority mapPriority(String priority) {
         return getEnumValueOrThrow(priority, Category.Priority.class);
+    }
+
+    @Named("mapCategoryForTicket")
+    default CategoryResponseDto mapCategoryForTicket(Category category) {
+        return new CategoryResponseDto(
+                null,
+                category.getName(),
+                category.getDescription(),
+                category.getPriority().name()
+        );
     }
 }
