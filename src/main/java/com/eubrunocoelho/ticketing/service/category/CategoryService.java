@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Category;
+import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.mapper.CategoryMapper;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
@@ -44,6 +45,24 @@ public class CategoryService {
         Category updatedCategory = categoryRepository.save(category);
 
         return categoryMapper.toDto(updatedCategory);
+    }
+
+    public void deleteCategory(Long id) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Categoria não encontrada. {id}: "
+                                                + id
+                                )
+                );
+
+        try {
+            categoryRepository.deleteById(category.getId());
+        } catch (Exception ex) {
+            throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
+        }
     }
 
     public List<CategoryResponseDto> findAll() {

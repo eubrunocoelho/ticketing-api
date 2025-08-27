@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.service.ticket;
 
+import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
@@ -62,6 +63,25 @@ public class TicketService {
         Ticket updateTicket = ticketRepository.save(ticket);
 
         return ticketMapper.toDto(updateTicket);
+    }
+
+    public void deleteTicket(
+            Long id
+    ) {
+        Ticket ticket = ticketRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Ticket não encontrado. {id}: " + id
+                                )
+                );
+
+        try {
+            ticketRepository.deleteById(ticket.getId());
+        } catch (Exception ex) {
+            throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
+        }
     }
 
     public List<TicketResponseDto> findAll() {

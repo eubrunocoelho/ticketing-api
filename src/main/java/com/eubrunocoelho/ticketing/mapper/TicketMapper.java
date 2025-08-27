@@ -48,7 +48,7 @@ public interface TicketMapper {
     void updateTicketFromDto(TicketUpdateDto ticketUpdateDto, @MappingTarget Ticket ticket);
 
     @Named("mapTicketForReply")
-    @Mapping(target = "user", source = "user", qualifiedByName = "mapUserForReply")
+    @Mapping(target = "user", source = "user")
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategoryForTicket")
     @Mapping(target = "replies", expression = "java(null)")
     TicketResponseDto mapTicketForReply(Ticket ticket);

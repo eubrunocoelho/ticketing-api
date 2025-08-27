@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.service.reply;
 
+import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
@@ -68,6 +69,28 @@ public class ReplyService {
         Reply updatedReply = replyRepository.save(reply);
 
         return replyMapper.toDto(updatedReply);
+    }
+
+    public void deleteReply(
+            Long ticketId,
+            Long replyId
+    ) {
+        Reply reply = replyRepository
+                .findByTicketIdAndId(ticketId, replyId)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(
+                                "Resposta não encontrada. {ticketId}: "
+                                        + ticketId
+                                        + ", {replyId}: "
+                                        + replyId
+                        )
+                );
+
+        try {
+            replyRepository.deleteById(reply.getId());
+        } catch (Exception ex) {
+            throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
+        }
     }
 
     public List<ReplyResponseDto> findAllByTicketId(Long ticketId) {

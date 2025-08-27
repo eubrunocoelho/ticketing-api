@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,6 +77,17 @@ public class CategoryController extends AbstractController {
         );
 
         return ResponseEntity.ok().body(responseDto);
+    }
+
+    @DeleteMapping(
+            value = "/{id}"
+    )
+    public ResponseEntity<Void> deleteCategory(
+            @PathVariable Long id
+    ) {
+        categoryService.deleteCategory(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(
