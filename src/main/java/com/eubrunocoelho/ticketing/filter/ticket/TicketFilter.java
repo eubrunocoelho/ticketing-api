@@ -17,9 +17,21 @@ public class TicketFilter extends Filter<Ticket> {
     public Specification<Ticket> status(String value) {
         return (
                 Arrays.asList(STATUS).contains(value)
-        ) ? (root, query, cb) ->
-                cb.equal(root.get("status"), value)
+        ) ?
+                (root, query, cb) ->
+                        cb.equal(
+                                root.get("status"),
+                                value
+                        )
                 :
                 null;
+    }
+
+    public Specification<Ticket> search(String value) {
+        return (root, query, cb) ->
+                cb.like(
+                        cb.lower(root.get("title")),
+                        "%" + value.toLowerCase() + "%"
+                );
     }
 }
