@@ -51,7 +51,8 @@ public class CategoryController extends AbstractController {
 
         ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                categoryResponseDto
+                categoryResponseDto,
+                null
         );
 
         return ResponseEntity.created(location).body(responseDto);
@@ -73,7 +74,8 @@ public class CategoryController extends AbstractController {
 
         ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                categoryResponseDto
+                categoryResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);
@@ -99,7 +101,8 @@ public class CategoryController extends AbstractController {
 
         ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                categoryResponseDto
+                categoryResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);
@@ -113,7 +116,8 @@ public class CategoryController extends AbstractController {
 
         ResponseDto<List<CategoryResponseDto>> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                listCategoryResponseDto
+                listCategoryResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);

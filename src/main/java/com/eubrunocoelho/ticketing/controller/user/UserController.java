@@ -43,7 +43,8 @@ public class UserController extends AbstractController {
 
         ResponseDto<UserResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(false),
-                userResponseDto
+                userResponseDto,
+                null
         );
 
         return ResponseEntity.created(location).body(responseDto);
@@ -59,7 +60,8 @@ public class UserController extends AbstractController {
 
         ResponseDto<UserResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                userResponseDto
+                userResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);

@@ -32,7 +32,8 @@ public class AuthController extends AbstractController {
 
         ResponseDto<AuthResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(false),
-                authResponseDto
+                authResponseDto,
+                null
         );
 
         String authorization = "Bearer " + responseDto.data().authToken();

@@ -54,7 +54,8 @@ public class TicketController extends AbstractController {
 
         ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                ticketResponseDto
+                ticketResponseDto,
+                null
         );
 
         return ResponseEntity.created(location).body(responseDto);
@@ -73,7 +74,8 @@ public class TicketController extends AbstractController {
 
         ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                ticketResponseDto
+                ticketResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);
@@ -98,7 +100,8 @@ public class TicketController extends AbstractController {
 
         ResponseDto<List<TicketResponseDto>> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                listTicketResponseDto
+                listTicketResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);
@@ -115,7 +118,8 @@ public class TicketController extends AbstractController {
 
         ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                ticketResponseDto
+                ticketResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);

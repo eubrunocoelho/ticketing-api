@@ -78,7 +78,8 @@ public class ReplyController extends AbstractController {
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                replyResponseDto
+                replyResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);
@@ -107,7 +108,8 @@ public class ReplyController extends AbstractController {
 
         ResponseDto<List<ReplyResponseDto>> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                listReplyResponseDto
+                listReplyResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);
@@ -128,7 +130,8 @@ public class ReplyController extends AbstractController {
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                replyResponseDto
+                replyResponseDto,
+                null
         );
 
         return ResponseEntity.ok().body(responseDto);
