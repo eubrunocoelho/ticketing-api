@@ -7,6 +7,7 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
+import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import com.eubrunocoelho.ticketing.sort.ticket.TicketSort;
@@ -38,7 +39,7 @@ import java.util.List;
 public class TicketController extends AbstractController {
 
     private final TicketService ticketService;
-    private final TicketRepository ticketRepository;
+    private final CategoryRepository categoryRepository;
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -104,7 +105,7 @@ public class TicketController extends AbstractController {
             HttpServletRequest request,
             Pageable pageable
     ) {
-        TicketFilter filter = new TicketFilter(request);
+        TicketFilter filter = new TicketFilter(request, categoryRepository);
 
         String sortParam = request.getParameter("sort");
         Sort sort = TicketSort.getSort(sortParam);

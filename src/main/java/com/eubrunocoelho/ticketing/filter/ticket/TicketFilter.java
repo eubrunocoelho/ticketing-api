@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.filter.ticket;
 
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.filter.core.Filter;
+import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -11,8 +12,12 @@ public class TicketFilter extends Filter<Ticket> {
 
     public static final String[] STATUS = {"OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"};
 
-    public TicketFilter(HttpServletRequest request) {
+    private final CategoryRepository categoryRepository;
+
+    public TicketFilter(HttpServletRequest request, CategoryRepository categoryRepository) {
         super(request);
+
+        this.categoryRepository = categoryRepository;
     }
 
     public Specification<Ticket> status(String value) {
@@ -35,15 +40,18 @@ public class TicketFilter extends Filter<Ticket> {
                 );
     }
 
-    // Retornar null caso categoria não exista
     public Specification<Ticket> category(String value) {
         Long categoryId = Long.valueOf(value);
 
-        return (root, query, cb) ->
-                cb.equal(
-                        root.get("category").get("id"),
-                        categoryId
-                );
+        return (
+                categoryRepository.existsById(categoryId)
+        ) ?
+                (root, query, cb) ->
+                        cb.equal(
+                                root.get("category").get("id"),
+                                categoryId
+                        )
+                : null;
     }
 
     public Specification<Ticket> user(String value) {
