@@ -11,7 +11,7 @@ public class TicketSort {
 
     public static Sort getSort(String sortParam) {
         if (sortParam == null) {
-            return Sort.unsorted();
+            return Sort.by(Sort.Direction.DESC, "createdAt");
         }
 
         String value = sortParam.toUpperCase(Locale.ROOT);
@@ -26,7 +26,7 @@ public class TicketSort {
             case "LAST_UPDATED" -> Sort.by(Sort.Direction.DESC, "updatedAt");
             case "NAME" -> Sort.by(Sort.Direction.ASC, "title");
 
-            default -> Sort.unsorted();
+            default -> Sort.by(Sort.Direction.DESC, "createdAt");
         };
     }
 }
