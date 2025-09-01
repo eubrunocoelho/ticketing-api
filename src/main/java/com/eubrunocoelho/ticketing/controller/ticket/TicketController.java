@@ -6,15 +6,17 @@ import com.eubrunocoelho.ticketing.dto.meta.MetaResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
-import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
+import com.eubrunocoelho.ticketing.sort.ticket.TicketSort;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -104,7 +106,12 @@ public class TicketController extends AbstractController {
     ) {
         TicketFilter filter = new TicketFilter(request);
 
-        Page<TicketResponseDto> page = ticketService.findAllPaged(filter, pageable);
+        String sortParam = request.getParameter("sort");
+        Sort sort = TicketSort.getSort(sortParam);
+
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
+        Page<TicketResponseDto> page = ticketService.findAllPaged(filter, sortedPageable);
 
         MetaResponseDto meta = new MetaResponseDto(
                 page.isFirst(),

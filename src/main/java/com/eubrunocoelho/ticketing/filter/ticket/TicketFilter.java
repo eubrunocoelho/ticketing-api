@@ -45,7 +45,7 @@ public class TicketFilter extends Filter<Ticket> {
                         categoryId
                 );
     }
-    
+
     public Specification<Ticket> user(String value) {
         return (root, query, cb) ->
                 cb.or(
