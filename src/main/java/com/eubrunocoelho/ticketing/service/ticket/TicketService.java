@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.service.ticket;
 
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
+import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
 import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
@@ -15,6 +16,8 @@ import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -84,12 +87,10 @@ public class TicketService {
         }
     }
 
-    public List<TicketResponseDto> findAll() {
+    public Page<TicketResponseDto> findAllPaged(TicketFilter filter, Pageable pageable) {
         return ticketRepository
-                .findAll()
-                .stream()
-                .map(ticketMapper::toDto)
-                .toList();
+                .findAll(filter.toSpecification(), pageable)
+                .map(ticketMapper::toDto);
     }
 
     public TicketResponseDto findById(Long id) {
@@ -108,9 +109,5 @@ public class TicketService {
         ticket.setReplies(replies);
 
         return ticketMapper.toDtoWithReplies(ticket);
-    }
-
-    public TicketResponseDto toResponseDto(Ticket ticket) {
-        return ticketMapper.toDto(ticket);
     }
 }
