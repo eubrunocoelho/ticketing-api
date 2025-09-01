@@ -42,7 +42,9 @@ public class TicketController extends AbstractController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<TicketResponseDto>> createTicket(@RequestBody @Valid TicketCreateDto ticketCreateDto) {
+    public ResponseEntity<ResponseDto<TicketResponseDto>> createTicket(
+            @RequestBody @Valid TicketCreateDto ticketCreateDto
+    ) {
         TicketResponseDto ticketResponseDto = ticketService.createTicket(ticketCreateDto);
 
         URI location = ServletUriComponentsBuilder
@@ -96,7 +98,10 @@ public class TicketController extends AbstractController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAll(HttpServletRequest request, Pageable pageable) {
+    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAll(
+            HttpServletRequest request,
+            Pageable pageable
+    ) {
         TicketFilter filter = new TicketFilter(request);
 
         Page<TicketResponseDto> page = ticketService.findAllPaged(filter, pageable);
