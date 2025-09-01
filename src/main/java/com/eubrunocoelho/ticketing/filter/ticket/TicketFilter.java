@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Arrays;
 
 public class TicketFilter extends Filter<Ticket> {
+
     public static final String[] STATUS = {"OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"};
 
     public TicketFilter(HttpServletRequest request) {
@@ -23,8 +24,7 @@ public class TicketFilter extends Filter<Ticket> {
                                 root.get("status"),
                                 value
                         )
-                :
-                null;
+                : null;
     }
 
     public Specification<Ticket> search(String value) {
@@ -32,6 +32,17 @@ public class TicketFilter extends Filter<Ticket> {
                 cb.like(
                         cb.lower(root.get("title")),
                         "%" + value.toLowerCase() + "%"
+                );
+    }
+
+    // Retornar null caso categoria não exista
+    public Specification<Ticket> category(String value) {
+        Long categoryId = Long.valueOf(value);
+
+        return (root, query, cb) ->
+                cb.equal(
+                        root.get("category").get("id"),
+                        categoryId
                 );
     }
 }
