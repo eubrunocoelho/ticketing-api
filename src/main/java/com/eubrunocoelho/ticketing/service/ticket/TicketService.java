@@ -109,4 +109,8 @@ public class TicketService {
 
         return ticketMapper.toDtoWithReplies(ticket);
     }
+
+    public TicketResponseDto toResponseDto(Ticket ticket) {
+        return ticketMapper.toDto(ticket);
+    }
 }

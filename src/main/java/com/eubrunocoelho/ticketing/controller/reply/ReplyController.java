@@ -54,7 +54,8 @@ public class ReplyController extends AbstractController {
 
         ResponseDto<ReplyResponseDto> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
-                replyResponseDto
+                replyResponseDto,
+                null
         );
 
         return ResponseEntity.created(location).body(responseDto);

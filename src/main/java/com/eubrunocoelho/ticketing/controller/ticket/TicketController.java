@@ -2,11 +2,13 @@ package com.eubrunocoelho.ticketing.controller.ticket;
 
 import com.eubrunocoelho.ticketing.controller.AbstractController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
+import com.eubrunocoelho.ticketing.dto.meta.MetaResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
+import com.eubrunocoelho.ticketing.mapper.TicketMapper;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -95,16 +97,31 @@ public class TicketController extends AbstractController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAll() {
-        List<TicketResponseDto> listTicketResponseDto = ticketService.findAll();
+    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAll(HttpServletRequest request, Pageable pageable) {
+        TicketFilter filter = new TicketFilter(request);
+
+        Page<Ticket> page = ticketRepository.findAll(filter.toSpecification(), pageable);
+
+        List<TicketResponseDto> listTicketResponseDto = page
+                .map(ticketService::toResponseDto)
+                .getContent();
+
+        MetaResponseDto meta = new MetaResponseDto(
+                page.isFirst(),
+                page.isLast(),
+                page.getNumberOfElements(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalPages()
+        );
 
         ResponseDto<List<TicketResponseDto>> responseDto = new ResponseDto<>(
                 getScreenLabel(true),
                 listTicketResponseDto,
-                null
+                meta
         );
 
-        return ResponseEntity.ok().body(responseDto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping(
@@ -123,12 +140,5 @@ public class TicketController extends AbstractController {
         );
 
         return ResponseEntity.ok().body(responseDto);
-    }
-
-    @GetMapping
-    public Page<Ticket> index(HttpServletRequest request, Pageable pageable) {
-        TicketFilter filter = new TicketFilter(request);
-
-        return ticketRepository.findAll(filter.toSpecification(), pageable);
     }
 }
