@@ -45,4 +45,16 @@ public class TicketFilter extends Filter<Ticket> {
                         categoryId
                 );
     }
+    
+    public Specification<Ticket> user(String value) {
+        return (root, query, cb) ->
+                cb.or(
+                        cb.equal(
+                                cb.lower(root.get("user").get("username")), value.toLowerCase()
+                        ),
+                        cb.equal(
+                                cb.lower(root.get("user").get("email")), value.toLowerCase()
+                        )
+                );
+    }
 }
