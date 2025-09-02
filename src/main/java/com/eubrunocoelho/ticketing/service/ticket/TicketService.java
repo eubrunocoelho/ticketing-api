@@ -62,7 +62,18 @@ public class TicketService {
                                 )
                 );
 
-        ticketMapper.updateTicketFromDto(ticketUpdateDto, ticket);
+        Category category = categoryRepository.findById(ticketUpdateDto.category())
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Categoria não encontrada. {id}: " + ticketUpdateDto.category()
+                                )
+                );
+
+        ticketMapper.updateTicketFromDto(ticketUpdateDto, ticket, category);
+
+        ticket.setCategory(category);
+
         Ticket updateTicket = ticketRepository.save(ticket);
 
         return ticketMapper.toDto(updateTicket);

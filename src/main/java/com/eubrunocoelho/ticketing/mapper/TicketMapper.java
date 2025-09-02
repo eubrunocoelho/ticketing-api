@@ -45,7 +45,9 @@ public interface TicketMapper {
     TicketRepliesResponseDto toTicketRepliesDto(Reply reply);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateTicketFromDto(TicketUpdateDto ticketUpdateDto, @MappingTarget Ticket ticket);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    void updateTicketFromDto(TicketUpdateDto ticketUpdateDto, @MappingTarget Ticket ticket, Category category);
 
     @Named("mapTicketForReply")
     @Mapping(target = "user", source = "user")
