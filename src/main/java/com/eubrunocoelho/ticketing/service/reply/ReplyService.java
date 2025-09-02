@@ -17,6 +17,7 @@ import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationServi
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -104,8 +105,21 @@ public class ReplyService {
                                 )
                 );
 
-        return replyRepository
-                .findByTicketId(ticket.getId(), filter.toSpecification(), pageable)
+        Specification<Reply> specification =
+                (root, query, cb) -> {
+                    var ticketPredicate = cb.equal(root.get("ticket").get("id"), ticket.getId());
+                    var filterPredicate = (filter.toSpecification() != null)
+                            ? filter.toSpecification().toPredicate(root, query, cb)
+                            : null;
+
+                    if (filterPredicate != null) {
+                        return cb.and(ticketPredicate, filterPredicate);
+                    } else {
+                        return ticketPredicate;
+                    }
+                };
+
+        return replyRepository.findAll(specification, pageable)
                 .map(replyMapper::toDto);
     }
 
