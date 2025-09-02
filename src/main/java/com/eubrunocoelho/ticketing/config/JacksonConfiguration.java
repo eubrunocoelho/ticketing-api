@@ -13,7 +13,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import java.time.format.DateTimeFormatter;
 
 @Configuration
-public class JacksonConfig {
+public class JacksonConfiguration {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

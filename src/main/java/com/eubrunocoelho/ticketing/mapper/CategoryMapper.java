@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.mapper;
 
-import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
+import com.eubrunocoelho.ticketing.config.MapperConfiguration;
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
@@ -15,7 +15,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrThrow;
 
 @Mapper(
-        config = CentralMapperConfig.class,
+        config = MapperConfiguration.class,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface CategoryMapper {

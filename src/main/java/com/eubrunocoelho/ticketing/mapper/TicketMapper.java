@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.mapper;
 
-import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
+import com.eubrunocoelho.ticketing.config.MapperConfiguration;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
@@ -17,7 +17,7 @@ import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
-        config = CentralMapperConfig.class,
+        config = MapperConfiguration.class,
         uses = {UserMapper.class, CategoryMapper.class}
 )
 public interface TicketMapper {
