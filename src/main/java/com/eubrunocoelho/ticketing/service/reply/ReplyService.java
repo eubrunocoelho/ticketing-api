@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.service.reply;
 
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
+import com.eubrunocoelho.ticketing.filter.reply.ReplyFilter;
 import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
@@ -14,9 +15,9 @@ import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -93,7 +94,7 @@ public class ReplyService {
         }
     }
 
-    public List<ReplyResponseDto> findAllByTicketId(Long ticketId) {
+    public Page<ReplyResponseDto> findAllByTicketIdPaged(Long ticketId, ReplyFilter filter, Pageable pageable) {
         Ticket ticket = ticketRepository
                 .findById(ticketId)
                 .orElseThrow(
@@ -104,10 +105,8 @@ public class ReplyService {
                 );
 
         return replyRepository
-                .findByTicketIdOrderByCreatedAtDesc(ticket.getId())
-                .stream()
-                .map(replyMapper::toDto)
-                .toList();
+                .findByTicketId(ticket.getId(), filter.toSpecification(), pageable)
+                .map(replyMapper::toDto);
     }
 
     public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
