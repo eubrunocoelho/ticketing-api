@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
+import com.eubrunocoelho.ticketing.exception.auth.JwtTokenExpiredException;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueException;
@@ -140,6 +141,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<Object> handleCredentialsInvalidException(
             InvalidCredentialsException exception,
+            WebRequest request
+    ) {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(JwtTokenExpiredException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleJwtTokenExpiredException(
+            JwtTokenExpiredException exception,
             WebRequest request
     ) {
         return buildErrorResponse(

@@ -1,7 +1,9 @@
 package com.eubrunocoelho.ticketing.service.jwt;
 
+import com.eubrunocoelho.ticketing.exception.auth.JwtTokenExpiredException;
 import com.eubrunocoelho.ticketing.jwt.JwtUtility;
 import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,17 +19,21 @@ public class JwtAuthenticationService {
     private final JwtUtility jwtUtility;
     private final LoginUtilityService loginUtilityService;
 
-    public void processToken(HttpServletRequest request) {
+    public void processToken(HttpServletRequest request) throws JwtTokenExpiredException {
         String token = extractToken(request);
 
-        if (token == null || jwtUtility.isTokenExpired(token)) {
+        if (token == null) {
             return;
         }
 
-        String username = jwtUtility.getUsername(token);
+        try {
+            String username = jwtUtility.getUsername(token);
 
-        if (username != null && !isAlreadyAuthenticated()) {
-            authenticateUser(username, request);
+            if (username != null && !isAlreadyAuthenticated()) {
+                authenticateUser(username, request);
+            }
+        } catch (ExpiredJwtException ex) {
+            throw new JwtTokenExpiredException("O token de acesso fornecido expirou. Por favor, faça login novamente.");
         }
     }
 
