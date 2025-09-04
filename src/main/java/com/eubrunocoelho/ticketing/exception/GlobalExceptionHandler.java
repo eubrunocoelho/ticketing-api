@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
 import com.eubrunocoelho.ticketing.exception.auth.JwtTokenExpiredException;
+import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueException;
@@ -160,6 +161,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 exception,
                 exception.getMessage(),
                 HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(SelfReplyNotAllowedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> handleSelfReplyNotAllowedException(
+            SelfReplyNotAllowedException exception,
+            WebRequest request
+    ) {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN
         );
     }
 
