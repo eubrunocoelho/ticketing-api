@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.service.reply;
 
+import com.eubrunocoelho.ticketing.event.reply.ReplyCreatedEvent;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.filter.reply.ReplyFilter;
 import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
@@ -15,6 +16,7 @@ import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReplyService {
 
+    private final ApplicationEventPublisher eventPublisher;
     private final TicketRepository ticketRepository;
     private final LoginUtilityService loginUtilityService;
     private final ReplyRepository replyRepository;
@@ -46,6 +49,8 @@ public class ReplyService {
         replyValidationService.validate(reply, loggedUser);
 
         Reply createdReply = replyRepository.save(reply);
+
+        eventPublisher.publishEvent(new ReplyCreatedEvent(this, createdReply));
 
         return replyMapper.toDto(createdReply);
     }
