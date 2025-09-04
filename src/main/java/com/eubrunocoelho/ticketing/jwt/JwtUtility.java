@@ -14,7 +14,7 @@ import java.util.Map;
 public class JwtUtility {
 
     @Value("${com.eubrunocoelho.ticketing.jwt.secret}")
-    private String SECRET_KEY;
+    private String secretKey;
 
     public String generateToken(
             Map<String, String> extractClaims,
@@ -58,7 +58,7 @@ public class JwtUtility {
     }
 
     private SecretKey getSignInKey() {
-        byte[] keyBytes = SECRET_KEY.getBytes();
+        byte[] keyBytes = secretKey.getBytes();
 
         return Keys.hmacShaKeyFor(keyBytes);
     }

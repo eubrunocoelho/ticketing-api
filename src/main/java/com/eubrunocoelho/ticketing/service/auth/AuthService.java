@@ -18,7 +18,7 @@ import java.util.Map;
 public class AuthService {
 
     private final UserService userService;
-    private final JwtUtility jwtUtilityService;
+    private final JwtUtility jwtUtility;
     private final PasswordEncoder passwordEncoder;
 
     public AuthResponseDto authenticate(AuthDto authDto) {
@@ -32,7 +32,7 @@ public class AuthService {
 
         Map<String, String> claims = new HashMap<>();
         claims.put("role", user.getRole().name());
-        String authToken = jwtUtilityService.generateToken(
+        String authToken = jwtUtility.generateToken(
                 claims,
                 user.getUsername(),
                 1000 * 60 * 60 * 24
