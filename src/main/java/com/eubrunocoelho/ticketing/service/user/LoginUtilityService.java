@@ -18,10 +18,10 @@ public class LoginUtilityService {
 
     private final UserRepository userRepository;
 
-    public AuthenticatedUser findMatch(String username) {
-        User user = userRepository.findByUsername(username)
+    public AuthenticatedUser findMatch(String usernameOrEmail) {
+        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        "Usuário não encontrado. {username}: " + username
+                        "Usuário não encontrado. {username/email}: " + usernameOrEmail
                 ));
 
         GrantedAuthority authority = () -> user.getRole().name();

@@ -4,7 +4,10 @@ import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
+import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.jwt.JwtUtility;
+import com.eubrunocoelho.ticketing.mapper.AuthMapper;
+import com.eubrunocoelho.ticketing.service.auth.validation.CredentialValidationService;
 import com.eubrunocoelho.ticketing.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,29 +22,33 @@ public class AuthService {
 
     private final UserService userService;
     private final JwtUtility jwtUtility;
-    private final PasswordEncoder passwordEncoder;
+    private final CredentialValidationService credentialValidationService;
+    private final AuthMapper authMapper;
 
     public AuthResponseDto authenticate(AuthDto authDto) {
-        User user = userService.findByUsername(authDto.username());
+        User user;
 
-        if (user == null
-                || !passwordEncoder.matches(authDto.password(), user.getPassword())
-        ) {
-            throw new InvalidCredentialsException("\"username\" ou \"password\" inválidos.");
+        try {
+            user = userService.findByUsernameOrEmail(authDto.username());
+        } catch (ObjectNotFoundException ex) {
+            throw new InvalidCredentialsException("Credenciais inválidas.");
         }
 
+        credentialValidationService.validate(user, authDto.password());
+
+        String authToken = generateAuthToken(user);
+
+        return authMapper.toDto(user, authToken);
+    }
+
+    public String generateAuthToken(User user) {
         Map<String, String> claims = new HashMap<>();
         claims.put("role", user.getRole().name());
-        String authToken = jwtUtility.generateToken(
+
+        return jwtUtility.generateToken(
                 claims,
                 user.getUsername(),
                 1000 * 60 * 60 * 24
-        );
-
-        return new AuthResponseDto(
-                authToken,
-                user.getUsername(),
-                user.getRole().name()
         );
     }
 }

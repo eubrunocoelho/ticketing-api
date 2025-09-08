@@ -31,9 +31,10 @@ public class UserService {
         );
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() ->
-                new ObjectNotFoundException("Usuário não encontrado. {username}: " + username)
-        );
+    public User findByUsernameOrEmail(String usernameOrEmail) {
+        return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+                .orElseThrow(() ->
+                        new ObjectNotFoundException("Usuário não encontrado. {username/email}: " + usernameOrEmail)
+                );
     }
 }
