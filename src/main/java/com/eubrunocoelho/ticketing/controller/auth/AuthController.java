@@ -28,19 +28,8 @@ public class AuthController extends AbstractController {
     public ResponseEntity<ResponseDto<AuthResponseDto>> authenticate(
             @RequestBody @Valid AuthDto authDto
     ) {
-        AuthResponseDto authResponseDto = authService.authenticate(authDto);
+        AuthResponseDto authResponse = authService.authenticate(authDto);
 
-        ResponseDto<AuthResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(false),
-                authResponseDto,
-                null
-        );
-
-        String authorization = "Bearer " + responseDto.data().authToken();
-
-        return ResponseEntity
-                .ok()
-                .header("Authorization", authorization)
-                .body(responseDto);
+        return okResponse(getScreenLabel(true), authResponse);
     }
 }

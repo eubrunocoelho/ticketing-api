@@ -12,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/users")
@@ -31,25 +28,12 @@ public class UserController extends AbstractController {
     public ResponseEntity<ResponseDto<UserResponseDto>> create(
             @RequestBody @Valid UserCreateDto userCreateDto
     ) {
-        UserResponseDto userResponseDto = userService.createUser(userCreateDto);
+        UserResponseDto createdUserResponse = userService.createUser(userCreateDto);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(
-                        userResponseDto.id()
-                )
-                .toUri();
-
-        ResponseDto<UserResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(false),
-                userResponseDto,
-                null
-        );
-
-        return ResponseEntity.created(location).body(responseDto);
+        return createdResponse(getScreenLabel(false), createdUserResponse, createdUserResponse.id());
     }
 
+    // REFACTOR
     @GetMapping(
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE

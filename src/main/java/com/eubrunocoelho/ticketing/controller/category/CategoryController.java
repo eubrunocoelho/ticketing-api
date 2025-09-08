@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -37,27 +35,31 @@ public class CategoryController extends AbstractController {
     public ResponseEntity<ResponseDto<CategoryResponseDto>> createCategory(
             @RequestBody @Valid CategoryCreateDto categoryCreateDTO
     ) {
-        CategoryResponseDto categoryResponseDto = categoryService.createCategory(
+        CategoryResponseDto createdCategoryResponse = categoryService.createCategory(
                 categoryCreateDTO
         );
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(
-                        categoryResponseDto.id()
-                )
-                .toUri();
-
-        ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                categoryResponseDto,
-                null
-        );
-
-        return ResponseEntity.created(location).body(responseDto);
+        return createdResponse(getScreenLabel(true), createdCategoryResponse, createdCategoryResponse.id());
     }
 
+    @GetMapping(
+            value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<CategoryResponseDto>> findCategory(@PathVariable Long id) {
+        CategoryResponseDto categoryResponse = categoryService.findById(id);
+
+        return okResponse(getScreenLabel(true), categoryResponse);
+    }
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategory() {
+        List<CategoryResponseDto> categoriesResponse = categoryService.findAll();
+
+        return okResponse(getScreenLabel(true), categoriesResponse);
+    }
 
     @PatchMapping(
             value = "/{id}",
@@ -67,18 +69,12 @@ public class CategoryController extends AbstractController {
     public ResponseEntity<ResponseDto<CategoryResponseDto>> updateCategory(
             @PathVariable Long id, @RequestBody @Valid CategoryUpdateDto categoryUpdateDto
     ) {
-        CategoryResponseDto categoryResponseDto = categoryService.updateCategory(
+        CategoryResponseDto updatedCategoryResponse = categoryService.updateCategory(
                 id,
                 categoryUpdateDto
         );
 
-        ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                categoryResponseDto,
-                null
-        );
-
-        return ResponseEntity.ok().body(responseDto);
+        return okResponse(getScreenLabel(true), updatedCategoryResponse);
     }
 
     @DeleteMapping(
@@ -89,37 +85,6 @@ public class CategoryController extends AbstractController {
     ) {
         categoryService.deleteCategory(id);
 
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping(
-            value = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<ResponseDto<CategoryResponseDto>> findCategory(@PathVariable Long id) {
-        CategoryResponseDto categoryResponseDto = categoryService.findById(id);
-
-        ResponseDto<CategoryResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                categoryResponseDto,
-                null
-        );
-
-        return ResponseEntity.ok().body(responseDto);
-    }
-
-    @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategory() {
-        List<CategoryResponseDto> listCategoryResponseDto = categoryService.findAll();
-
-        ResponseDto<List<CategoryResponseDto>> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                listCategoryResponseDto,
-                null
-        );
-
-        return ResponseEntity.ok().body(responseDto);
+        return noContentResponse();
     }
 }

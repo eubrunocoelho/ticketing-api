@@ -25,6 +25,7 @@ public class UserService {
         return userMapper.toDto(createdUser);
     }
 
+    // REFACTOR
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException("Usuário não encontrado. {id}: " + id)

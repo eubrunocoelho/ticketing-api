@@ -44,9 +44,9 @@ public class TicketController extends AbstractController {
     public ResponseEntity<ResponseDto<TicketResponseDto>> createTicket(
             @RequestBody @Valid TicketCreateDto ticketCreateDto
     ) {
-        TicketResponseDto createdTicket = ticketService.createTicket(ticketCreateDto);
+        TicketResponseDto createdTicketResponse = ticketService.createTicket(ticketCreateDto);
 
-        return createdResponse(getScreenLabel(true), createdTicket, createdTicket.id());
+        return createdResponse(getScreenLabel(true), createdTicketResponse, createdTicketResponse.id());
     }
 
     @GetMapping(
@@ -56,9 +56,9 @@ public class TicketController extends AbstractController {
     public ResponseEntity<ResponseDto<TicketResponseDto>> findTicket(
             @PathVariable Long id
     ) {
-        TicketResponseDto ticket = ticketService.findById(id);
+        TicketResponseDto ticketResponse = ticketService.findById(id);
 
-        return okResponse(getScreenLabel(true), ticket);
+        return okResponse(getScreenLabel(true), ticketResponse);
     }
 
     @GetMapping(
@@ -74,9 +74,9 @@ public class TicketController extends AbstractController {
 
         Pageable sortedPageable = PageableFactory.build(pageable, sort);
 
-        Page<TicketResponseDto> pageableTickets = ticketService.findAllPaged(filter, sortedPageable);
+        Page<TicketResponseDto> pageableTicketsResponse = ticketService.findAllPaged(filter, sortedPageable);
 
-        return okResponse(getScreenLabel(true), pageableTickets);
+        return okResponse(getScreenLabel(true), pageableTicketsResponse);
     }
 
     @PatchMapping(
@@ -88,9 +88,9 @@ public class TicketController extends AbstractController {
             @PathVariable Long id,
             @RequestBody @Valid TicketUpdateDto ticketUpdateDto
     ) {
-        TicketResponseDto updatedTicket = ticketService.updateTicket(id, ticketUpdateDto);
+        TicketResponseDto updatedTicketResponse = ticketService.updateTicket(id, ticketUpdateDto);
 
-        return okResponse(getScreenLabel(true), updatedTicket);
+        return okResponse(getScreenLabel(true), updatedTicketResponse);
     }
 
     @DeleteMapping(
