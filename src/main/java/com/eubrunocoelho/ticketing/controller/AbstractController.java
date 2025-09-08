@@ -9,7 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RequiredArgsConstructor
-public abstract class AbstractController {
+public abstract class AbstractController extends BaseController {
 
     protected static final String SCREEN_LABEL = "Ticketing API - [%s] [%s]";
 

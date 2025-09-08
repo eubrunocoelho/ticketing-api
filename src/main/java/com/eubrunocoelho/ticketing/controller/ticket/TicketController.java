@@ -2,7 +2,6 @@ package com.eubrunocoelho.ticketing.controller.ticket;
 
 import com.eubrunocoelho.ticketing.controller.AbstractController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
-import com.eubrunocoelho.ticketing.dto.meta.MetaResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
@@ -10,11 +9,11 @@ import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import com.eubrunocoelho.ticketing.sort.ticket.TicketSort;
+import com.eubrunocoelho.ticketing.util.PageableFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
@@ -27,9 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -47,54 +44,21 @@ public class TicketController extends AbstractController {
     public ResponseEntity<ResponseDto<TicketResponseDto>> createTicket(
             @RequestBody @Valid TicketCreateDto ticketCreateDto
     ) {
-        TicketResponseDto ticketResponseDto = ticketService.createTicket(ticketCreateDto);
+        TicketResponseDto createdTicket = ticketService.createTicket(ticketCreateDto);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(
-                        ticketResponseDto.id()
-                )
-                .toUri();
-
-        ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                ticketResponseDto,
-                null
-        );
-
-        return ResponseEntity.created(location).body(responseDto);
+        return createdResponse(getScreenLabel(true), createdTicket, createdTicket.id());
     }
 
-    @PatchMapping(
+    @GetMapping(
             value = "/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<TicketResponseDto>> updateTicket(
-            @PathVariable Long id,
-            @RequestBody @Valid TicketUpdateDto ticketUpdateDto
-    ) {
-        TicketResponseDto ticketResponseDto = ticketService.updateTicket(id, ticketUpdateDto);
-
-        ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                ticketResponseDto,
-                null
-        );
-
-        return ResponseEntity.ok().body(responseDto);
-    }
-
-    @DeleteMapping(
-            value = "/{id}"
-    )
-    public ResponseEntity<Void> deleteTicket(
+    public ResponseEntity<ResponseDto<TicketResponseDto>> findTicket(
             @PathVariable Long id
     ) {
-        ticketService.deleteTicket(id);
+        TicketResponseDto ticket = ticketService.findById(id);
 
-        return ResponseEntity.noContent().build();
+        return okResponse(getScreenLabel(true), ticket);
     }
 
     @GetMapping(
@@ -106,46 +70,37 @@ public class TicketController extends AbstractController {
     ) {
         TicketFilter filter = new TicketFilter(request, categoryRepository);
 
-        String sortParam = request.getParameter("sort");
-        Sort sort = TicketSort.getSort(sortParam);
+        Sort sort = TicketSort.getSort(request.getParameter("sort"));
 
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        Pageable sortedPageable = PageableFactory.build(pageable, sort);
 
-        Page<TicketResponseDto> page = ticketService.findAllPaged(filter, sortedPageable);
+        Page<TicketResponseDto> pageableTickets = ticketService.findAllPaged(filter, sortedPageable);
 
-        MetaResponseDto meta = new MetaResponseDto(
-                page.isFirst(),
-                page.isLast(),
-                page.getNumberOfElements(),
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalPages()
-        );
-
-        ResponseDto<List<TicketResponseDto>> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                page.getContent(),
-                meta
-        );
-
-        return ResponseEntity.ok(responseDto);
+        return okResponse(getScreenLabel(true), pageableTickets);
     }
 
-    @GetMapping(
+    @PatchMapping(
             value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<TicketResponseDto>> findTicket(
+    public ResponseEntity<ResponseDto<TicketResponseDto>> updateTicket(
+            @PathVariable Long id,
+            @RequestBody @Valid TicketUpdateDto ticketUpdateDto
+    ) {
+        TicketResponseDto updatedTicket = ticketService.updateTicket(id, ticketUpdateDto);
+
+        return okResponse(getScreenLabel(true), updatedTicket);
+    }
+
+    @DeleteMapping(
+            value = "/{id}"
+    )
+    public ResponseEntity<Void> deleteTicket(
             @PathVariable Long id
     ) {
-        TicketResponseDto ticketResponseDto = ticketService.findById(id);
+        ticketService.deleteTicket(id);
 
-        ResponseDto<TicketResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                ticketResponseDto,
-                null
-        );
-
-        return ResponseEntity.ok().body(responseDto);
+        return noContentResponse();
     }
 }
