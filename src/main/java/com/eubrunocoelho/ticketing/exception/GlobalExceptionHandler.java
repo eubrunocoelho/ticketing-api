@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
-import com.eubrunocoelho.ticketing.exception.auth.JwtTokenExpiredException;
+import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenExpiredException;
 import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;

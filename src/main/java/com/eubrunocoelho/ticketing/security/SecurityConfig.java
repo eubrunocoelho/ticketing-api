@@ -1,7 +1,7 @@
-package com.eubrunocoelho.ticketing.config;
+package com.eubrunocoelho.ticketing.security;
 
-import com.eubrunocoelho.ticketing.jwt.JwtFilter;
-import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
+import com.eubrunocoelho.ticketing.security.filter.JwtAuthenticationFilter;
+import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtFilter jwtFilter;
-    private final LoginUtilityService loginUtilityService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserPrincipalService userPrincipalService;
 
     @Bean
     @Order(1)
@@ -38,14 +38,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS
                 ))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetailsService userDetailsService = (username -> {
-            return loginUtilityService.findMatch(username);
+            return userPrincipalService.findMatch(username);
         });
 
         return userDetailsService;

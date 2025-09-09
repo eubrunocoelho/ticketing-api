@@ -7,7 +7,7 @@ import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
 import com.eubrunocoelho.ticketing.filter.reply.ReplyFilter;
 import com.eubrunocoelho.ticketing.service.reply.ReplyService;
-import com.eubrunocoelho.ticketing.sort.reply.ReplySort;
+import com.eubrunocoelho.ticketing.util.sort.ReplySortHelper;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -79,7 +79,7 @@ public class ReplyController extends BaseController {
     ) {
         ReplyFilter filter = new ReplyFilter(request);
 
-        Sort sort = ReplySort.getSort(request.getParameter("sort"));
+        Sort sort = ReplySortHelper.getSort(request.getParameter("sort"));
 
         Pageable sortedPageable = PageableFactory.build(pageable, sort);
 

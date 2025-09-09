@@ -1,13 +1,13 @@
-package com.eubrunocoelho.ticketing.sort.reply;
+package com.eubrunocoelho.ticketing.util.sort;
 
 import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 import java.util.Locale;
 
-public class ReplySort {
+public class TicketSortHelper {
 
-    protected static final String[] SORT = {"NEW", "OLDER", "LAST_UPDATED"};
+    protected static final String[] SORT = {"NEW", "OLDER", "LAST_UPDATED", "NAME"};
 
     public static Sort getSort(String sortParam) {
         if (sortParam == null) {
@@ -23,7 +23,8 @@ public class ReplySort {
         return switch (value) {
             case "NEW" -> Sort.by(Sort.Direction.DESC, "createdAt");
             case "OLDER" -> Sort.by(Sort.Direction.ASC, "createdAt");
-            case "LAST_UPDATE" -> Sort.by(Sort.Direction.DESC, "updatedAt");
+            case "LAST_UPDATED" -> Sort.by(Sort.Direction.DESC, "updatedAt");
+            case "NAME" -> Sort.by(Sort.Direction.ASC, "title");
 
             default -> Sort.by(Sort.Direction.DESC, "createdAt");
         };

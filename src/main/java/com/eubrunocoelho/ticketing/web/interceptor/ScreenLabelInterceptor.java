@@ -1,7 +1,7 @@
-package com.eubrunocoelho.ticketing.filter;
+package com.eubrunocoelho.ticketing.web.interceptor;
 
 import com.eubrunocoelho.ticketing.entity.User;
-import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
+import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.util.ScreenLabelContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ public class ScreenLabelInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(ScreenLabelInterceptor.class);
     private static final String SCREEN_LABEL_FORMAT = "Ticketing API - [%s] [%s]";
 
-    private final LoginUtilityService loginUtilityService;
+    private final UserPrincipalService userPrincipalService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -26,7 +26,7 @@ public class ScreenLabelInterceptor implements HandlerInterceptor {
         String userInfo = "";
 
         try {
-            User loggedUser = loginUtilityService.getLoggedInUser();
+            User loggedUser = userPrincipalService.getLoggedInUser();
 
             if (loggedUser != null) {
                 userInfo = String.format("%s|%s", loggedUser.getUsername(), loggedUser.getRole().name());

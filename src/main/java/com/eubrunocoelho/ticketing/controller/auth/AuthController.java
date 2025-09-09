@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.controller.auth;
 
 import com.eubrunocoelho.ticketing.controller.BaseController;
-import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
+import com.eubrunocoelho.ticketing.dto.auth.SigninRequestDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.auth.AuthService;
@@ -26,9 +26,9 @@ public class AuthController extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<AuthResponseDto>> authenticate(
-            @RequestBody @Valid AuthDto authDto
+            @RequestBody @Valid SigninRequestDto signinRequestDto
     ) {
-        AuthResponseDto authResponse = authService.authenticate(authDto);
+        AuthResponseDto authResponse = authService.authenticate(signinRequestDto);
 
         return okResponse(authResponse);
     }

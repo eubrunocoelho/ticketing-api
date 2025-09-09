@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.service.user;
 
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
+import com.eubrunocoelho.ticketing.security.principal.AuthenticatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class LoginUtilityService {
+public class UserPrincipalService {
 
     private final UserRepository userRepository;
 

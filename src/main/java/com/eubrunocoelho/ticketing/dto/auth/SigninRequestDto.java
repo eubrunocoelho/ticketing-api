@@ -2,7 +2,7 @@ package com.eubrunocoelho.ticketing.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record AuthDto(
+public record SigninRequestDto(
 
         @NotBlank(message = "O valor para \"username\" é obrigatório.")
         String username,

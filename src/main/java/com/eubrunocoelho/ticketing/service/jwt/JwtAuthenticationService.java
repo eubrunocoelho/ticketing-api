@@ -1,8 +1,8 @@
 package com.eubrunocoelho.ticketing.service.jwt;
 
-import com.eubrunocoelho.ticketing.exception.auth.JwtTokenExpiredException;
-import com.eubrunocoelho.ticketing.jwt.JwtUtility;
-import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
+import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenExpiredException;
+import com.eubrunocoelho.ticketing.security.jwt.JwtProvider;
+import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class JwtAuthenticationService {
 
-    private final JwtUtility jwtUtility;
-    private final LoginUtilityService loginUtilityService;
+    private final JwtProvider jwtProvider;
+    private final UserPrincipalService userPrincipalService;
 
     public void processToken(HttpServletRequest request) throws JwtTokenExpiredException {
         String token = extractToken(request);
@@ -27,7 +27,7 @@ public class JwtAuthenticationService {
         }
 
         try {
-            String username = jwtUtility.getUsername(token);
+            String username = jwtProvider.getUsername(token);
 
             if (username != null && !isAlreadyAuthenticated()) {
                 authenticateUser(username, request);
@@ -52,7 +52,7 @@ public class JwtAuthenticationService {
     }
 
     private void authenticateUser(String username, HttpServletRequest request) {
-        UserDetails userDetails = loginUtilityService.findMatch(username);
+        UserDetails userDetails = userPrincipalService.findMatch(username);
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(

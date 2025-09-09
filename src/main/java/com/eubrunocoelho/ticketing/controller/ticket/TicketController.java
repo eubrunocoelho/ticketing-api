@@ -8,7 +8,7 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
-import com.eubrunocoelho.ticketing.sort.ticket.TicketSort;
+import com.eubrunocoelho.ticketing.util.sort.TicketSortHelper;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -70,7 +70,7 @@ public class TicketController extends BaseController {
     ) {
         TicketFilter filter = new TicketFilter(request, categoryRepository);
 
-        Sort sort = TicketSort.getSort(request.getParameter("sort"));
+        Sort sort = TicketSortHelper.getSort(request.getParameter("sort"));
 
         Pageable sortedPageable = PageableFactory.build(pageable, sort);
 

@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.user;
+package com.eubrunocoelho.ticketing.security.principal;
 
 import com.eubrunocoelho.ticketing.entity.User;
 import org.springframework.security.core.GrantedAuthority;

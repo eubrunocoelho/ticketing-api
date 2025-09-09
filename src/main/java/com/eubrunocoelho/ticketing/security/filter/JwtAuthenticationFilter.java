@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.jwt;
+package com.eubrunocoelho.ticketing.security.filter;
 
 import com.eubrunocoelho.ticketing.service.jwt.JwtAuthenticationService;
 import jakarta.servlet.FilterChain;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtAuthenticationService jwtAuthenticationService;
     private final HandlerExceptionResolver handlerExceptionResolver;

@@ -3,7 +3,7 @@ package com.eubrunocoelho.ticketing.service.reply;
 import com.eubrunocoelho.ticketing.event.reply.ReplyCreatedEvent;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.filter.reply.ReplyFilter;
-import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
+import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
@@ -28,14 +28,14 @@ public class ReplyService {
 
     private final ApplicationEventPublisher eventPublisher;
     private final TicketRepository ticketRepository;
-    private final LoginUtilityService loginUtilityService;
+    private final UserPrincipalService userPrincipalService;
     private final ReplyRepository replyRepository;
     private final ReplyFactory replyFactory;
     private final ReplyValidationService replyValidationService;
     private final ReplyMapper replyMapper;
 
     public ReplyResponseDto createReply(Long ticketId, ReplyCreateDto dto) {
-        User loggedUser = loginUtilityService.getLoggedInUser();
+        User loggedUser = userPrincipalService.getLoggedInUser();
         Ticket ticket = ticketRepository
                 .findById(ticketId)
                 .orElseThrow(

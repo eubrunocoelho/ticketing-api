@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.config;
 
-import com.eubrunocoelho.ticketing.filter.ScreenLabelInterceptor;
+import com.eubrunocoelho.ticketing.web.interceptor.ScreenLabelInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

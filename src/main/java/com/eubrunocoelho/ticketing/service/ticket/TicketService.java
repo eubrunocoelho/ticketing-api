@@ -2,7 +2,7 @@ package com.eubrunocoelho.ticketing.service.ticket;
 
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
-import com.eubrunocoelho.ticketing.service.user.LoginUtilityService;
+import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
@@ -26,14 +26,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TicketService {
 
-    private final LoginUtilityService loginUtilityService;
+    private final UserPrincipalService userPrincipalService;
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;
     private final CategoryRepository categoryRepository;
     private final ReplyRepository replyRepository;
 
     public TicketResponseDto createTicket(TicketCreateDto ticketCreateDto) {
-        User loggedUser = loginUtilityService.getLoggedInUser();
+        User loggedUser = userPrincipalService.getLoggedInUser();
         Category category = categoryRepository.findById(ticketCreateDto.category())
                 .orElseThrow(
                         () ->
