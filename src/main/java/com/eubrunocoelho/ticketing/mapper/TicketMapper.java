@@ -22,6 +22,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface TicketMapper {
 
+    @Named("ticketToEntity")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")
     @Mapping(target = "category", source = "category")
@@ -36,7 +37,11 @@ public interface TicketMapper {
 
     @Named("ticketToDtoWithReplies")
     @Mapping(target = "category", source = "category", qualifiedByName = "mapCategoryForTicket")
-    @Mapping(target = "replies", source = "replies", qualifiedByName = "ticketRepliesToDto")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "replies", ignore = true)
     TicketResponseDto toDtoWithReplies(Ticket ticket);
 
     @Named("ticketRepliesToDto")
@@ -44,6 +49,7 @@ public interface TicketMapper {
     @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapUserForReply")
     TicketRepliesResponseDto toTicketRepliesDto(Reply reply);
 
+    @Named("updateTicketFromDto")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", ignore = true)

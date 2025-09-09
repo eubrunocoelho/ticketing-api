@@ -15,8 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 )
 public interface UserMapper {
 
+    @Named("userToEntity")
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")
     @Mapping(target = "role", expression = "java(defaultRole())")
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     User toEntity(UserCreateDto dto, @Context PasswordEncoder encoder);
 
     @Named("userToDto")
@@ -28,14 +32,9 @@ public interface UserMapper {
     }
 
     @Named("mapUserForReply")
-    default UserResponseDto mapUserForReply(User user) {
-        return new UserResponseDto(
-                null,
-                user.getUsername(),
-                user.getEmail(),
-                null
-        );
-    }
+    @Mapping(target = "id", expression = "java(null)")
+    @Mapping(target = "role", expression = "java(null)")
+    UserResponseDto mapUserForReply(User user);
 
     default User.Role defaultRole() {
         return User.Role.ROLE_USER;
