@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.controller.auth;
 
-import com.eubrunocoelho.ticketing.controller.AbstractController;
+import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.auth.AuthDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController extends AbstractController {
+public class AuthController extends BaseController {
 
     private final AuthService authService;
 
@@ -30,6 +30,6 @@ public class AuthController extends AbstractController {
     ) {
         AuthResponseDto authResponse = authService.authenticate(authDto);
 
-        return okResponse(getScreenLabel(true), authResponse);
+        return okResponse(authResponse);
     }
 }

@@ -8,11 +8,15 @@ import java.util.List;
 
 public class ResponseBuilder {
 
-    public static <T> ResponseDto<T> buildSingle(String screenLabel, T data) {
+    public static <T> ResponseDto<T> buildSingle(T data) {
+        String screenLabel = ScreenLabelContext.getLabel();
+
         return new ResponseDto<>(screenLabel, data, null);
     }
 
-    public static <T> ResponseDto<List<T>> buildPaged(String screenLabel, Page<T> page) {
+    public static <T> ResponseDto<List<T>> buildPaged(Page<T> page) {
+        String screenLabel = ScreenLabelContext.getLabel();
+
         MetaResponseDto meta = new MetaResponseDto(
                 page.isFirst(),
                 page.isLast(),

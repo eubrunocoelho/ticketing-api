@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.controller.category;
 
-import com.eubrunocoelho.ticketing.controller.AbstractController;
+import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.category.CategoryCreateDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @RequiredArgsConstructor
-public class CategoryController extends AbstractController {
+public class CategoryController extends BaseController {
 
     private final CategoryService categoryService;
 
@@ -39,7 +39,7 @@ public class CategoryController extends AbstractController {
                 categoryCreateDTO
         );
 
-        return createdResponse(getScreenLabel(true), createdCategoryResponse, createdCategoryResponse.id());
+        return createdResponse(createdCategoryResponse, createdCategoryResponse.id());
     }
 
     @GetMapping(
@@ -49,7 +49,7 @@ public class CategoryController extends AbstractController {
     public ResponseEntity<ResponseDto<CategoryResponseDto>> findCategory(@PathVariable Long id) {
         CategoryResponseDto categoryResponse = categoryService.findById(id);
 
-        return okResponse(getScreenLabel(true), categoryResponse);
+        return okResponse(categoryResponse);
     }
 
     @GetMapping(
@@ -58,7 +58,7 @@ public class CategoryController extends AbstractController {
     public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategory() {
         List<CategoryResponseDto> categoriesResponse = categoryService.findAll();
 
-        return okResponse(getScreenLabel(true), categoriesResponse);
+        return okResponse(categoriesResponse);
     }
 
     @PatchMapping(
@@ -74,7 +74,7 @@ public class CategoryController extends AbstractController {
                 categoryUpdateDto
         );
 
-        return okResponse(getScreenLabel(true), updatedCategoryResponse);
+        return okResponse(updatedCategoryResponse);
     }
 
     @DeleteMapping(

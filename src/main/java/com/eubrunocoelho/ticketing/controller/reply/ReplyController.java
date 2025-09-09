@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.controller.reply;
 
-import com.eubrunocoelho.ticketing.controller.AbstractController;
+import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
@@ -31,7 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
-public class ReplyController extends AbstractController {
+public class ReplyController extends BaseController {
 
     private final ReplyService replyService;
 
@@ -49,7 +49,7 @@ public class ReplyController extends AbstractController {
                 replyCreateDto
         );
 
-        return createdResponse(getScreenLabel(true), createdReplyResponse, createdReplyResponse.id());
+        return createdResponse(createdReplyResponse, createdReplyResponse.id());
     }
 
     @GetMapping(
@@ -65,7 +65,7 @@ public class ReplyController extends AbstractController {
                 replyId
         );
 
-        return okResponse(getScreenLabel(true), replyResponse);
+        return okResponse(replyResponse);
     }
 
     @GetMapping(
@@ -85,7 +85,7 @@ public class ReplyController extends AbstractController {
 
         Page<ReplyResponseDto> pageableRepliesResponse = replyService.findAllByTicketIdPaged(ticketId, filter, sortedPageable);
 
-        return okResponse(getScreenLabel(true), pageableRepliesResponse);
+        return okResponse(pageableRepliesResponse);
     }
 
     @PatchMapping(
@@ -104,7 +104,7 @@ public class ReplyController extends AbstractController {
                 replyUpdateDto
         );
 
-        return okResponse(getScreenLabel(true), updatedReplyResponse);
+        return okResponse(updatedReplyResponse);
     }
 
     @DeleteMapping(

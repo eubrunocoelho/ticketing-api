@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.mapper;
 
-import com.eubrunocoelho.ticketing.config.MapperConfiguration;
+import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;
@@ -11,7 +11,7 @@ import org.mapstruct.Named;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(
-        config = MapperConfiguration.class
+        config = CentralMapperConfig.class
 )
 public interface UserMapper {
 

@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.controller.ticket;
 
-import com.eubrunocoelho.ticketing.controller.AbstractController;
+import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
@@ -32,7 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
-public class TicketController extends AbstractController {
+public class TicketController extends BaseController {
 
     private final TicketService ticketService;
     private final CategoryRepository categoryRepository;
@@ -46,7 +46,7 @@ public class TicketController extends AbstractController {
     ) {
         TicketResponseDto createdTicketResponse = ticketService.createTicket(ticketCreateDto);
 
-        return createdResponse(getScreenLabel(true), createdTicketResponse, createdTicketResponse.id());
+        return createdResponse(createdTicketResponse, createdTicketResponse.id());
     }
 
     @GetMapping(
@@ -58,7 +58,7 @@ public class TicketController extends AbstractController {
     ) {
         TicketResponseDto ticketResponse = ticketService.findById(id);
 
-        return okResponse(getScreenLabel(true), ticketResponse);
+        return okResponse(ticketResponse);
     }
 
     @GetMapping(
@@ -76,7 +76,7 @@ public class TicketController extends AbstractController {
 
         Page<TicketResponseDto> pageableTicketsResponse = ticketService.findAllPaged(filter, sortedPageable);
 
-        return okResponse(getScreenLabel(true), pageableTicketsResponse);
+        return okResponse(pageableTicketsResponse);
     }
 
     @PatchMapping(
@@ -90,7 +90,7 @@ public class TicketController extends AbstractController {
     ) {
         TicketResponseDto updatedTicketResponse = ticketService.updateTicket(id, ticketUpdateDto);
 
-        return okResponse(getScreenLabel(true), updatedTicketResponse);
+        return okResponse(updatedTicketResponse);
     }
 
     @DeleteMapping(

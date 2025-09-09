@@ -1,13 +1,13 @@
 package com.eubrunocoelho.ticketing.mapper;
 
-import com.eubrunocoelho.ticketing.config.MapperConfiguration;
+import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(
-        config = MapperConfiguration.class
+        config = CentralMapperConfig.class
 )
 public interface AuthMapper {
 

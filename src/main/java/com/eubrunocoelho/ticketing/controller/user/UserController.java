@@ -1,10 +1,9 @@
 package com.eubrunocoelho.ticketing.controller.user;
 
-import com.eubrunocoelho.ticketing.controller.AbstractController;
+import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
-import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.service.user.UserService;
 import jakarta.validation.Valid;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController extends AbstractController {
+public class UserController extends BaseController {
 
     private final UserService userService;
     private final UserMapper userMapper;
@@ -30,24 +29,15 @@ public class UserController extends AbstractController {
     ) {
         UserResponseDto createdUserResponse = userService.createUser(userCreateDto);
 
-        return createdResponse(getScreenLabel(false), createdUserResponse, createdUserResponse.id());
+        return createdResponse(createdUserResponse, createdUserResponse.id());
     }
 
-    // REFACTOR
     @GetMapping(
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<UserResponseDto>> findById(@PathVariable Long id) {
-        User user = userService.findById(id);
-        UserResponseDto userResponseDto = userMapper.toDto(user);
+    public ResponseEntity<Void> findById(@PathVariable Long id) {
 
-        ResponseDto<UserResponseDto> responseDto = new ResponseDto<>(
-                getScreenLabel(true),
-                userResponseDto,
-                null
-        );
-
-        return ResponseEntity.ok().body(responseDto);
+        return noContentResponse();
     }
 }
