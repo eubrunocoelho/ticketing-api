@@ -7,8 +7,8 @@ import com.eubrunocoelho.ticketing.dto.reply.ReplyFilterDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
 import com.eubrunocoelho.ticketing.service.reply.ReplyService;
-import com.eubrunocoelho.ticketing.util.sort.ReplySortHelper;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
+import com.eubrunocoelho.ticketing.util.sort.ReplySortResolver;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +26,7 @@ import java.util.List;
 public class ReplyController extends BaseController {
 
     private final ReplyService replyService;
+    private final ReplySortResolver replySortResolver;
 
     @PostMapping(
             value = "/{ticketId}/reply",
@@ -70,7 +71,7 @@ public class ReplyController extends BaseController {
             Pageable pageable,
             @RequestParam(name = "sort", required = false) String sortParam
     ) {
-        Sort sort = ReplySortHelper.getSort(sortParam);
+        Sort sort = replySortResolver.resolve(sortParam);
         Pageable sortedPageable = PageableFactory.build(pageable, sort);
 
         Page<ReplyResponseDto> pageableRepliesResponse = replyService.findAllByTicketIdPaged(ticketId, filter, sortedPageable);

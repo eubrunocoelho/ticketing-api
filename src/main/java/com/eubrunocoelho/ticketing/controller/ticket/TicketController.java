@@ -7,8 +7,8 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
-import com.eubrunocoelho.ticketing.util.sort.TicketSortHelper;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
+import com.eubrunocoelho.ticketing.util.sort.TicketSortResolver;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +26,7 @@ import java.util.List;
 public class TicketController extends BaseController {
 
     private final TicketService ticketService;
+    private final TicketSortResolver ticketSortResolver;
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -59,7 +60,7 @@ public class TicketController extends BaseController {
             Pageable pageable,
             @RequestParam(name = "sort", required = false) String sortParam
     ) {
-        Sort sort = TicketSortHelper.getSort(sortParam);
+        Sort sort = ticketSortResolver.resolve(sortParam);
         Pageable sortedPageable = PageableFactory.build(pageable, sort);
 
         Page<TicketResponseDto> pageableTicketsResponse = ticketService.findAllPaged(filter, sortedPageable);
