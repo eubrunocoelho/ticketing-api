@@ -3,13 +3,12 @@ package com.eubrunocoelho.ticketing.controller.reply;
 import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
+import com.eubrunocoelho.ticketing.dto.reply.ReplyFilterDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
-import com.eubrunocoelho.ticketing.filter.reply.ReplyFilter;
 import com.eubrunocoelho.ticketing.service.reply.ReplyService;
 import com.eubrunocoelho.ticketing.util.sort.ReplySortHelper;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,14 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -74,13 +66,11 @@ public class ReplyController extends BaseController {
     )
     public ResponseEntity<ResponseDto<List<ReplyResponseDto>>> findAllReplyByTicket(
             @PathVariable Long ticketId,
-            HttpServletRequest request,
-            Pageable pageable
+            ReplyFilterDto filter,
+            Pageable pageable,
+            @RequestParam(name = "sort", required = false) String sortParam
     ) {
-        ReplyFilter filter = new ReplyFilter(request);
-
-        Sort sort = ReplySortHelper.getSort(request.getParameter("sort"));
-
+        Sort sort = ReplySortHelper.getSort(sortParam);
         Pageable sortedPageable = PageableFactory.build(pageable, sort);
 
         Page<ReplyResponseDto> pageableRepliesResponse = replyService.findAllByTicketIdPaged(ticketId, filter, sortedPageable);

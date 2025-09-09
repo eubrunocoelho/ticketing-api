@@ -1,7 +1,8 @@
 package com.eubrunocoelho.ticketing.service.ticket;
 
+import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
-import com.eubrunocoelho.ticketing.filter.ticket.TicketFilter;
+import com.eubrunocoelho.ticketing.repository.specification.TicketSpecificationBuilder;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
@@ -18,6 +19,7 @@ import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class TicketService {
 
     private final UserPrincipalService userPrincipalService;
     private final TicketRepository ticketRepository;
+    private final TicketSpecificationBuilder ticketSpecificationBuilder;
     private final TicketMapper ticketMapper;
     private final CategoryRepository categoryRepository;
     private final ReplyRepository replyRepository;
@@ -47,6 +50,32 @@ public class TicketService {
         Ticket createdTicket = ticketRepository.save(ticket);
 
         return ticketMapper.toDto(createdTicket);
+    }
+
+    public TicketResponseDto findById(Long id) {
+        Ticket ticket = ticketRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Ticket não encontrado. {id}: " + id
+                                )
+                );
+
+        List<Reply> replies = replyRepository
+                .findByTicketIdOrderByCreatedAtDesc(ticket.getId());
+
+        ticket.setReplies(replies);
+
+        return ticketMapper.toDtoWithReplies(ticket);
+    }
+
+    public Page<TicketResponseDto> findAllPaged(TicketFilterDto filter, Pageable pageable) {
+        Specification<Ticket> specification = ticketSpecificationBuilder.build(filter);
+
+        Page<Ticket> ticketPage = ticketRepository.findAll(specification, pageable);
+
+        return ticketPage.map(ticketMapper::toDto);
     }
 
     public TicketResponseDto updateTicket(
@@ -102,29 +131,5 @@ public class TicketService {
         } catch (Exception ex) {
             throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
         }
-    }
-
-    public Page<TicketResponseDto> findAllPaged(TicketFilter filter, Pageable pageable) {
-        return ticketRepository
-                .findAll(filter.toSpecification(), pageable)
-                .map(ticketMapper::toDto);
-    }
-
-    public TicketResponseDto findById(Long id) {
-        Ticket ticket = ticketRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Ticket não encontrado. {id}: " + id
-                                )
-                );
-
-        List<Reply> replies = replyRepository
-                .findByTicketIdOrderByCreatedAtDesc(ticket.getId());
-
-        ticket.setReplies(replies);
-
-        return ticketMapper.toDtoWithReplies(ticket);
     }
 }

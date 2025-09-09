@@ -1,8 +1,9 @@
 package com.eubrunocoelho.ticketing.service.reply;
 
+import com.eubrunocoelho.ticketing.dto.reply.ReplyFilterDto;
 import com.eubrunocoelho.ticketing.event.reply.ReplyCreatedEvent;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
-import com.eubrunocoelho.ticketing.filter.reply.ReplyFilter;
+import com.eubrunocoelho.ticketing.repository.specification.ReplySpecificationBuilder;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
@@ -33,6 +34,7 @@ public class ReplyService {
     private final ReplyFactory replyFactory;
     private final ReplyValidationService replyValidationService;
     private final ReplyMapper replyMapper;
+    private final ReplySpecificationBuilder replySpecificationBuilder;
 
     public ReplyResponseDto createReply(Long ticketId, ReplyCreateDto dto) {
         User loggedUser = userPrincipalService.getLoggedInUser();
@@ -53,6 +55,44 @@ public class ReplyService {
         eventPublisher.publishEvent(new ReplyCreatedEvent(this, createdReply));
 
         return replyMapper.toDto(createdReply);
+    }
+
+    public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
+        Reply reply = replyRepository
+                .findByTicketIdAndId(ticketId, replyId)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Resposta não encontrada. {ticketId}: "
+                                                + ticketId
+                                                + ", {replyId}: "
+                                                + replyId
+                                )
+                );
+
+        return replyMapper.toDto(reply);
+    }
+
+    public Page<ReplyResponseDto> findAllByTicketIdPaged(Long ticketId, ReplyFilterDto filter, Pageable pageable) {
+        Ticket ticket = ticketRepository
+                .findById(ticketId)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Ticket não encontrado. {id}: " + ticketId
+                                )
+                );
+
+        Specification<Reply> ticketSpecification =
+                (root, query, cb) -> cb.equal(
+                        root.get("ticket").get("id"), ticket.getId()
+                );
+
+        Specification<Reply> filterSpecification = replySpecificationBuilder.build(filter);
+        Specification<Reply> finalSpecification = ticketSpecification.and(filterSpecification);
+
+        return replyRepository.findAll(finalSpecification, pageable)
+                .map(replyMapper::toDto);
     }
 
     public ReplyResponseDto updateReply(
@@ -98,49 +138,5 @@ public class ReplyService {
         } catch (Exception ex) {
             throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
         }
-    }
-
-    public Page<ReplyResponseDto> findAllByTicketIdPaged(Long ticketId, ReplyFilter filter, Pageable pageable) {
-        Ticket ticket = ticketRepository
-                .findById(ticketId)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Ticket não encontrado. {id}: " + ticketId
-                                )
-                );
-
-        Specification<Reply> specification =
-                (root, query, cb) -> {
-                    var ticketPredicate = cb.equal(root.get("ticket").get("id"), ticket.getId());
-                    var filterPredicate = (filter.toSpecification() != null)
-                            ? filter.toSpecification().toPredicate(root, query, cb)
-                            : null;
-
-                    if (filterPredicate != null) {
-                        return cb.and(ticketPredicate, filterPredicate);
-                    } else {
-                        return ticketPredicate;
-                    }
-                };
-
-        return replyRepository.findAll(specification, pageable)
-                .map(replyMapper::toDto);
-    }
-
-    public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
-        Reply reply = replyRepository
-                .findByTicketIdAndId(ticketId, replyId)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Resposta não encontrada. {ticketId}: "
-                                                + ticketId
-                                                + ", {replyId}: "
-                                                + replyId
-                                )
-                );
-
-        return replyMapper.toDto(reply);
     }
 }
