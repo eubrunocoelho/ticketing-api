@@ -6,8 +6,8 @@ import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.category.CategoryService;
+import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,10 +23,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
-@RequiredArgsConstructor
 public class CategoryController extends BaseController {
 
     private final CategoryService categoryService;
+
+    public CategoryController(
+            CategoryService categoryService,
+            ResponseBuilder responseBuilder
+    ) {
+        super(responseBuilder);
+
+        this.categoryService = categoryService;
+    }
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -8,9 +8,9 @@ import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
 import com.eubrunocoelho.ticketing.service.reply.ReplyService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
+import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.reply.ReplySortResolver;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,11 +22,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
-@RequiredArgsConstructor
 public class ReplyController extends BaseController {
 
     private final ReplyService replyService;
     private final ReplySortResolver replySortResolver;
+
+    public ReplyController(
+            ReplyService replyService,
+            ReplySortResolver replySortResolver,
+            ResponseBuilder responseBuilder
+    ) {
+        super(responseBuilder);
+
+        this.replyService = replyService;
+        this.replySortResolver = replySortResolver;
+    }
 
     @PostMapping(
             value = "/{ticketId}/reply",

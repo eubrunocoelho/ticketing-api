@@ -4,21 +4,27 @@ import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
-import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.service.user.UserService;
+import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
 public class UserController extends BaseController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
+
+    public UserController(
+            UserService userService,
+            ResponseBuilder responseBuilder
+    ) {
+        super(responseBuilder);
+
+        this.userService = userService;
+    }
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,

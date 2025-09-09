@@ -8,9 +8,9 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
+import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.ticket.TicketSortResolver;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,11 +22,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
-@RequiredArgsConstructor
 public class TicketController extends BaseController {
 
     private final TicketService ticketService;
     private final TicketSortResolver ticketSortResolver;
+
+    public TicketController(
+            TicketService ticketService,
+            TicketSortResolver ticketSortResolver,
+            ResponseBuilder responseBuilder
+    ) {
+        super(responseBuilder);
+
+        this.ticketService = ticketService;
+        this.ticketSortResolver = ticketSortResolver;
+    }
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
