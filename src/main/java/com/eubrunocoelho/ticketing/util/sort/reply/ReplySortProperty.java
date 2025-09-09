@@ -1,5 +1,6 @@
-package com.eubrunocoelho.ticketing.util.sort;
+package com.eubrunocoelho.ticketing.util.sort.reply;
 
+import com.eubrunocoelho.ticketing.util.sort.core.SortableProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

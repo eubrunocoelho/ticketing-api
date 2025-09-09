@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.util.sort;
+package com.eubrunocoelho.ticketing.util.sort.core;
 
 import org.springframework.data.domain.Sort;
 

@@ -1,5 +1,6 @@
-package com.eubrunocoelho.ticketing.util.sort;
+package com.eubrunocoelho.ticketing.util.sort.ticket;
 
+import com.eubrunocoelho.ticketing.util.sort.core.SortResolver;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 

@@ -8,7 +8,7 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
-import com.eubrunocoelho.ticketing.util.sort.TicketSortResolver;
+import com.eubrunocoelho.ticketing.util.sort.ticket.TicketSortResolver;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
