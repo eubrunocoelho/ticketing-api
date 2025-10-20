@@ -9,6 +9,7 @@ import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public UserResponseDto createUser(UserCreateDto userDTO) {
         User user = userMapper.toEntity(userDTO, passwordEncoder);
         User createdUser = userRepository.save(user);
@@ -25,13 +27,14 @@ public class UserService {
         return userMapper.toDto(createdUser);
     }
 
-    // REFACTOR
+    @Transactional(readOnly = true)
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new ObjectNotFoundException("Usuário não encontrado. {id}: " + id)
         );
     }
 
+    @Transactional(readOnly = true)
     public User findByUsernameOrEmail(String usernameOrEmail) {
         return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() ->

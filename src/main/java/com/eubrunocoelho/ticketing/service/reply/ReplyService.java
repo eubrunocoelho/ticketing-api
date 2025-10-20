@@ -18,10 +18,12 @@ import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +38,7 @@ public class ReplyService {
     private final ReplyMapper replyMapper;
     private final ReplySpecificationBuilder replySpecificationBuilder;
 
+    @Transactional
     public ReplyResponseDto createReply(Long ticketId, ReplyCreateDto dto) {
         User loggedUser = userPrincipalService.getLoggedInUser();
         Ticket ticket = ticketRepository
@@ -57,6 +60,7 @@ public class ReplyService {
         return replyMapper.toDto(createdReply);
     }
 
+    @Transactional(readOnly = true)
     public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
         Reply reply = replyRepository
                 .findByTicketIdAndId(ticketId, replyId)
@@ -73,6 +77,7 @@ public class ReplyService {
         return replyMapper.toDto(reply);
     }
 
+    @Transactional(readOnly = true)
     public Page<ReplyResponseDto> findAllByTicketIdPaged(Long ticketId, ReplyFilterDto filter, Pageable pageable) {
         Ticket ticket = ticketRepository
                 .findById(ticketId)
@@ -95,6 +100,7 @@ public class ReplyService {
                 .map(replyMapper::toDto);
     }
 
+    @Transactional
     public ReplyResponseDto updateReply(
             Long ticketId,
             Long replyId,
@@ -118,6 +124,7 @@ public class ReplyService {
         return replyMapper.toDto(updatedReply);
     }
 
+    @Transactional
     public void deleteReply(
             Long ticketId,
             Long replyId
@@ -135,7 +142,7 @@ public class ReplyService {
 
         try {
             replyRepository.deleteById(reply.getId());
-        } catch (Exception ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
         }
     }

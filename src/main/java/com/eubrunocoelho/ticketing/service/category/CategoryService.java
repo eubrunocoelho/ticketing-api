@@ -9,7 +9,9 @@ import com.eubrunocoelho.ticketing.mapper.CategoryMapper;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
+    @Transactional
     public CategoryResponseDto createCategory(CategoryCreateDto categoryCreateDTO) {
         Category category = categoryMapper.toEntity(categoryCreateDTO);
         Category createdCategory = categoryRepository.save(category);
@@ -27,6 +30,31 @@ public class CategoryService {
         return categoryMapper.toDto(createdCategory);
     }
 
+    @Transactional(readOnly = true)
+    public List<CategoryResponseDto> findAll() {
+        return categoryRepository
+                .findAll()
+                .stream()
+                .map(categoryMapper::toDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public CategoryResponseDto findById(Long id) {
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(
+                        () ->
+                                new ObjectNotFoundException(
+                                        "Categoria não encontrada. {id}: "
+                                                + id
+                                )
+                );
+
+        return categoryMapper.toDto(category);
+    }
+
+    @Transactional
     public CategoryResponseDto updateCategory(
             Long id,
             CategoryUpdateDto categoryUpdateDto
@@ -47,6 +75,7 @@ public class CategoryService {
         return categoryMapper.toDto(updatedCategory);
     }
 
+    @Transactional
     public void deleteCategory(Long id) {
         Category category = categoryRepository
                 .findById(id)
@@ -60,30 +89,8 @@ public class CategoryService {
 
         try {
             categoryRepository.deleteById(category.getId());
-        } catch (Exception ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
         }
-    }
-
-    public List<CategoryResponseDto> findAll() {
-        return categoryRepository
-                .findAll()
-                .stream()
-                .map(categoryMapper::toDto)
-                .toList();
-    }
-
-    public CategoryResponseDto findById(Long id) {
-        Category category = categoryRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Categoria não encontrada. {id}: "
-                                                + id
-                                )
-                );
-
-        return categoryMapper.toDto(category);
     }
 }

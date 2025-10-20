@@ -17,10 +17,12 @@ import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class TicketService {
     private final CategoryRepository categoryRepository;
     private final ReplyRepository replyRepository;
 
+    @Transactional
     public TicketResponseDto createTicket(TicketCreateDto ticketCreateDto) {
         User loggedUser = userPrincipalService.getLoggedInUser();
         Category category = categoryRepository.findById(ticketCreateDto.category())
@@ -52,6 +55,7 @@ public class TicketService {
         return ticketMapper.toDto(createdTicket);
     }
 
+    @Transactional(readOnly = true)
     public TicketResponseDto findById(Long id) {
         Ticket ticket = ticketRepository
                 .findById(id)
@@ -70,6 +74,7 @@ public class TicketService {
         return ticketMapper.toDtoWithReplies(ticket);
     }
 
+    @Transactional(readOnly = true)
     public Page<TicketResponseDto> findAllPaged(TicketFilterDto filter, Pageable pageable) {
         Specification<Ticket> specification = ticketSpecificationBuilder.build(filter);
 
@@ -78,6 +83,7 @@ public class TicketService {
         return ticketPage.map(ticketMapper::toDto);
     }
 
+    @Transactional
     public TicketResponseDto updateTicket(
             Long id,
             TicketUpdateDto ticketUpdateDto
@@ -114,6 +120,7 @@ public class TicketService {
         return ticketMapper.toDto(updateTicket);
     }
 
+    @Transactional
     public void deleteTicket(
             Long id
     ) {
@@ -128,7 +135,7 @@ public class TicketService {
 
         try {
             ticketRepository.deleteById(ticket.getId());
-        } catch (Exception ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
         }
     }

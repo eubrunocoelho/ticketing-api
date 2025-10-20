@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -19,6 +20,7 @@ public class UserPrincipalService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public AuthenticatedUser findMatch(String usernameOrEmail) {
         User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
                 .orElseThrow(() -> new UsernameNotFoundException(
@@ -32,6 +34,7 @@ public class UserPrincipalService {
         return new AuthenticatedUser(user, authorities);
     }
 
+    // REFACTOR
     public User getLoggedInUser() {
         return Optional.ofNullable(
                         SecurityContextHolder.getContext().getAuthentication()
