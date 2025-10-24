@@ -1,0 +1,48 @@
+root = true
+
+[*.java]
+
+indent_style = tab
+indent_size = 4
+tab_width = 4
+
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+max_line_length = 120
+
+ij_java_else_on_new_line = true
+ij_java_catch_on_new_line = true
+ij_java_finally_on_new_line = true
+
+ij_java_space_after_comma = true
+ij_java_space_after_for_semicolon = true
+ij_java_space_before_for_semicolon = false
+ij_java_space_before_method_call_parentheses = false
+ij_java_space_before_method_parentheses = false
+ij_java_space_before_if_parentheses = true
+ij_java_space_before_while_parentheses = true
+ij_java_space_before_for_parentheses = true
+ij_java_space_before_switch_parentheses = true
+ij_java_space_before_synchronized_parentheses = true
+
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_names_count_to_use_import_on_demand = 999
+ij_java_imports_layout = java.*,javax.*,org.*,com.*,*,static
+
+ij_java_keep_simple_blocks_in_one_line = false
+ij_java_keep_simple_methods_in_one_line = false
+ij_java_keep_simple_lambdas_in_one_line = false
+
+ij_java_method_call_chain_wrap = normal
+ij_java_call_parameters_wrap = off
+ij_java_align_multiline_parameters = true
+ij_java_align_multiline_method_parentheses = false
+ij_java_align_multiline_parameters_in_calls = true
+
+ij_continuation_indent_size = 8
+ij_java_blank_lines_after_package = 1
+ij_java_blank_lines_after_imports = 1
+ij_java_blank_lines_before_package = 0
+ij_java_blank_lines_around_method = 1
