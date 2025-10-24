@@ -11,11 +11,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = ExistsTicketIdValidator.class)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ExistsTicketId {
-
+@Constraint( validatedBy = ExistsTicketIdValidator.class )
+@Target( {ElementType.FIELD, ElementType.PARAMETER} )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface ExistsTicketId
+{
     String message() default "Não existe um ticket para este valor de ID em \"ticket\".";
 
     Class<?>[] groups() default {};

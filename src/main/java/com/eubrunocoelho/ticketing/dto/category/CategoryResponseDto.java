@@ -1,7 +1,6 @@
 package com.eubrunocoelho.ticketing.dto.category;
 
 public record CategoryResponseDto(
-
         Long id,
 
         String name,
@@ -9,5 +8,6 @@ public record CategoryResponseDto(
         String description,
 
         String priority
-) {
+)
+{
 }

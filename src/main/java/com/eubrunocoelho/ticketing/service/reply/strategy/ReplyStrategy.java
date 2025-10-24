@@ -3,9 +3,9 @@ package com.eubrunocoelho.ticketing.service.reply.strategy;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 
-public interface ReplyStrategy {
+public interface ReplyStrategy
+{
+    boolean applies( Long ticketId );
 
-    boolean applies(Long ticketId);
-
-    void configure(Reply reply, Long ticketId, Ticket ticket);
+    void configure( Reply reply, Long ticketId, Ticket ticket );
 }

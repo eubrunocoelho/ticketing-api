@@ -16,13 +16,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/tickets")
-public class ReplyController extends BaseController {
+@RequestMapping( "/tickets" )
+public class ReplyController extends BaseController
+{
 
     private final ReplyService replyService;
     private final ReplySortResolver replySortResolver;
@@ -31,8 +41,9 @@ public class ReplyController extends BaseController {
             ReplyService replyService,
             ReplySortResolver replySortResolver,
             ResponseBuilder responseBuilder
-    ) {
-        super(responseBuilder);
+    )
+    {
+        super( responseBuilder );
 
         this.replyService = replyService;
         this.replySortResolver = replySortResolver;
@@ -46,13 +57,14 @@ public class ReplyController extends BaseController {
     public ResponseEntity<ResponseDto<ReplyResponseDto>> createReply(
             @PathVariable Long ticketId,
             @RequestBody @Valid ReplyCreateDto replyCreateDto
-    ) {
+    )
+    {
         ReplyResponseDto createdReplyResponse = replyService.createReply(
                 ticketId,
                 replyCreateDto
         );
 
-        return createdResponse(createdReplyResponse, createdReplyResponse.id());
+        return createdResponse( createdReplyResponse, createdReplyResponse.id() );
     }
 
     @GetMapping(
@@ -62,13 +74,14 @@ public class ReplyController extends BaseController {
     public ResponseEntity<ResponseDto<ReplyResponseDto>> findReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId
-    ) {
+    )
+    {
         ReplyResponseDto replyResponse = replyService.findByTicketIdAndReplyId(
                 ticketId,
                 replyId
         );
 
-        return okResponse(replyResponse);
+        return okResponse( replyResponse );
     }
 
     @GetMapping(
@@ -79,14 +92,17 @@ public class ReplyController extends BaseController {
             @PathVariable Long ticketId,
             ReplyFilterDto filter,
             Pageable pageable,
-            @RequestParam(name = "sort", required = false) String sortParam
-    ) {
-        Sort sort = replySortResolver.resolve(sortParam);
-        Pageable sortedPageable = PageableFactory.build(pageable, sort);
+            @RequestParam( name = "sort", required = false ) String sortParam
+    )
+    {
+        Sort sort = replySortResolver.resolve( sortParam );
+        Pageable sortedPageable = PageableFactory.build( pageable, sort );
 
-        Page<ReplyResponseDto> pageableRepliesResponse = replyService.findAllByTicketIdPaged(ticketId, filter, sortedPageable);
+        Page<ReplyResponseDto> pageableRepliesResponse = replyService.findAllByTicketIdPaged(
+                ticketId, filter, sortedPageable
+        );
 
-        return okResponse(pageableRepliesResponse);
+        return okResponse( pageableRepliesResponse );
     }
 
     @PatchMapping(
@@ -98,14 +114,15 @@ public class ReplyController extends BaseController {
             @PathVariable Long ticketId,
             @PathVariable Long replyId,
             @RequestBody ReplyUpdateDto replyUpdateDto
-    ) {
+    )
+    {
         ReplyResponseDto updatedReplyResponse = replyService.updateReply(
                 ticketId,
                 replyId,
                 replyUpdateDto
         );
 
-        return okResponse(updatedReplyResponse);
+        return okResponse( updatedReplyResponse );
     }
 
     @DeleteMapping(
@@ -114,8 +131,9 @@ public class ReplyController extends BaseController {
     public ResponseEntity<Void> deleteReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId
-    ) {
-        replyService.deleteReply(ticketId, replyId);
+    )
+    {
+        replyService.deleteReply( ticketId, replyId );
 
         return noContentResponse();
     }

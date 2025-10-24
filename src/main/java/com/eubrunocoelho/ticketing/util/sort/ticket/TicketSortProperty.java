@@ -7,12 +7,31 @@ import org.springframework.data.domain.Sort;
 
 @Getter
 @RequiredArgsConstructor
-public enum TicketSortProperty implements SortableProperty {
+public enum TicketSortProperty implements SortableProperty
+{
+    /**
+     * Ordenar por novos tickets
+     */
+    @SuppressWarnings( "checkstyle:UnusedVariable" )
+    NEW( Sort.by( Sort.Direction.DESC, "createdAt" ) ),
 
-    NEW(Sort.by(Sort.Direction.DESC, "createdAt")),
-    OLDER(Sort.by(Sort.Direction.ASC, "createdAt")),
-    LAST_UPDATE(Sort.by(Sort.Direction.DESC, "updatedAt")),
-    NAME(Sort.by(Sort.Direction.ASC, "title"));
+    /**
+     * Ordenar por tickets antigos
+     */
+    @SuppressWarnings( "checkstyle:UnusedVariable" )
+    OLDER( Sort.by( Sort.Direction.ASC, "createdAt" ) ),
+
+    /**
+     * Ordenar por tickets recém-atualizados
+     */
+    @SuppressWarnings( "checkstyle:UnusedVariable" )
+    LAST_UPDATE( Sort.by( Sort.Direction.DESC, "updatedAt" ) ),
+
+    /**
+     * Ordenar por tickets de a-Z
+     */
+    @SuppressWarnings( "checkstyle:UnusedVariable" )
+    NAME( Sort.by( Sort.Direction.ASC, "title" ) );
 
     private final Sort sort;
 }

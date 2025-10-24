@@ -9,16 +9,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExistsCategoryIdValidator implements ConstraintValidator<ExistsCategoryId, Long> {
-
+public class ExistsCategoryIdValidator implements ConstraintValidator<ExistsCategoryId, Long>
+{
     private final CategoryRepository categoryRepository;
 
     @Override
-    public boolean isValid(Long categoryId, ConstraintValidatorContext context) {
-        if (categoryId == null) {
+    public boolean isValid( Long categoryId, ConstraintValidatorContext context )
+    {
+        if ( categoryId == null )
+        {
             return true;
         }
 
-        return categoryRepository.existsById(categoryId);
+        return categoryRepository.existsById( categoryId );
     }
 }

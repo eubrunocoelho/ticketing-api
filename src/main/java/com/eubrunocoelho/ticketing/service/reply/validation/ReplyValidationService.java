@@ -6,13 +6,17 @@ import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedExcepti
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReplyValidationService {
-
-    public void validate(Reply reply, User loggedUser) {
+public class ReplyValidationService
+{
+    public void validate( Reply reply, User loggedUser )
+    {
         User respondedTo = reply.getRespondedToUser();
 
-        if (respondedTo != null && loggedUser.getId().equals(respondedTo.getId())) {
-            throw new SelfReplyNotAllowedException("Você não pode responder diretamente seu próprio ticket ou sua própria resposta.");
+        if ( respondedTo != null && loggedUser.getId().equals( respondedTo.getId() ) )
+        {
+            throw new SelfReplyNotAllowedException(
+                    "Você não pode responder diretamente seu próprio ticket ou sua própria resposta."
+            );
         }
     }
 }

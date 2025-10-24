@@ -1,7 +1,6 @@
 package com.eubrunocoelho.ticketing.dto.auth;
 
 public record AuthResponseDto(
-
         String authToken,
 
         String username,
@@ -9,5 +8,6 @@ public record AuthResponseDto(
         String email,
 
         String role
-) {
+)
+{
 }

@@ -11,21 +11,23 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ResponseBuilder {
-
+public class ResponseBuilder
+{
     private final MetaMapper metaMapper;
 
-    public <T> ResponseDto<T> buildSingle(T data) {
+    public <T> ResponseDto<T> buildSingle( T data )
+    {
         String screenLabel = ScreenLabelContext.getLabel();
 
-        return new ResponseDto<>(screenLabel, data, null);
+        return new ResponseDto<>( screenLabel, data, null );
     }
 
-    public <T> ResponseDto<List<T>> buildPaged(Page<T> page) {
+    public <T> ResponseDto<List<T>> buildPaged( Page<T> page )
+    {
         String screenLabel = ScreenLabelContext.getLabel();
 
-        MetaResponseDto meta = metaMapper.toDto(page);
+        MetaResponseDto meta = metaMapper.toDto( page );
 
-        return new ResponseDto<>(screenLabel, page.getContent(), meta);
+        return new ResponseDto<>( screenLabel, page.getContent(), meta );
     }
 }

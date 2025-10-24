@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyFactory {
-
+public class ReplyFactory
+{
     private final ReplyMapper replyMapper;
     private final ReplyConfigurator replyConfigurator;
 
@@ -21,10 +21,11 @@ public class ReplyFactory {
             ReplyCreateDto replyCreateDto,
             User loggedUser,
             Ticket ticket
-    ) {
-        Reply reply = replyMapper.toEntity(replyCreateDto, ticket, loggedUser);
+    )
+    {
+        Reply reply = replyMapper.toEntity( replyCreateDto, ticket, loggedUser );
 
-        replyConfigurator.configure(reply, ticketId, ticket);
+        replyConfigurator.configure( reply, ticketId, ticket );
 
         return reply;
     }

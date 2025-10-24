@@ -20,48 +20,49 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         config = CentralMapperConfig.class,
         uses = {UserMapper.class, CategoryMapper.class}
 )
-public interface TicketMapper {
+public interface TicketMapper
+{
+    @Named( "ticketToEntity" )
+    @Mapping( target = "id", ignore = true )
+    @Mapping( target = "user", source = "user" )
+    @Mapping( target = "category", source = "category" )
+    @Mapping( target = "status", expression = "java(defaultStatus())" )
+    Ticket toEntity( TicketCreateDto dto, User user, Category category );
 
-    @Named("ticketToEntity")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", source = "user")
-    @Mapping(target = "category", source = "category")
-    @Mapping(target = "status", expression = "java(defaultStatus())")
-    Ticket toEntity(TicketCreateDto dto, User user, Category category);
+    @Named( "ticketToDto" )
+    @Mapping( target = "user", source = "user", qualifiedByName = "userToDto" )
+    @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
+    @Mapping( target = "replies", expression = "java(null)" )
+    TicketResponseDto toDto( Ticket ticket );
 
-    @Named("ticketToDto")
-    @Mapping(target = "user", source = "user", qualifiedByName = "userToDto")
-    @Mapping(target = "category", source = "category", qualifiedByName = "mapCategoryForTicket")
-    @Mapping(target = "replies", expression = "java(null)")
-    TicketResponseDto toDto(Ticket ticket);
+    @Named( "ticketToDtoWithReplies" )
+    @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
+    @Mapping(  target = "user", ignore = true )
+    @Mapping( target = "status", ignore = true )
+    @Mapping( target = "createdAt", ignore = true )
+    @Mapping( target = "updatedAt", ignore = true )
+    @Mapping( target = "replies", ignore = true )
+    TicketResponseDto toDtoWithReplies( Ticket ticket );
 
-    @Named("ticketToDtoWithReplies")
-    @Mapping(target = "category", source = "category", qualifiedByName = "mapCategoryForTicket")
-    @Mapping(target = "user", ignore = true)
-    @Mapping(target = "status", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "replies", ignore = true)
-    TicketResponseDto toDtoWithReplies(Ticket ticket);
+    @Named( "ticketRepliesToDto" )
+    @Mapping( target = "createdUser", source = "createdUser", qualifiedByName = "mapUserForReply" )
+    @Mapping( target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapUserForReply" )
+    TicketRepliesResponseDto toTicketRepliesDto( Reply reply );
 
-    @Named("ticketRepliesToDto")
-    @Mapping(target = "createdUser", source = "createdUser", qualifiedByName = "mapUserForReply")
-    @Mapping(target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapUserForReply")
-    TicketRepliesResponseDto toTicketRepliesDto(Reply reply);
+    @Named( "updateTicketFromDto" )
+    @BeanMapping( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+    @Mapping( target = "id", ignore = true )
+    @Mapping( target = "category", ignore = true )
+    void updateTicketFromDto( TicketUpdateDto ticketUpdateDto, @MappingTarget Ticket ticket, Category category );
 
-    @Named("updateTicketFromDto")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "category", ignore = true)
-    void updateTicketFromDto(TicketUpdateDto ticketUpdateDto, @MappingTarget Ticket ticket, Category category);
+    @Named( "mapTicketForReply" )
+    @Mapping( target = "user", source = "user" )
+    @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
+    @Mapping( target = "replies", expression = "java(null)" )
+    TicketResponseDto mapTicketForReply( Ticket ticket );
 
-    @Named("mapTicketForReply")
-    @Mapping(target = "user", source = "user")
-    @Mapping(target = "category", source = "category", qualifiedByName = "mapCategoryForTicket")
-    @Mapping(target = "replies", expression = "java(null)")
-    TicketResponseDto mapTicketForReply(Ticket ticket);
-
-    default Ticket.Status defaultStatus() {
+    default Ticket.Status defaultStatus()
+    {
         return Ticket.Status.OPEN;
     }
 }

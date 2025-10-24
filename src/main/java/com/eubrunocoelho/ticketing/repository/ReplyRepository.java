@@ -7,13 +7,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 import java.util.Optional;
 
-public interface ReplyRepository extends JpaRepository<Reply, Long>, JpaSpecificationExecutor<Reply> {
+public interface ReplyRepository extends JpaRepository<Reply, Long>, JpaSpecificationExecutor<Reply>
+{
+    boolean existsByTicketId( Long ticketId );
 
-    boolean existsByTicketId(Long ticketId);
+    Optional<Reply> findByTicketIdAndId( Long ticketId, Long id );
 
-    Optional<Reply> findByTicketIdAndId(Long ticketId, Long id);
+    Optional<Reply> findTopByTicketIdOrderByCreatedAtDesc( Long ticketId );
 
-    Optional<Reply> findTopByTicketIdOrderByCreatedAtDesc(Long ticketId);
-
-    List<Reply> findByTicketIdOrderByCreatedAtDesc(Long ticketId);
+    List<Reply> findByTicketIdOrderByCreatedAtDesc( Long ticketId );
 }

@@ -8,42 +8,91 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 @RequiredArgsConstructor
-public class ScreenLabelInterceptor implements HandlerInterceptor {
+public class ScreenLabelInterceptor implements HandlerInterceptor
+{
 
-    private static final Logger logger = LoggerFactory.getLogger(ScreenLabelInterceptor.class);
-    private static final String SCREEN_LABEL_FORMAT = "Ticketing API - [%s] [%s]";
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger( ScreenLabelInterceptor.class );
+
+    private static final String SCREEN_LABEL_FORMAT =
+            "Ticketing API - [%s] [%s]";
 
     private final UserPrincipalService userPrincipalService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String requestInfo = String.format("[%s]|%s", request.getMethod(), request.getRequestURI());
+    public boolean preHandle(
+            HttpServletRequest request,
+
+            @NonNull
+            HttpServletResponse response,
+
+            @NonNull
+            Object handler
+    )
+    {
+        String requestInfo = String.format(
+                "[%s]|%s",
+                request.getMethod(),
+                request.getRequestURI()
+        );
+
         String userInfo = "";
 
-        try {
+        try
+        {
             User loggedUser = userPrincipalService.getLoggedInUser();
 
-            if (loggedUser != null) {
-                userInfo = String.format("%s|%s", loggedUser.getUsername(), loggedUser.getRole().name());
+            if ( loggedUser != null )
+            {
+                userInfo = String.format(
+                        "%s|%s",
+                        loggedUser.getUsername(),
+                        loggedUser.getRole().name()
+                );
             }
-        } catch (Exception ex) {
+        }
+        catch ( Exception ex )
+        {
+            ignore();
         }
 
-        String screenLabel = String.format(SCREEN_LABEL_FORMAT, requestInfo, userInfo);
-        logger.info(screenLabel);
+        String screenLabel = String.format(
+                SCREEN_LABEL_FORMAT,
+                requestInfo,
+                userInfo
+        );
 
-        ScreenLabelContext.setLabel(screenLabel);
+        LOGGER.info( screenLabel );
+
+        ScreenLabelContext.setLabel( screenLabel );
 
         return true;
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(
+            @NonNull
+            HttpServletRequest request,
+
+            @NonNull
+            HttpServletResponse response,
+
+            @NonNull
+            Object handler,
+
+            Exception ex
+    ) throws Exception
+    {
         ScreenLabelContext.clear();
+    }
+
+    public void ignore()
+    {
     }
 }

@@ -1,6 +1,6 @@
 package com.eubrunocoelho.ticketing.service.auth;
 
-import com.eubrunocoelho.ticketing.dto.auth.SigninRequestDto;
+import com.eubrunocoelho.ticketing.dto.auth.SignInRequestDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
@@ -17,32 +17,39 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
-
+public class AuthService
+{
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final CredentialValidationService credentialValidationService;
     private final AuthMapper authMapper;
 
-    public AuthResponseDto authenticate(SigninRequestDto signinRequestDto) {
+    public AuthResponseDto authenticate( SignInRequestDto signinRequestDto
+    )
+    {
         User user;
 
-        try {
-            user = userService.findByUsernameOrEmail(signinRequestDto.username());
-        } catch (ObjectNotFoundException ex) {
-            throw new InvalidCredentialsException("Credenciais inválidas.");
+        try
+        {
+            user = userService.findByUsernameOrEmail( signinRequestDto.username() );
+        }
+        catch ( ObjectNotFoundException ex )
+        {
+            throw new InvalidCredentialsException( "Credenciais inválidas." );
         }
 
-        credentialValidationService.validate(user, signinRequestDto.password());
+        credentialValidationService.validate( user, signinRequestDto.password() );
 
-        String authToken = generateAuthToken(user);
+        String authToken = generateAuthToken( user );
 
-        return authMapper.toDto(user, authToken);
+        return authMapper.toDto( user, authToken );
     }
 
-    public String generateAuthToken(User user) {
+    // Add constant for expireInterval
+    public String generateAuthToken( User user )
+    {
         Map<String, String> claims = new HashMap<>();
-        claims.put("role", user.getRole().name());
+        claims.put( "role", user.getRole().name() );
 
         return jwtProvider.generateToken(
                 claims,

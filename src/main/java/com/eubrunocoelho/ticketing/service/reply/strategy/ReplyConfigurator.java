@@ -9,15 +9,18 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyConfigurator {
-
+public class ReplyConfigurator
+{
     private final List<ReplyStrategy> strategies;
 
-    public void configure(Reply reply, Long ticketId, Ticket ticket) {
+    public void configure( Reply reply, Long ticketId, Ticket ticket )
+    {
         strategies.stream()
-                .filter(strategy -> strategy.applies(ticketId))
+                .filter( strategy -> strategy.applies( ticketId ) )
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Estratégia não encontrada."))
-                .configure(reply, ticketId, ticket);
+                .orElseThrow(
+                        () -> new IllegalStateException( "Estratégia não encontrada." )
+                )
+                .configure( reply, ticketId, ticket );
     }
 }

@@ -10,18 +10,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyEventListener {
-
+public class ReplyEventListener
+{
     private final TicketRepository ticketRepository;
 
     @EventListener
-    public void handleReplyCreated(ReplyCreatedEvent event) {
+    public void handleReplyCreated( ReplyCreatedEvent event )
+    {
         Reply reply = event.getReply();
         Ticket ticket = reply.getTicket();
 
-        if (ticket.getStatus() == Ticket.Status.OPEN) {
-            ticket.setStatus(Ticket.Status.IN_PROGRESS);
-            ticketRepository.save(ticket);
+        if ( ticket.getStatus() == Ticket.Status.OPEN )
+        {
+            ticket.setStatus( Ticket.Status.IN_PROGRESS );
+            ticketRepository.save( ticket );
         }
     }
 }

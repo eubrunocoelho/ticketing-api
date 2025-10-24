@@ -18,28 +18,29 @@ import static com.eubrunocoelho.ticketing.util.EnumUtil.getEnumValueOrThrow;
         config = CentralMapperConfig.class,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
-public interface CategoryMapper {
+public interface CategoryMapper
+{
+    @Named( "categoryToEntity" )
+    @Mapping( target = "id", ignore = true )
+    @Mapping( target = "priority", source = "priority", qualifiedByName = "mapPriority" )
+    Category toEntity( CategoryCreateDto dto );
 
-    @Named("categoryToEntity")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "priority", source = "priority", qualifiedByName = "mapPriority")
-    Category toEntity(CategoryCreateDto dto);
+    @Named( "categoryToDto" )
+    CategoryResponseDto toDto( Category entity );
 
-    @Named("categoryToDto")
-    CategoryResponseDto toDto(Category entity);
+    @Named( "updateCategoryFromDto" )
+    @BeanMapping( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+    @Mapping( target = "id", ignore = true )
+    @Mapping( target = "priority", source = "priority", qualifiedByName = "mapPriority" )
+    void updateCategoryFromDto( CategoryUpdateDto categoryUpdateDto, @MappingTarget Category category );
 
-    @Named("updateCategoryFromDto")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "priority", source = "priority", qualifiedByName = "mapPriority")
-    void updateCategoryFromDto(CategoryUpdateDto categoryUpdateDto, @MappingTarget Category category);
+    @Named( "mapCategoryForTicket" )
+    @Mapping( target = "id", expression = "java(null)" )
+    CategoryResponseDto mapCategoryForTicket( Category category );
 
-    @Named("mapCategoryForTicket")
-    @Mapping(target = "id", expression = "java(null)")
-    CategoryResponseDto mapCategoryForTicket(Category category);
-
-    @Named("mapPriority")
-    default Category.Priority mapPriority(String priority) {
-        return getEnumValueOrThrow(priority, Category.Priority.class);
+    @Named( "mapPriority" )
+    default Category.Priority mapPriority( String priority )
+    {
+        return getEnumValueOrThrow( priority, Category.Priority.class );
     }
 }

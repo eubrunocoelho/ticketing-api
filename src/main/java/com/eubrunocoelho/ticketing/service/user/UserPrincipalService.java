@@ -16,35 +16,43 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserPrincipalService {
-
+public class UserPrincipalService
+{
     private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public AuthenticatedUser findMatch(String usernameOrEmail) {
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "Usuário não encontrado. {username/email}: " + usernameOrEmail
-                ));
+    @Transactional( readOnly = true )
+    public AuthenticatedUser findMatch( String usernameOrEmail )
+    {
+        User user = userRepository.findByUsernameOrEmail( usernameOrEmail, usernameOrEmail )
+                .orElseThrow( () ->
+                        new UsernameNotFoundException(
+                                "Usuário não encontrado. {username/email}: " + usernameOrEmail
+                        )
+                );
 
         GrantedAuthority authority = () -> user.getRole().name();
 
-        Set<GrantedAuthority> authorities = Set.of(authority);
+        Set<GrantedAuthority> authorities = Set.of( authority );
 
-        return new AuthenticatedUser(user, authorities);
+        return new AuthenticatedUser( user, authorities );
     }
 
-    // REFACTOR
-    public User getLoggedInUser() {
+    // Inspect
+    public User getLoggedInUser()
+    {
         return Optional.ofNullable(
-                        SecurityContextHolder.getContext().getAuthentication()
+                        SecurityContextHolder
+                                .getContext()
+                                .getAuthentication()
                 )
-                .map(Authentication::getPrincipal)
-                .filter(AuthenticatedUser.class::isInstance)
-                .map(AuthenticatedUser.class::cast)
-                .map(AuthenticatedUser::getUser)
+                .map( Authentication::getPrincipal )
+                .filter( AuthenticatedUser.class::isInstance )
+                .map( AuthenticatedUser.class::cast )
+                .map( AuthenticatedUser::getUser )
                 .orElseThrow(
-                        () -> new IllegalStateException("Usuário não está autenticado.")
+                        () -> new IllegalStateException(
+                                "Usuário não está autenticado."
+                        )
                 );
     }
 }

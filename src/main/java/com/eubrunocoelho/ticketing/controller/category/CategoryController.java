@@ -22,16 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
-public class CategoryController extends BaseController {
-
+@RequestMapping( "/categories" )
+public class CategoryController extends BaseController
+{
     private final CategoryService categoryService;
 
     public CategoryController(
             CategoryService categoryService,
             ResponseBuilder responseBuilder
-    ) {
-        super(responseBuilder);
+    )
+    {
+        super( responseBuilder );
 
         this.categoryService = categoryService;
     }
@@ -42,31 +43,34 @@ public class CategoryController extends BaseController {
     )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> createCategory(
             @RequestBody @Valid CategoryCreateDto categoryCreateDTO
-    ) {
+    )
+    {
         CategoryResponseDto createdCategoryResponse = categoryService.createCategory(
                 categoryCreateDTO
         );
 
-        return createdResponse(createdCategoryResponse, createdCategoryResponse.id());
+        return createdResponse( createdCategoryResponse, createdCategoryResponse.id() );
     }
 
     @GetMapping(
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<CategoryResponseDto>> findCategory(@PathVariable Long id) {
-        CategoryResponseDto categoryResponse = categoryService.findById(id);
+    public ResponseEntity<ResponseDto<CategoryResponseDto>> findCategory( @PathVariable Long id )
+    {
+        CategoryResponseDto categoryResponse = categoryService.findById( id );
 
-        return okResponse(categoryResponse);
+        return okResponse( categoryResponse );
     }
 
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategory() {
+    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategory()
+    {
         List<CategoryResponseDto> categoriesResponse = categoryService.findAll();
 
-        return okResponse(categoriesResponse);
+        return okResponse( categoriesResponse );
     }
 
     @PatchMapping(
@@ -76,13 +80,14 @@ public class CategoryController extends BaseController {
     )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> updateCategory(
             @PathVariable Long id, @RequestBody @Valid CategoryUpdateDto categoryUpdateDto
-    ) {
+    )
+    {
         CategoryResponseDto updatedCategoryResponse = categoryService.updateCategory(
                 id,
                 categoryUpdateDto
         );
 
-        return okResponse(updatedCategoryResponse);
+        return okResponse( updatedCategoryResponse );
     }
 
     @DeleteMapping(
@@ -90,8 +95,9 @@ public class CategoryController extends BaseController {
     )
     public ResponseEntity<Void> deleteCategory(
             @PathVariable Long id
-    ) {
-        categoryService.deleteCategory(id);
+    )
+    {
+        categoryService.deleteCategory( id );
 
         return noContentResponse();
     }

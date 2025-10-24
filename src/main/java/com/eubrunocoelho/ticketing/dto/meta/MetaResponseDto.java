@@ -1,7 +1,6 @@
 package com.eubrunocoelho.ticketing.dto.meta;
 
 public record MetaResponseDto(
-
         boolean firstPage,
 
         boolean lastPage,
@@ -13,5 +12,6 @@ public record MetaResponseDto(
         Integer pageSize,
 
         Integer totalPages
-) {
+)
+{
 }

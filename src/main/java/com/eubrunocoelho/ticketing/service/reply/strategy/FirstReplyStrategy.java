@@ -8,18 +8,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FirstReplyStrategy implements ReplyStrategy {
-
+public class FirstReplyStrategy implements ReplyStrategy
+{
     private final ReplyRepository replyRepository;
 
     @Override
-    public boolean applies(Long ticketId) {
-        return !replyRepository.existsByTicketId(ticketId);
+    public boolean applies( Long ticketId )
+    {
+        return !replyRepository.existsByTicketId( ticketId );
     }
 
     @Override
-    public void configure(Reply reply, Long ticketId, Ticket ticket) {
-        reply.setParent(null);
-        reply.setRespondedToUser(ticket.getUser());
+    public void configure( Reply reply, Long ticketId, Ticket ticket )
+    {
+        reply.setParent( null );
+        reply.setRespondedToUser( ticket.getUser() );
     }
 }

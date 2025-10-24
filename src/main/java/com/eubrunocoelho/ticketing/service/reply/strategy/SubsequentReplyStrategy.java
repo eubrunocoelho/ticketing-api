@@ -8,24 +8,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SubsequentReplyStrategy implements ReplyStrategy {
-
+public class SubsequentReplyStrategy implements ReplyStrategy
+{
     private final ReplyRepository replyRepository;
 
     @Override
-    public boolean applies(Long ticketId) {
-        return replyRepository.existsByTicketId(ticketId);
+    public boolean applies( Long ticketId )
+    {
+        return replyRepository.existsByTicketId( ticketId );
     }
 
     @Override
-    public void configure(Reply reply, Long ticketId, Ticket ticket) {
+    public void configure( Reply reply, Long ticketId, Ticket ticket )
+    {
         Reply lastReply = replyRepository
-                .findTopByTicketIdOrderByCreatedAtDesc(ticketId)
+                .findTopByTicketIdOrderByCreatedAtDesc( ticketId )
                 .orElseThrow(
-                        () -> new IllegalStateException("Resposta não encontrada.")
+                        () -> new IllegalStateException( "Resposta não encontrada." )
                 );
 
-        reply.setParent(lastReply);
-        reply.setRespondedToUser(lastReply.getCreatedUser());
+        reply.setParent( lastReply );
+        reply.setRespondedToUser( lastReply.getCreatedUser() );
     }
 }

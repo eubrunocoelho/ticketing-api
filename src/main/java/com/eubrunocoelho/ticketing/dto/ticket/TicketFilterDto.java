@@ -1,7 +1,6 @@
 package com.eubrunocoelho.ticketing.dto.ticket;
 
 public record TicketFilterDto(
-
         String status,
 
         String search,
@@ -9,5 +8,6 @@ public record TicketFilterDto(
         Long category,
 
         String user
-) {
+)
+{
 }

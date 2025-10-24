@@ -13,32 +13,39 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
-
+public class UserService
+{
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserResponseDto createUser(UserCreateDto userDTO) {
-        User user = userMapper.toEntity(userDTO, passwordEncoder);
-        User createdUser = userRepository.save(user);
+    public UserResponseDto createUser( UserCreateDto userDTO )
+    {
+        User user = userMapper.toEntity( userDTO, passwordEncoder );
+        User createdUser = userRepository.save( user );
 
-        return userMapper.toDto(createdUser);
+        return userMapper.toDto( createdUser );
     }
 
-    @Transactional(readOnly = true)
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new ObjectNotFoundException("Usuário não encontrado. {id}: " + id)
+    @Transactional( readOnly = true )
+    public User findById( Long id )
+    {
+        return userRepository.findById( id ).orElseThrow( () ->
+                new ObjectNotFoundException(
+                        "Usuário não encontrado. {id}: " + id
+                )
         );
     }
 
-    @Transactional(readOnly = true)
-    public User findByUsernameOrEmail(String usernameOrEmail) {
-        return userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
-                .orElseThrow(() ->
-                        new ObjectNotFoundException("Usuário não encontrado. {username/email}: " + usernameOrEmail)
+    @Transactional( readOnly = true )
+    public User findByUsernameOrEmail( String usernameOrEmail )
+    {
+        return userRepository.findByUsernameOrEmail( usernameOrEmail, usernameOrEmail )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Usuário não encontrado. {username/email}: " + usernameOrEmail
+                        )
                 );
     }
 }

@@ -13,28 +13,41 @@ import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
-public class ReplySpecificationBuilder {
-
-    public Specification<Reply> build(ReplyFilterDto filter) {
+public class ReplySpecificationBuilder
+{
+    public Specification<Reply> build( ReplyFilterDto filter )
+    {
         return Stream.of(
-                        createSpecification(filter.user(), this::userIs)
-                ).flatMap(Optional::stream)
-                .reduce(Specification::and)
-                .orElse((root, query, cb) -> cb.conjunction());
+                        createSpecification( filter.user(), this::userIs )
+                )
+                .flatMap( Optional::stream )
+                .reduce( Specification::and )
+                .orElse(
+                        ( root, query, cb ) -> cb.conjunction()
+                );
     }
 
-    private <V> Optional<Specification<Reply>> createSpecification(V value, Function<V, Specification<Reply>> function) {
-        if (value instanceof String stringValue) {
-            return StringUtils.hasText(stringValue) ? Optional.of(function.apply(value)) : Optional.empty();
+    private <V> Optional<Specification<Reply>> createSpecification(
+            V value,
+            Function<V, Specification<Reply>> function
+    )
+    {
+        if ( value instanceof String stringValue )
+        {
+            return StringUtils.hasText( stringValue )
+                    ? Optional.of( function.apply( value ) )
+                    : Optional.empty();
         }
 
-        return Optional.ofNullable(value).map(function);
+        return Optional.ofNullable( value ).map( function );
     }
 
-    private Specification<Reply> userIs(String userValue) {
-        return (root, query, cb) -> cb.or(
-                cb.equal(cb.lower(root.get("createdUser").get("username")), userValue.toLowerCase()),
-                cb.equal(cb.lower(root.get("createdUser").get("email")), userValue.toLowerCase())
+    private Specification<Reply> userIs( String userValue )
+    {
+        return ( root, query, cb ) -> cb.or (
+                    cb.equal( cb.lower( root.get( "createdUser" ).get( "username" ) ), userValue.toLowerCase() ),
+                    cb.equal( cb.lower( root.get( "createdUser" ).get( "email" ) ), userValue.toLowerCase()
+                )
         );
     }
 }

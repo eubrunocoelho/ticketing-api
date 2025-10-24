@@ -9,12 +9,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String> {
-
+public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String>
+{
     private final UserRepository userRepository;
 
     @Override
-    public boolean isValid(String username, ConstraintValidatorContext context) {
-        return !userRepository.existsByUsername(username);
+    public boolean isValid( String username, ConstraintValidatorContext context )
+    {
+        return !userRepository.existsByUsername( username );
     }
 }

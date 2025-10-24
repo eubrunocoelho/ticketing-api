@@ -1,18 +1,21 @@
 package com.eubrunocoelho.ticketing.util;
 
-public class ScreenLabelContext {
+public class ScreenLabelContext
+{
+    private static final ThreadLocal<String> CURRENT_SCREEN_LABEL = new ThreadLocal<>();
 
-    private static final ThreadLocal<String> currentScreenLabel = new ThreadLocal<>();
-
-    public static void setLabel(String label) {
-        currentScreenLabel.set(label);
+    public static void setLabel( String label )
+    {
+        CURRENT_SCREEN_LABEL.set( label );
     }
 
-    public static String getLabel() {
-        return currentScreenLabel.get();
+    public static String getLabel()
+    {
+        return CURRENT_SCREEN_LABEL.get();
     }
 
-    public static void clear() {
-        currentScreenLabel.remove();
+    public static void clear()
+    {
+        CURRENT_SCREEN_LABEL.remove();
     }
 }

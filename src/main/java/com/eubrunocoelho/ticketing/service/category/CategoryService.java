@@ -17,80 +17,84 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
-
+public class CategoryService
+{
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
     @Transactional
-    public CategoryResponseDto createCategory(CategoryCreateDto categoryCreateDTO) {
-        Category category = categoryMapper.toEntity(categoryCreateDTO);
-        Category createdCategory = categoryRepository.save(category);
+    public CategoryResponseDto createCategory( CategoryCreateDto categoryCreateDTO )
+    {
+        Category category = categoryMapper.toEntity( categoryCreateDTO );
+        Category createdCategory = categoryRepository.save( category );
 
-        return categoryMapper.toDto(createdCategory);
+        return categoryMapper.toDto( createdCategory );
     }
 
-    @Transactional(readOnly = true)
-    public List<CategoryResponseDto> findAll() {
+    @Transactional( readOnly = true )
+    public List<CategoryResponseDto> findAll()
+    {
         return categoryRepository
                 .findAll()
                 .stream()
-                .map(categoryMapper::toDto)
+                .map( categoryMapper::toDto )
                 .toList();
     }
 
-    @Transactional(readOnly = true)
-    public CategoryResponseDto findById(Long id) {
+    @Transactional( readOnly = true )
+    public CategoryResponseDto findById( Long id )
+    {
         Category category = categoryRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Categoria não encontrada. {id}: "
-                                                + id
-                                )
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Categoria não encontrada. {id}: " + id
+                        )
                 );
 
-        return categoryMapper.toDto(category);
+        return categoryMapper.toDto( category );
     }
 
     @Transactional
     public CategoryResponseDto updateCategory(
             Long id,
             CategoryUpdateDto categoryUpdateDto
-    ) {
+    )
+    {
         Category category = categoryRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Categoria não encontrada. {id}: "
-                                                + id
-                                )
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Categoria não encontrada. {id}: " + id
+                        )
                 );
 
-        categoryMapper.updateCategoryFromDto(categoryUpdateDto, category);
-        Category updatedCategory = categoryRepository.save(category);
+        categoryMapper.updateCategoryFromDto( categoryUpdateDto, category );
+        Category updatedCategory = categoryRepository.save( category );
 
-        return categoryMapper.toDto(updatedCategory);
+        return categoryMapper.toDto( updatedCategory );
     }
 
     @Transactional
-    public void deleteCategory(Long id) {
+    public void deleteCategory( Long id )
+    {
         Category category = categoryRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Categoria não encontrada. {id}: "
-                                                + id
-                                )
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Categoria não encontrada. {id}: " + id
+                        )
                 );
 
-        try {
-            categoryRepository.deleteById(category.getId());
-        } catch (DataIntegrityViolationException ex) {
-            throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
+        try
+        {
+            categoryRepository.deleteById( category.getId() );
+        }
+        catch ( DataIntegrityViolationException ex )
+        {
+            throw new DataBindingViolationException(
+                    "Não é possível excluir pois há entidades relacionadas."
+            );
         }
     }
 }

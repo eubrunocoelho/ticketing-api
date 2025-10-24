@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record TicketResponseDto(
-
         Long id,
 
         UserResponseDto user,
@@ -26,5 +25,6 @@ public record TicketResponseDto(
         LocalDateTime updatedAt,
 
         List<TicketRepliesResponseDto> replies
-) {
+)
+{
 }

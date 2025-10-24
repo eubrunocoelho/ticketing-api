@@ -11,11 +11,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = EnumValidator.class)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ValidEnum {
-
+@Constraint( validatedBy = EnumValidator.class )
+@Target( {ElementType.FIELD, ElementType.PARAMETER} )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface ValidEnum
+{
     String message() default "Valor inválido.";
 
     Class<?>[] groups() default {};

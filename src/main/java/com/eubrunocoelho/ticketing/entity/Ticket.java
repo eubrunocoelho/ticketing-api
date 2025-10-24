@@ -33,43 +33,66 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Table(name = "tickets")
-@EntityListeners(AuditingEntityListener.class)
-public class Ticket {
+@Table( name = "tickets" )
+@EntityListeners( AuditingEntityListener.class )
+public class Ticket
+{
+    public enum Status
+    {
+        /**
+         * Ticket aberto
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        OPEN,
 
-    public static enum Status {
-        OPEN, IN_PROGRESS, RESOLVED, CLOSED
+        /**
+         * Ticket em progresso
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        IN_PROGRESS,
+
+        /**
+         * Ticket resolvido
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        RESOLVED,
+
+        /**
+         * Ticket fechado
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        CLOSED
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "id", nullable = false )
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne( optional = false, fetch = FetchType.LAZY )
+    @JoinColumn( name = "user_id", nullable = false )
     private User user;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @ManyToOne( optional = false, fetch = FetchType.LAZY )
+    @JoinColumn( name = "category_id", nullable = false )
     private Category category;
 
-    @Column(name = "title", nullable = false)
+    @Column( name = "title", nullable = false )
     private String title;
 
-    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
+    @Column( name = "content", columnDefinition = "TEXT", nullable = false )
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Enumerated( EnumType.STRING )
+    @Column( name = "status", nullable = false )
     private Status status;
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column( name = "created_at", nullable = false, updatable = false )
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)
+    @Column( name = "updated_at", nullable = false )
     private LocalDateTime updatedAt;
 
     @OneToMany(

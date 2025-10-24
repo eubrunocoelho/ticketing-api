@@ -8,13 +8,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CredentialValidationService {
-
+public class CredentialValidationService
+{
     private final PasswordEncoder passwordEncoder;
 
-    public void validate(User user, String password) {
-        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
-            throw new InvalidCredentialsException("Credenciais inválidas.");
+    public void validate( User user, String password )
+    {
+        if ( user == null || !passwordEncoder.matches( password, user.getPassword() ) )
+        {
+            throw new InvalidCredentialsException( "Credenciais inválidas." );
         }
     }
 }

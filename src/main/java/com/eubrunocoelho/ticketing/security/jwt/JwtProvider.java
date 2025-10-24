@@ -11,55 +11,59 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
-public class JwtProvider {
-
-    @Value("${com.eubrunocoelho.ticketing.jwt.secret}")
+public class JwtProvider
+{
+    @SuppressWarnings( "unused" )
+    @Value( "${com.eubrunocoelho.ticketing.jwt.secret}" )
     private String secretKey;
 
     public String generateToken(
             Map<String, String> extractClaims,
             String username,
             long expireInterval
-    ) {
+    )
+    {
         return Jwts
                 .builder()
-                .claims().add(extractClaims)
+                .claims()
+                .add( extractClaims )
                 .and()
-                .subject(username)
-                .issuedAt(
-                        new Date(System.currentTimeMillis())
-                )
-                .expiration(
-                        new Date(System.currentTimeMillis() + expireInterval)
-                )
-                .signWith(getSignInKey())
+                .subject( username )
+                .issuedAt( new Date( System.currentTimeMillis() ) )
+                .expiration( new Date( System.currentTimeMillis() + expireInterval ) )
+                .signWith( getSignInKey() )
                 .compact();
     }
 
-    public String getUsername(String token) {
-        Claims claims = extractAllClaims(token);
+    public String getUsername( String token )
+    {
+        Claims claims = extractAllClaims( token );
 
         return claims.getSubject();
     }
 
-    public boolean isTokenExpired(String token) {
-        Claims claims = extractAllClaims(token);
+    // Inspect
+    public boolean isTokenExpired( String token )
+    {
+        Claims claims = extractAllClaims( token );
 
-        return claims.getExpiration().before(new Date());
+        return claims.getExpiration().before( new Date() );
     }
 
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims( String token )
+    {
         return Jwts
                 .parser()
-                .verifyWith(getSignInKey())
+                .verifyWith( getSignInKey() )
                 .build()
-                .parseSignedClaims(token)
+                .parseSignedClaims( token )
                 .getPayload();
     }
 
-    private SecretKey getSignInKey() {
+    private SecretKey getSignInKey()
+    {
         byte[] keyBytes = secretKey.getBytes();
 
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor( keyBytes );
     }
 }

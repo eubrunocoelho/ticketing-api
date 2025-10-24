@@ -8,12 +8,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
-public class WebMvcConfig implements WebMvcConfigurer {
-
+public class WebMvcConfig implements WebMvcConfigurer
+{
     private final ScreenLabelInterceptor screenLabelInterceptor;
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(screenLabelInterceptor);
+    public void addInterceptors( InterceptorRegistry registry )
+    {
+        registry.addInterceptor( screenLabelInterceptor );
     }
 }

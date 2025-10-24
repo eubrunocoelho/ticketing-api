@@ -9,12 +9,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ExistsTicketIdValidator implements ConstraintValidator<ExistsTicketId, Long> {
-
+public class ExistsTicketIdValidator implements ConstraintValidator<ExistsTicketId, Long>
+{
     private final TicketRepository ticketRepository;
 
     @Override
-    public boolean isValid(Long ticketId, ConstraintValidatorContext context) {
-        return ticketRepository.existsById(ticketId);
+    public boolean isValid( Long ticketId, ConstraintValidatorContext context )
+    {
+        return ticketRepository.existsById( ticketId );
     }
 }

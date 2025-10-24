@@ -7,11 +7,26 @@ import org.springframework.data.domain.Sort;
 
 @Getter
 @RequiredArgsConstructor
-public enum ReplySortProperty implements SortableProperty {
+public enum ReplySortProperty implements SortableProperty
+{
 
-    NEW(Sort.by(Sort.Direction.DESC, "createdAt")),
-    OLDER(Sort.by(Sort.Direction.ASC, "createdAt")),
-    LAST_UPDATE(Sort.by(Sort.Direction.DESC, "updatedAt"));
+    /**
+     * Ordenar por novas respostas
+     */
+    @SuppressWarnings( "checkstyle:UnusedVariable" )
+    NEW( Sort.by( Sort.Direction.DESC, "createdAt" ) ),
+
+    /**
+     * Ordenar por respostas antigas
+     */
+    @SuppressWarnings( "checkstyle:UnusedVariable" )
+    OLDER( Sort.by( Sort.Direction.ASC, "createdAt" ) ),
+
+    /**
+     * Ordenar por respostas recém-atualizadas
+     */
+    @SuppressWarnings( "checkstyle:UnusedVariable" )
+    LAST_UPDATE( Sort.by( Sort.Direction.DESC, "updatedAt" ) );
 
     private final Sort sort;
 }

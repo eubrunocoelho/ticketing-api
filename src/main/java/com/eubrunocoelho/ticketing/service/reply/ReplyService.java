@@ -27,8 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ReplyService {
-
+public class ReplyService
+{
     private final ApplicationEventPublisher eventPublisher;
     private final TicketRepository ticketRepository;
     private final UserPrincipalService userPrincipalService;
@@ -39,100 +39,37 @@ public class ReplyService {
     private final ReplySpecificationBuilder replySpecificationBuilder;
 
     @Transactional
-    public ReplyResponseDto createReply(Long ticketId, ReplyCreateDto dto) {
+    public ReplyResponseDto createReply(
+            Long ticketId,
+            ReplyCreateDto dto
+    )
+    {
         User loggedUser = userPrincipalService.getLoggedInUser();
         Ticket ticket = ticketRepository
-                .findById(ticketId)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Ticket não encontrado. {id}: " + ticketId
-                                )
+                .findById( ticketId )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Ticket não encontrado. {id}: " + ticketId
+                        )
                 );
 
-        Reply reply = replyFactory.buildReply(ticketId, dto, loggedUser, ticket);
-        replyValidationService.validate(reply, loggedUser);
+        Reply reply = replyFactory.buildReply( ticketId, dto, loggedUser, ticket );
+        replyValidationService.validate( reply, loggedUser );
 
-        Reply createdReply = replyRepository.save(reply);
+        Reply createdReply = replyRepository.save( reply );
 
-        eventPublisher.publishEvent(new ReplyCreatedEvent(this, createdReply));
+        eventPublisher.publishEvent( new ReplyCreatedEvent( this, createdReply ) );
 
-        return replyMapper.toDto(createdReply);
+        return replyMapper.toDto( createdReply );
     }
 
-    @Transactional(readOnly = true)
-    public ReplyResponseDto findByTicketIdAndReplyId(Long ticketId, Long replyId) {
+    @Transactional( readOnly = true )
+    public ReplyResponseDto findByTicketIdAndReplyId( Long ticketId, Long replyId )
+    {
         Reply reply = replyRepository
-                .findByTicketIdAndId(ticketId, replyId)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Resposta não encontrada. {ticketId}: "
-                                                + ticketId
-                                                + ", {replyId}: "
-                                                + replyId
-                                )
-                );
-
-        return replyMapper.toDto(reply);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ReplyResponseDto> findAllByTicketIdPaged(Long ticketId, ReplyFilterDto filter, Pageable pageable) {
-        Ticket ticket = ticketRepository
-                .findById(ticketId)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Ticket não encontrado. {id}: " + ticketId
-                                )
-                );
-
-        Specification<Reply> ticketSpecification =
-                (root, query, cb) -> cb.equal(
-                        root.get("ticket").get("id"), ticket.getId()
-                );
-
-        Specification<Reply> filterSpecification = replySpecificationBuilder.build(filter);
-        Specification<Reply> finalSpecification = ticketSpecification.and(filterSpecification);
-
-        return replyRepository.findAll(finalSpecification, pageable)
-                .map(replyMapper::toDto);
-    }
-
-    @Transactional
-    public ReplyResponseDto updateReply(
-            Long ticketId,
-            Long replyId,
-            ReplyUpdateDto replyUpdateDto
-    ) {
-        Reply reply = replyRepository
-                .findByTicketIdAndId(ticketId, replyId)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Resposta não encontrada. {ticketId}: "
-                                                + ticketId
-                                                + ", {replyId}: "
-                                                + replyId
-                                )
-                );
-
-        replyMapper.updateReplyFromDto(replyUpdateDto, reply);
-        Reply updatedReply = replyRepository.save(reply);
-
-        return replyMapper.toDto(updatedReply);
-    }
-
-    @Transactional
-    public void deleteReply(
-            Long ticketId,
-            Long replyId
-    ) {
-        Reply reply = replyRepository
-                .findByTicketIdAndId(ticketId, replyId)
-                .orElseThrow(
-                        () -> new ObjectNotFoundException(
+                .findByTicketIdAndId( ticketId, replyId )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
                                 "Resposta não encontrada. {ticketId}: "
                                         + ticketId
                                         + ", {replyId}: "
@@ -140,10 +77,84 @@ public class ReplyService {
                         )
                 );
 
-        try {
-            replyRepository.deleteById(reply.getId());
-        } catch (DataIntegrityViolationException ex) {
-            throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
+        return replyMapper.toDto( reply );
+    }
+
+    @Transactional( readOnly = true )
+    public Page<ReplyResponseDto> findAllByTicketIdPaged(
+            Long ticketId,
+            ReplyFilterDto filter,
+            Pageable pageable
+    )
+    {
+        Ticket ticket = ticketRepository
+                .findById( ticketId )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Ticket não encontrado. {id}: " + ticketId
+                        )
+                );
+
+        Specification<Reply> ticketSpecification =
+                ( root, query, cb ) -> cb.equal(
+                        root.get( "ticket" ).get( "id" ),
+                        ticket.getId()
+                );
+
+        Specification<Reply> filterSpecification = replySpecificationBuilder.build( filter );
+        Specification<Reply> finalSpecification = ticketSpecification.and( filterSpecification );
+
+        return replyRepository.findAll( finalSpecification, pageable )
+                .map( replyMapper::toDto );
+    }
+
+    @Transactional
+    public ReplyResponseDto updateReply(
+            Long ticketId,
+            Long replyId,
+            ReplyUpdateDto replyUpdateDto
+    )
+    {
+        Reply reply = replyRepository
+                .findByTicketIdAndId( ticketId, replyId )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Resposta não encontrada. {ticketId}: "
+                                        + ticketId
+                                        + ", {replyId}: "
+                                        + replyId
+                        )
+                );
+
+        replyMapper.updateReplyFromDto( replyUpdateDto, reply );
+        Reply updatedReply = replyRepository.save( reply );
+
+        return replyMapper.toDto( updatedReply );
+    }
+
+    @Transactional
+    public void deleteReply( Long ticketId, Long replyId )
+    {
+        Reply reply = replyRepository
+                .findByTicketIdAndId( ticketId, replyId )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                            "Resposta não encontrada. {ticketId}: "
+                                    + ticketId
+                                    + ", {replyId}: "
+                                    + replyId
+                        )
+                );
+
+        try
+        {
+            replyRepository.deleteById( reply.getId() );
+        }
+        catch ( DataIntegrityViolationException ex )
+        {
+            throw new DataBindingViolationException(
+                    "Não é possível excluir pois há entidades relacionadas."
+            );
         }
     }
 }

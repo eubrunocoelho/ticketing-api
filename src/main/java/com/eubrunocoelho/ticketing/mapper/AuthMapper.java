@@ -10,12 +10,12 @@ import org.mapstruct.Named;
 @Mapper(
         config = CentralMapperConfig.class
 )
-public interface AuthMapper {
-
-    @Named("authToDto")
-    @Mapping(target = "authToken", source = "token")
-    @Mapping(target = "username", source = "user.username")
-    @Mapping(target = "email", source = "user.email")
-    @Mapping(target = "role", expression = "java(user.getRole().name())")
-    AuthResponseDto toDto(User user, String token);
+public interface AuthMapper
+{
+    @Named( "authToDto" )
+    @Mapping( target = "authToken", source = "token" )
+    @Mapping( target = "username", source = "user.username" )
+    @Mapping( target = "email", source = "user.email" )
+    @Mapping( target = "role", expression = "java(user.getRole().name())" )
+    AuthResponseDto toDto( User user, String token );
 }

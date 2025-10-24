@@ -22,26 +22,43 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @Builder
-@Table(name = "categories")
-@EntityListeners(AuditingEntityListener.class)
-public class Category {
-    
-    public static enum Priority {
-        LOW, MEDIUM, HIGH
+@Table( name = "categories" )
+@EntityListeners( AuditingEntityListener.class )
+public class Category
+{
+    public enum Priority
+    {
+        /**
+         * Baixa prioridade
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        LOW,
+
+        /**
+         * Média prioridade
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        MEDIUM,
+
+        /**
+         * Alta prioridade
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        HIGH
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "id", nullable = false )
     Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column( name = "name", nullable = false )
     String name;
 
-    @Column(name = "description", nullable = true)
+    @Column( name = "description", nullable = true )
     String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "priority", nullable = false)
+    @Enumerated( EnumType.STRING )
+    @Column( name = "priority", nullable = false )
     Priority priority;
 }

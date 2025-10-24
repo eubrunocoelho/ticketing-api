@@ -6,7 +6,6 @@ import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import java.time.LocalDateTime;
 
 public record ReplyResponseDto(
-
         Long id,
 
         TicketResponseDto ticket,
@@ -22,4 +21,6 @@ public record ReplyResponseDto(
         LocalDateTime createdAt,
 
         LocalDateTime updatedAt
-) {}
+)
+{
+}

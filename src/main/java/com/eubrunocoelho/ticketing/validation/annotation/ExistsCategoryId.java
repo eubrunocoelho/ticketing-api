@@ -11,11 +11,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Constraint(validatedBy = ExistsCategoryIdValidator.class)
-@Target({ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ExistsCategoryId {
-
+@Constraint( validatedBy = ExistsCategoryIdValidator.class )
+@Target( {ElementType.FIELD, ElementType.PARAMETER} )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface ExistsCategoryId
+{
     String message() default "Não existe uma categoria para este valor de ID em \"category\".";
 
     Class<?>[] groups() default {};

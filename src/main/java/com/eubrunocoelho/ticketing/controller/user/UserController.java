@@ -9,19 +9,25 @@ import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
-public class UserController extends BaseController {
-
+@RequestMapping( "/users" )
+public class UserController extends BaseController
+{
     private final UserService userService;
 
     public UserController(
             UserService userService,
             ResponseBuilder responseBuilder
-    ) {
-        super(responseBuilder);
+    )
+    {
+        super( responseBuilder );
 
         this.userService = userService;
     }
@@ -32,18 +38,19 @@ public class UserController extends BaseController {
     )
     public ResponseEntity<ResponseDto<UserResponseDto>> create(
             @RequestBody @Valid UserCreateDto userCreateDto
-    ) {
-        UserResponseDto createdUserResponse = userService.createUser(userCreateDto);
+    )
+    {
+        UserResponseDto createdUserResponse = userService.createUser( userCreateDto );
 
-        return createdResponse(createdUserResponse, createdUserResponse.id());
+        return createdResponse( createdUserResponse, createdUserResponse.id() );
     }
 
     @GetMapping(
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Void> findById(@PathVariable Long id) {
-
+    public ResponseEntity<Void> findById( @PathVariable Long id )
+    {
         return noContentResponse();
     }
 }

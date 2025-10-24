@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.controller.auth;
 
 import com.eubrunocoelho.ticketing.controller.BaseController;
-import com.eubrunocoelho.ticketing.dto.auth.SigninRequestDto;
+import com.eubrunocoelho.ticketing.dto.auth.SignInRequestDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.auth.AuthService;
@@ -15,16 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController extends BaseController {
-
+@RequestMapping( "/auth" )
+public class AuthController extends BaseController
+{
     private final AuthService authService;
 
     public AuthController(
             AuthService authService,
             ResponseBuilder responseBuilder
-    ) {
-        super(responseBuilder);
+    )
+    {
+        super( responseBuilder );
 
         this.authService = authService;
     }
@@ -34,10 +35,11 @@ public class AuthController extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<AuthResponseDto>> authenticate(
-            @RequestBody @Valid SigninRequestDto signinRequestDto
-    ) {
-        AuthResponseDto authResponse = authService.authenticate(signinRequestDto);
+            @RequestBody @Valid SignInRequestDto signinRequestDto
+    )
+    {
+        AuthResponseDto authResponse = authService.authenticate( signinRequestDto );
 
-        return okResponse(authResponse);
+        return okResponse( authResponse );
     }
 }

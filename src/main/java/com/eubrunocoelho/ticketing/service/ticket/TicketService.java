@@ -28,8 +28,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TicketService {
-
+public class TicketService
+{
     private final UserPrincipalService userPrincipalService;
     private final TicketRepository ticketRepository;
     private final TicketSpecificationBuilder ticketSpecificationBuilder;
@@ -38,105 +38,110 @@ public class TicketService {
     private final ReplyRepository replyRepository;
 
     @Transactional
-    public TicketResponseDto createTicket(TicketCreateDto ticketCreateDto) {
+    public TicketResponseDto createTicket( TicketCreateDto ticketCreateDto )
+    {
         User loggedUser = userPrincipalService.getLoggedInUser();
-        Category category = categoryRepository.findById(ticketCreateDto.category())
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Categoria não encontrada. {id}: "
-                                                + ticketCreateDto.category()
-                                )
+        Category category = categoryRepository.findById( ticketCreateDto.category() )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Categoria não encontrada. {id}: "
+                                        + ticketCreateDto.category()
+                        )
                 );
 
-        Ticket ticket = ticketMapper.toEntity(ticketCreateDto, loggedUser, category);
-        Ticket createdTicket = ticketRepository.save(ticket);
+        Ticket ticket = ticketMapper.toEntity( ticketCreateDto, loggedUser, category );
+        Ticket createdTicket = ticketRepository.save( ticket );
 
-        return ticketMapper.toDto(createdTicket);
+        return ticketMapper.toDto( createdTicket );
     }
 
-    @Transactional(readOnly = true)
-    public TicketResponseDto findById(Long id) {
+    @Transactional( readOnly = true )
+    public TicketResponseDto findById( Long id )
+    {
         Ticket ticket = ticketRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Ticket não encontrado. {id}: " + id
-                                )
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Ticket não encontrado. {id}: " + id
+                        )
                 );
 
         List<Reply> replies = replyRepository
-                .findByTicketIdOrderByCreatedAtDesc(ticket.getId());
+                .findByTicketIdOrderByCreatedAtDesc( ticket.getId() );
 
-        ticket.setReplies(replies);
+        ticket.setReplies( replies );
 
-        return ticketMapper.toDtoWithReplies(ticket);
+        return ticketMapper.toDtoWithReplies( ticket );
     }
 
-    @Transactional(readOnly = true)
-    public Page<TicketResponseDto> findAllPaged(TicketFilterDto filter, Pageable pageable) {
-        Specification<Ticket> specification = ticketSpecificationBuilder.build(filter);
+    @Transactional( readOnly = true )
+    public Page<TicketResponseDto> findAllPaged( TicketFilterDto filter, Pageable pageable )
+    {
+        Specification<Ticket> specification = ticketSpecificationBuilder.build( filter );
 
-        Page<Ticket> ticketPage = ticketRepository.findAll(specification, pageable);
+        Page<Ticket> ticketPage = ticketRepository.findAll( specification, pageable );
 
-        return ticketPage.map(ticketMapper::toDto);
+        return ticketPage.map( ticketMapper::toDto );
     }
 
     @Transactional
     public TicketResponseDto updateTicket(
             Long id,
             TicketUpdateDto ticketUpdateDto
-    ) {
+    )
+    {
         Ticket ticket = ticketRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Ticket não encontrado. {id}: " + id
-                                )
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Ticket não encontrado. {id}: " + id
+                        )
                 );
 
         Category category = null;
 
-        if (ticketUpdateDto.category() != null) {
-            category = categoryRepository.findById(ticketUpdateDto.category())
-                    .orElseThrow(
-                            () ->
-                                    new ObjectNotFoundException(
-                                            "Categoria não encontrada. {id}: " + ticketUpdateDto.category()
-                                    )
+        if ( ticketUpdateDto.category() != null )
+        {
+            category = categoryRepository.findById( ticketUpdateDto.category() )
+                    .orElseThrow( () ->
+                            new ObjectNotFoundException(
+                                    "Categoria não encontrada. {id}: " + ticketUpdateDto.category()
+                            )
                     );
         }
 
-        ticketMapper.updateTicketFromDto(ticketUpdateDto, ticket, category);
+        ticketMapper.updateTicketFromDto( ticketUpdateDto, ticket, category );
 
-        if (category != null) {
-            ticket.setCategory(category);
+        if ( category != null )
+        {
+            ticket.setCategory( category );
         }
 
-        Ticket updateTicket = ticketRepository.save(ticket);
+        Ticket updateTicket = ticketRepository.save( ticket );
 
-        return ticketMapper.toDto(updateTicket);
+        return ticketMapper.toDto( updateTicket );
     }
 
     @Transactional
-    public void deleteTicket(
-            Long id
-    ) {
+    public void deleteTicket( Long id )
+    {
         Ticket ticket = ticketRepository
-                .findById(id)
-                .orElseThrow(
-                        () ->
-                                new ObjectNotFoundException(
-                                        "Ticket não encontrado. {id}: " + id
-                                )
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Ticket não encontrado. {id}: " + id
+                        )
                 );
 
-        try {
-            ticketRepository.deleteById(ticket.getId());
-        } catch (DataIntegrityViolationException ex) {
-            throw new DataBindingViolationException("Não é possível excluir pois há entidades relacionadas.");
+        try
+        {
+            ticketRepository.deleteById( ticket.getId() );
+        }
+        catch ( DataIntegrityViolationException ex )
+        {
+            throw new DataBindingViolationException(
+                    "Não é possível excluir pois há entidades relacionadas."
+            );
         }
     }
 }

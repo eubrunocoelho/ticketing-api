@@ -13,30 +13,32 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Mapper(
         config = CentralMapperConfig.class
 )
-public interface UserMapper {
+public interface UserMapper
+{
+    @Named( "userToEntity" )
+    @Mapping( target = "id", ignore = true )
+    @Mapping( target = "password", source = "password", qualifiedByName = "encodePassword" )
+    @Mapping( target = "role", expression = "java(defaultRole())" )
+    @Mapping( target = "createdAt", ignore = true )
+    @Mapping( target = "updatedAt", ignore = true )
+    User toEntity( UserCreateDto dto, @Context PasswordEncoder encoder );
 
-    @Named("userToEntity")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", source = "password", qualifiedByName = "encodePassword")
-    @Mapping(target = "role", expression = "java(defaultRole())")
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    User toEntity(UserCreateDto dto, @Context PasswordEncoder encoder);
+    @Named( "userToDto" )
+    UserResponseDto toDto( User entity );
 
-    @Named("userToDto")
-    UserResponseDto toDto(User entity);
-
-    @Named("encodePassword")
-    default String encodePassword(String password, @Context PasswordEncoder encoder) {
-        return encoder.encode(password);
+    @Named( "encodePassword" )
+    default String encodePassword( String password, @Context PasswordEncoder encoder )
+    {
+        return encoder.encode( password );
     }
 
-    @Named("mapUserForReply")
-    @Mapping(target = "id", expression = "java(null)")
-    @Mapping(target = "role", expression = "java(null)")
-    UserResponseDto mapUserForReply(User user);
+    @Named( "mapUserForReply" )
+    @Mapping( target = "id", expression = "java(null)" )
+    @Mapping( target = "role", expression = "java(null)" )
+    UserResponseDto mapUserForReply( User user );
 
-    default User.Role defaultRole() {
+    default User.Role defaultRole()
+    {
         return User.Role.ROLE_USER;
     }
 }

@@ -11,29 +11,36 @@ import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
-public abstract class BaseController {
-
+public abstract class BaseController
+{
+    /**
+     * Responsável por construir respostas {@link ResponseDto}
+     */
     protected final ResponseBuilder responseBuilder;
 
-    protected <T> ResponseEntity<ResponseDto<T>> createdResponse(T data, Object pathVariable) {
+    protected <T> ResponseEntity<ResponseDto<T>> createdResponse( T data, Object pathVariable )
+    {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(pathVariable)
+                .path( "/{id}" )
+                .buildAndExpand( pathVariable )
                 .toUri();
 
-        return ResponseEntity.created(location).body(responseBuilder.buildSingle(data));
+        return ResponseEntity.created( location ).body( responseBuilder.buildSingle( data ) );
     }
 
-    protected <T> ResponseEntity<ResponseDto<T>> okResponse(T data) {
-        return ResponseEntity.ok(responseBuilder.buildSingle(data));
+    protected <T> ResponseEntity<ResponseDto<T>> okResponse( T data )
+    {
+        return ResponseEntity.ok( responseBuilder.buildSingle( data ) );
     }
 
-    protected <T> ResponseEntity<ResponseDto<List<T>>> okResponse(Page<T> page) {
-        return ResponseEntity.ok(responseBuilder.buildPaged(page));
+    protected <T> ResponseEntity<ResponseDto<List<T>>> okResponse( Page<T> page )
+    {
+        return ResponseEntity.ok( responseBuilder.buildPaged( page ) );
     }
 
-    protected ResponseEntity<Void> noContentResponse() {
+    protected ResponseEntity<Void> noContentResponse()
+    {
         return ResponseEntity.noContent().build();
     }
 }

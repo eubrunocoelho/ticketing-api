@@ -16,43 +16,55 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+// Inspect
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
-
+public class SecurityConfig
+{
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserPrincipalService userPrincipalService;
 
     @Bean
-    @Order(1)
-    public SecurityFilterChain basicAuthSecurityFilterChain(HttpSecurity httpSecurity)
-            throws Exception {
+    @Order( 1 )
+    public SecurityFilterChain basicAuthSecurityFilterChain( HttpSecurity httpSecurity ) throws Exception
+    {
         return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(request -> {
-                    request.requestMatchers("/auth/**").permitAll();
-                    request.requestMatchers(HttpMethod.POST, "/users").permitAll();
-                    request.anyRequest().authenticated();
-                })
-                .sessionManagement(session -> session.sessionCreationPolicy(
-                        SessionCreationPolicy.STATELESS
-                ))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf( csrf -> csrf.disable() )
+                .authorizeHttpRequests(
+                        request ->
+                        {
+                            request.requestMatchers( "/auth/**" )
+                                    .permitAll();
+                            request.requestMatchers( HttpMethod.POST, "/users" )
+                                    .permitAll();
+                            request.anyRequest()
+                                    .authenticated();
+                        }
+                )
+                .sessionManagement( session -> session.sessionCreationPolicy
+                        ( SessionCreationPolicy.STATELESS )
+                )
+                .addFilterBefore( jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class )
                 .build();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetailsService userDetailsService = (username -> {
-            return userPrincipalService.findMatch(username);
-        });
+    public UserDetailsService userDetailsService()
+    {
+        UserDetailsService userDetailsService =
+                ( username ->
+                    {
+                        return userPrincipalService.findMatch( username );
+                    }
+                );
 
         return userDetailsService;
     }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() {
+    public PasswordEncoder getPasswordEncoder()
+    {
         return new BCryptPasswordEncoder();
     }
 }
