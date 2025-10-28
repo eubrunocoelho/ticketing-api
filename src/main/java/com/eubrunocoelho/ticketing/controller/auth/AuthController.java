@@ -35,10 +35,10 @@ public class AuthController extends BaseController
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<AuthResponseDto>> authenticate(
-            @RequestBody @Valid SignInRequestDto signinRequestDto
+            @RequestBody @Valid SignInRequestDto signInRequestDto
     )
     {
-        AuthResponseDto authResponse = authService.authenticate( signinRequestDto );
+        AuthResponseDto authResponse = authService.authenticate( signInRequestDto );
 
         return okResponse( authResponse );
     }

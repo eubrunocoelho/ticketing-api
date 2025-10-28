@@ -10,6 +10,7 @@ import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -41,6 +42,7 @@ public class CategoryController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@categorySecurity.canCreate(authentication)" )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> createCategory(
             @RequestBody @Valid CategoryCreateDto categoryCreateDTO
     )
