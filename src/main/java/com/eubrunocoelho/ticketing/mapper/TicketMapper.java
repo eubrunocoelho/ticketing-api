@@ -37,11 +37,6 @@ public interface TicketMapper
 
     @Named( "ticketToDtoWithReplies" )
     @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
-    @Mapping(  target = "user", ignore = true )
-    @Mapping( target = "status", ignore = true )
-    @Mapping( target = "createdAt", ignore = true )
-    @Mapping( target = "updatedAt", ignore = true )
-    @Mapping( target = "replies", ignore = true )
     TicketResponseDto toDtoWithReplies( Ticket ticket );
 
     @Named( "ticketRepliesToDto" )

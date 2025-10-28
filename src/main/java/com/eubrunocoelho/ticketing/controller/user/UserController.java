@@ -45,6 +45,7 @@ public class UserController extends BaseController
         return createdResponse( createdUserResponse, createdUserResponse.id() );
     }
 
+    // Implement
     @GetMapping(
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
