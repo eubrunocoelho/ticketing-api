@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -64,6 +65,7 @@ public class TicketController extends BaseController
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@ticketSecurity.canAccessTicket(#id)" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> findTicket(
             @PathVariable Long id
     )
@@ -76,6 +78,7 @@ public class TicketController extends BaseController
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@ticketSecurity.canAccessAllTickets()" )
     public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAll(
             TicketFilterDto filter,
             Pageable pageable,
@@ -98,6 +101,7 @@ public class TicketController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@ticketSecurity.canUpdateTicket(#id)" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> updateTicket(
             @PathVariable Long id,
             @RequestBody @Valid TicketUpdateDto ticketUpdateDto
@@ -111,6 +115,7 @@ public class TicketController extends BaseController
     @DeleteMapping(
             value = "/{id}"
     )
+    @PreAuthorize( "@ticketSecurity.canDeleteTicket(#id)" )
     public ResponseEntity<Void> deleteTicket(
             @PathVariable Long id
     )
