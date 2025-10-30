@@ -3,7 +3,6 @@ package com.eubrunocoelho.ticketing.security.authorization;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 @Component( "categorySecurity" )
