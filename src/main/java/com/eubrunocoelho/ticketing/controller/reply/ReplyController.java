@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -52,6 +53,7 @@ public class ReplyController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@replySecurity.canCreateReply(#ticketId)" )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> createReply(
             @PathVariable Long ticketId,
             @RequestBody @Valid ReplyCreateDto replyCreateDto
@@ -69,6 +71,7 @@ public class ReplyController extends BaseController
             value = "/{ticketId}/reply/{replyId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@replySecurity.canAccessReply(#ticketId)" )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> findReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId
@@ -86,7 +89,8 @@ public class ReplyController extends BaseController
             value = "/{ticketId}/reply",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<List<ReplyResponseDto>>> findAllReplyByTicket(
+    @PreAuthorize( "@replySecurity.canAccessRepliesByTicket(#ticketId)" )
+    public ResponseEntity<ResponseDto<List<ReplyResponseDto>>> findAllRepliesByTicket(
             @PathVariable Long ticketId,
             ReplyFilterDto filter,
             Pageable pageable,
@@ -108,6 +112,7 @@ public class ReplyController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@replySecurity.canUpdateReply(#ticketId, #replyId)" )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> updateReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId,
@@ -126,6 +131,7 @@ public class ReplyController extends BaseController
     @DeleteMapping(
             value = "/{ticketId}/reply/{replyId}"
     )
+    @PreAuthorize( "@replySecurity.canDeleteReply(#ticketId, #replyId)" )
     public ResponseEntity<Void> deleteReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId
