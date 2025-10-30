@@ -12,7 +12,7 @@ public class CategorySecurity
 {
     private final UserPrincipalService userPrincipalService;
 
-    public boolean canCreate( Authentication authentication )
+    public boolean canCreateCategory()
     {
         User loggedUser = userPrincipalService.getLoggedInUser();
 
@@ -20,7 +20,7 @@ public class CategorySecurity
                 || loggedUser.getRole() == User.Role.ROLE_STAFF;
     }
 
-    public boolean canUpdate( Authentication authentication )
+    public boolean canUpdateCategory()
     {
         User loggedUser = userPrincipalService.getLoggedInUser();
 
@@ -28,7 +28,7 @@ public class CategorySecurity
                 || loggedUser.getRole() == User.Role.ROLE_STAFF;
     }
 
-    public boolean canDelete( Authentication authentication )
+    public boolean canDeleteCategory()
     {
         User loggedUser = userPrincipalService.getLoggedInUser();
 
