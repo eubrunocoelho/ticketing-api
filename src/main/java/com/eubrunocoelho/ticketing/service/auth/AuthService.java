@@ -24,21 +24,21 @@ public class AuthService
     private final CredentialValidationService credentialValidationService;
     private final AuthMapper authMapper;
 
-    public AuthResponseDto authenticate( SignInRequestDto signinRequestDto
+    public AuthResponseDto authenticate( SignInRequestDto signInRequestDto
     )
     {
         User user;
 
         try
         {
-            user = userService.findByUsernameOrEmail( signinRequestDto.username() );
+            user = userService.findByUsernameOrEmail( signInRequestDto.username() );
         }
         catch ( ObjectNotFoundException ex )
         {
             throw new InvalidCredentialsException( "Credenciais inválidas." );
         }
 
-        credentialValidationService.validate( user, signinRequestDto.password() );
+        credentialValidationService.validate( user, signInRequestDto.password() );
 
         String authToken = generateAuthToken( user );
 
