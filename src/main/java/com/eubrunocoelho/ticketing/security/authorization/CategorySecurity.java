@@ -19,4 +19,20 @@ public class CategorySecurity
         return loggedUser.getRole() == User.Role.ROLE_ADMIN
                 || loggedUser.getRole() == User.Role.ROLE_STAFF;
     }
+
+    public boolean canUpdate( Authentication authentication )
+    {
+        User loggedUser = userPrincipalService.getLoggedInUser();
+
+        return loggedUser.getRole() == User.Role.ROLE_ADMIN
+                || loggedUser.getRole() == User.Role.ROLE_STAFF;
+    }
+
+    public boolean canDelete( Authentication authentication )
+    {
+        User loggedUser = userPrincipalService.getLoggedInUser();
+
+        return loggedUser.getRole() == User.Role.ROLE_ADMIN
+                || loggedUser.getRole() == User.Role.ROLE_STAFF;
+    }
 }
