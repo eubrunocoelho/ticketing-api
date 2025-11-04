@@ -75,7 +75,7 @@ public class CategoryController extends BaseController
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategory()
+    public ResponseEntity<ResponseDto<List<CategoryResponseDto>>> findAllCategories()
     {
         List<CategoryResponseDto> categoriesResponse = categoryService.findAll();
 
