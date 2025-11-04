@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.service.user;
 
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
+import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
@@ -47,5 +48,25 @@ public class UserService
                                 "Usuário não encontrado. {username/email}: " + usernameOrEmail
                         )
                 );
+    }
+
+    @Transactional
+    public UserResponseDto updateUser(
+            Long id,
+            UserUpdateDto userUpdateDto
+    )
+    {
+        User user = userRepository
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Usuário não econtrado. {id}: " + id
+                        )
+                );
+
+        userMapper.updateUserFromDto( userUpdateDto, passwordEncoder , user );
+        User updatedUser = userRepository.save( user );
+
+        return userMapper.toDto( updatedUser );
     }
 }

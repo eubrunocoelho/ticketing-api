@@ -3,10 +3,12 @@ package com.eubrunocoelho.ticketing.mapper;
 import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
+import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -25,6 +27,15 @@ public interface UserMapper
 
     @Named( "userToDto" )
     UserResponseDto toDto( User entity );
+
+    @Named( "updateUserFromDto" )
+    @Mapping( target = "id", ignore = true )
+    @Mapping( target = "password", source = "password", qualifiedByName = "encodePassword" )
+    void updateUserFromDto(
+            UserUpdateDto userUpdateDto,
+            @Context PasswordEncoder encoder,
+            @MappingTarget User user
+    );
 
     @Named( "encodePassword" )
     default String encodePassword( String password, @Context PasswordEncoder encoder )

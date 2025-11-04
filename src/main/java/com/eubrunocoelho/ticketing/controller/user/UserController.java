@@ -4,12 +4,14 @@ import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
+import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.service.user.UserService;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,5 +55,20 @@ public class UserController extends BaseController
     public ResponseEntity<Void> findById( @PathVariable Long id )
     {
         return noContentResponse();
+    }
+
+    @PatchMapping(
+            value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<UserResponseDto>> updateUser(
+            @PathVariable Long id,
+            @RequestBody @Valid UserUpdateDto userUpdateDto
+    )
+    {
+        UserResponseDto updatedUserResponse = userService.updateUser( id, userUpdateDto );
+
+        return okResponse( updatedUserResponse );
     }
 }
