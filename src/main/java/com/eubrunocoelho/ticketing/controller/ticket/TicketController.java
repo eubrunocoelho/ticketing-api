@@ -79,7 +79,7 @@ public class TicketController extends BaseController
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @PreAuthorize( "@ticketSecurity.canAccessAllTickets()" )
-    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAll(
+    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAllTickets(
             TicketFilterDto filter,
             Pageable pageable,
             @RequestParam( name = "sort", required = false ) String sortParam
