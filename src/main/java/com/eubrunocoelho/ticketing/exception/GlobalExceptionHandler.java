@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -52,13 +51,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                 "Erro de validação. Verifique o campo \"errors\" para detalhes."
         );
 
-        for ( FieldError fieldError : exception.getBindingResult().getFieldErrors() )
-        {
-            errorResponse.addValidationError(
-                    fieldError.getField(),
-                    fieldError.getDefaultMessage()
-            );
-        }
+        exception.getBindingResult().getFieldErrors().forEach(
+                fieldError -> errorResponse
+                        .addValidationError( fieldError.getField(), fieldError.getDefaultMessage() )
+        );
+
+        exception.getBindingResult().getGlobalErrors().forEach(
+                globalError -> errorResponse
+                        .addValidationError( globalError.getObjectName(), globalError.getDefaultMessage() )
+        );
 
         return ResponseEntity.unprocessableEntity().body( errorResponse );
     }
