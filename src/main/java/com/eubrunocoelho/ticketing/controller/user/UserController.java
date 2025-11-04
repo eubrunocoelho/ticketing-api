@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping( "/users" )
 public class UserController extends BaseController
@@ -47,14 +49,25 @@ public class UserController extends BaseController
         return createdResponse( createdUserResponse, createdUserResponse.id() );
     }
 
-    // Implement
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<List<UserResponseDto>>> findAllUsers()
+    {
+        List<UserResponseDto> usersResponse = userService.findAll();
+
+        return okResponse( usersResponse );
+    }
+
     @GetMapping(
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Void> findById( @PathVariable Long id )
+    public ResponseEntity<ResponseDto<UserResponseDto>> findUser( @PathVariable Long id )
     {
-        return noContentResponse();
+        UserResponseDto userResponse = userService.findById( id );
+
+        return okResponse( userResponse );
     }
 
     @PatchMapping(

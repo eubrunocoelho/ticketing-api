@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService
@@ -30,13 +32,27 @@ public class UserService
     }
 
     @Transactional( readOnly = true )
-    public User findById( Long id )
+    public List<UserResponseDto> findAll()
     {
-        return userRepository.findById( id ).orElseThrow( () ->
-                new ObjectNotFoundException(
-                        "Usuário não encontrado. {id}: " + id
-                )
-        );
+        return userRepository
+                .findAll()
+                .stream()
+                .map( userMapper::toDto )
+                .toList();
+    }
+
+    @Transactional( readOnly = true )
+    public UserResponseDto findById( Long id )
+    {
+        User user = userRepository
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Usuário não encontrado. {id}: " + id
+                        )
+                );
+
+        return userMapper.toDto( user );
     }
 
     @Transactional( readOnly = true )
@@ -51,10 +67,7 @@ public class UserService
     }
 
     @Transactional
-    public UserResponseDto updateUser(
-            Long id,
-            UserUpdateDto userUpdateDto
-    )
+    public UserResponseDto updateUser( Long id, UserUpdateDto userUpdateDto )
     {
         User user = userRepository
                 .findById( id )
