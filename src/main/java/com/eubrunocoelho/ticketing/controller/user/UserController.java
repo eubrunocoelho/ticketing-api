@@ -10,6 +10,7 @@ import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class UserController extends BaseController
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@userSecurity.canAccessAllUsers()" )
     public ResponseEntity<ResponseDto<List<UserResponseDto>>> findAllUsers()
     {
         List<UserResponseDto> usersResponse = userService.findAll();
@@ -63,6 +65,7 @@ public class UserController extends BaseController
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@userSecurity.canAccessUser(#id)" )
     public ResponseEntity<ResponseDto<UserResponseDto>> findUser( @PathVariable Long id )
     {
         UserResponseDto userResponse = userService.findById( id );
@@ -75,6 +78,7 @@ public class UserController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@userSecurity.canUpdateUser(#id)" )
     public ResponseEntity<ResponseDto<UserResponseDto>> updateUser(
             @PathVariable Long id,
             @RequestBody @Valid UserUpdateDto userUpdateDto
