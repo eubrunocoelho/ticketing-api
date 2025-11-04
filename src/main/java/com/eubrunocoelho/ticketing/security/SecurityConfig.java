@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.security;
 
 import com.eubrunocoelho.ticketing.security.filter.JwtAuthenticationFilter;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity(
         securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
+        jsr250Enabled = true
 )
 @RequiredArgsConstructor
 public class SecurityConfig
@@ -50,6 +50,27 @@ public class SecurityConfig
                 )
                 .sessionManagement( session -> session.sessionCreationPolicy
                         ( SessionCreationPolicy.STATELESS )
+                )
+                .exceptionHandling(
+                        ex -> ex
+                                .authenticationEntryPoint(
+                                        ( request, response, authException ) ->
+                                        {
+                                            if ( !response.isCommitted() )
+                                            {
+                                                response.setStatus( HttpServletResponse.SC_UNAUTHORIZED );
+                                            }
+                                        }
+                                )
+                                .accessDeniedHandler(
+                                        ( request, response, accessDeniedException ) ->
+                                        {
+                                            if ( !response.isCommitted() )
+                                            {
+                                                response.setStatus( HttpServletResponse.SC_FORBIDDEN );
+                                            }
+                                        }
+                                )
                 )
                 .addFilterBefore( jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class )
                 .build();
