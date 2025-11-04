@@ -1,10 +1,14 @@
 package com.eubrunocoelho.ticketing.dto.category;
 
+import com.eubrunocoelho.ticketing.validation.annotation.UniqueForUpdateCategory;
 import com.eubrunocoelho.ticketing.validation.annotation.ValidEnum;
 import com.eubrunocoelho.ticketing.entity.Category;
 import jakarta.validation.constraints.Size;
 
+@UniqueForUpdateCategory
 public record CategoryUpdateDto(
+        Long id,
+
         @Size( min = 4, message = "O valor para \"name\" deve ter no mínimo 4 caracteres." )
         @Size( max = 255, message = "O valor para \"name\" deve ter no máximo 255 caracteres." )
         String name,

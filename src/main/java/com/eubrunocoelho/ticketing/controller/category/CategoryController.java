@@ -7,7 +7,10 @@ import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.category.CategoryService;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,21 +24,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping( "/categories" )
 public class CategoryController extends BaseController
 {
     private final CategoryService categoryService;
+    private final Validator validator;
 
     public CategoryController(
             CategoryService categoryService,
+            Validator validator,
             ResponseBuilder responseBuilder
     )
     {
         super( responseBuilder );
 
         this.categoryService = categoryService;
+        this.validator = validator;
     }
 
     @PostMapping(
@@ -75,6 +82,7 @@ public class CategoryController extends BaseController
         return okResponse( categoriesResponse );
     }
 
+    // Refactor
     @PatchMapping(
             value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -82,12 +90,28 @@ public class CategoryController extends BaseController
     )
     @PreAuthorize( "@categorySecurity.canUpdateCategory()" )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> updateCategory(
-            @PathVariable Long id, @RequestBody @Valid CategoryUpdateDto categoryUpdateDto
+            @PathVariable Long id,
+            @RequestBody CategoryUpdateDto categoryUpdateDto
     )
     {
+        CategoryUpdateDto categoryUpdateDtoWithId = new CategoryUpdateDto(
+                id,
+                categoryUpdateDto.name(),
+                categoryUpdateDto.description(),
+                categoryUpdateDto.priority()
+        );
+
+        Set<ConstraintViolation<CategoryUpdateDto>> violations = validator
+                .validate( categoryUpdateDtoWithId );
+
+        if ( !violations.isEmpty() )
+        {
+            throw new ConstraintViolationException( violations );
+        }
+
         CategoryResponseDto updatedCategoryResponse = categoryService.updateCategory(
                 id,
-                categoryUpdateDto
+                categoryUpdateDtoWithId
         );
 
         return okResponse( updatedCategoryResponse );

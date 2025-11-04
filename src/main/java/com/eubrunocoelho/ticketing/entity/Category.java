@@ -52,7 +52,7 @@ public class Category
     @Column( name = "id", nullable = false )
     Long id;
 
-    @Column( name = "name", nullable = false )
+    @Column( name = "name", nullable = false, unique = true )
     String name;
 
     @Column( name = "description", nullable = true )
