@@ -86,7 +86,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     {
         return buildErrorResponse(
                 exception,
-                exception.getMostSpecificCause().getMessage(),
+                "Violação de integridade de dados. Verifique entidades relacionadas.",
                 HttpStatus.CONFLICT
         );
     }
