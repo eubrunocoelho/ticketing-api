@@ -6,6 +6,7 @@ import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedExcepti
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueException;
+import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenMalformedException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -160,6 +161,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ResponseStatus( HttpStatus.UNAUTHORIZED )
     public ResponseEntity<Object> handleCredentialsInvalidException(
             InvalidCredentialsException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler( JwtTokenMalformedException.class )
+    @ResponseStatus( HttpStatus.UNAUTHORIZED )
+    public ResponseEntity<Object> handleJwtTokenMalformedException(
+            JwtTokenMalformedException exception,
             WebRequest request
     )
     {

@@ -2,8 +2,10 @@ package com.eubrunocoelho.ticketing.service.jwt;
 
 import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenExpiredException;
 import com.eubrunocoelho.ticketing.security.jwt.JwtProvider;
+import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenMalformedException;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +22,9 @@ public class JwtAuthenticationService
     private final JwtProvider jwtProvider;
     private final UserPrincipalService userPrincipalService;
 
-    public void processToken( HttpServletRequest request ) throws JwtTokenExpiredException
+    public void processToken(
+            HttpServletRequest request
+    ) throws JwtTokenMalformedException, JwtTokenExpiredException
     {
         String token = extractToken( request );
 
@@ -30,13 +34,19 @@ public class JwtAuthenticationService
         }
 
         try
-         {
+        {
             String username = jwtProvider.getUsername( token );
 
             if ( username != null && !isAlreadyAuthenticated() )
             {
                 authenticateUser( username, request );
             }
+        }
+        catch ( MalformedJwtException ex )
+        {
+            throw new JwtTokenMalformedException(
+                    "O token de acesso fornecido é inválido."
+            );
         }
         catch ( ExpiredJwtException ex )
         {
