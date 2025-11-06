@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.repository;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
+import com.eubrunocoelho.ticketing.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -14,6 +15,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Long>, JpaSpecific
     Optional<Reply> findByTicketIdAndId( Long ticketId, Long id );
 
     Optional<Reply> findTopByTicketIdOrderByCreatedAtDesc( Long ticketId );
+
+    Optional<Reply> findTopByTicketIdAndCreatedUserRoleOrderByCreatedAtDesc( Long ticketId, User.Role role );
 
     List<Reply> findByTicketIdOrderByCreatedAtDesc( Long ticketId );
 }

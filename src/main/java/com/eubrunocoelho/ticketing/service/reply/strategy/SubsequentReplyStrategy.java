@@ -4,10 +4,12 @@ import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Order( 3 )
 public class SubsequentReplyStrategy implements ReplyStrategy
 {
     private final ReplyRepository replyRepository;

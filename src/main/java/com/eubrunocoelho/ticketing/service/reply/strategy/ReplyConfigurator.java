@@ -19,7 +19,7 @@ public class ReplyConfigurator
                 .filter( strategy -> strategy.applies( ticketId ) )
                 .findFirst()
                 .orElseThrow(
-                        () -> new IllegalStateException( "Estratégia não encontrada." )
+                        () -> new IllegalStateException( "Estratégia não aplicável." )
                 )
                 .configure( reply, ticketId, ticket );
     }
