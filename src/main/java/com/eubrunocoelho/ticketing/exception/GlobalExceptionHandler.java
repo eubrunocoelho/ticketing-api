@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -84,9 +85,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
             WebRequest request
     )
     {
+        final String errorMessage = "Violação de integridade de dados. Verifique entidades relacionadas.";
+
         return buildErrorResponse(
                 exception,
-                "Violação de integridade de dados. Verifique entidades relacionadas.",
+                errorMessage,
                 HttpStatus.CONFLICT
         );
     }
@@ -196,6 +199,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                 exception,
                 exception.getMessage(),
                 HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler( AuthorizationDeniedException.class )
+    @ResponseStatus( HttpStatus.FORBIDDEN )
+    public ResponseEntity<Object> handleAuthorizationDeniedException(
+            AuthorizationDeniedException exception,
+            WebRequest request
+    )
+    {
+        final String errorMessage = "Acesso negado. Você não tem permissão para realizar esta operação.";
+
+        return buildErrorResponse(
+                exception,
+                errorMessage,
+                HttpStatus.FORBIDDEN
         );
     }
 
