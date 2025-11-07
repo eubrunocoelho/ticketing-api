@@ -5,7 +5,7 @@ import com.eubrunocoelho.ticketing.entity.Ticket;
 
 public interface ReplyStrategy
 {
-    boolean applies( Long ticketId );
+    boolean applies( Long ticketId  );
 
     void configure( Reply reply, Long ticketId, Ticket ticket );
 }

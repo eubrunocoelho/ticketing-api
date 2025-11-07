@@ -25,5 +25,7 @@ public class FirstReplyStrategy implements ReplyStrategy
     {
         reply.setParent( null );
         reply.setRespondedToUser( ticket.getUser() );
+
+        return;
     }
 }
