@@ -52,6 +52,7 @@ public class TicketController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
+    @PreAuthorize( "@ticketSecurity.canCreateTicket()" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> createTicket(
             @RequestBody @Valid TicketCreateDto ticketCreateDto
     )

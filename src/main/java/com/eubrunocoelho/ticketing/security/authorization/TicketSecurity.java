@@ -13,6 +13,16 @@ public class TicketSecurity
     private final UserPrincipalService userPrincipalService;
     private final TicketRepository ticketRepository;
 
+    public boolean canCreateTicket()
+    {
+        User loggedUser = userPrincipalService.getLoggedInUser();
+
+        return !(
+                loggedUser.getRole() == User.Role.ROLE_ADMIN
+                        || loggedUser.getRole() == User.Role.ROLE_STAFF
+        );
+    }
+
     public boolean canAccessTicket( Long ticketId )
     {
         User loggedUser = userPrincipalService.getLoggedInUser();
