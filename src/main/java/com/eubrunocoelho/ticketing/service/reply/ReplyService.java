@@ -54,7 +54,7 @@ public class ReplyService
                 );
 
         Reply reply = replyFactory.buildReply( ticketId, dto, loggedUser, ticket );
-        replyValidationService.validate( reply, loggedUser );
+        replyValidationService.validate( ticketId, reply, loggedUser );
 
         Reply createdReply = replyRepository.save( reply );
 

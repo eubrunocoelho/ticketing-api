@@ -38,7 +38,7 @@ public class StaffInterchangeStrategy implements ReplyStrategy
         Optional<Reply> lastReply = replyRepository.findTopByTicketIdOrderByCreatedAtDesc( ticketId );
 
         // Se existe resposta e a última resposta está presente
-        if ( existsReply && lastReply.isPresent() )
+        if ( existsReply && !lastReply.isEmpty() )
         {
             // Pega `role` do usuário criador da última resposta
             User.Role replyCreatedUserRole = lastReply.get().getCreatedUser().getRole();
@@ -67,13 +67,19 @@ public class StaffInterchangeStrategy implements ReplyStrategy
 
         // Última resposta
         Optional<Reply> lastReply = replyRepository.findTopByTicketIdOrderByCreatedAtDesc( ticketId );
+
+        if ( lastReply.isEmpty() )
+        {
+            return;
+        }
+
         User.Role lastReplyCreatedUserRole = lastReply.get().getCreatedUser().getRole();
 
         // Se existir uma resposta de um usuário ROLE_USER
         // E a última resposta é de um usuário STAFF
         // E o usuário logado é STAFF
         if (
-                replyCreatedUserRoleUser.isPresent()
+                !replyCreatedUserRoleUser.isEmpty()
                         && STAFF_ROLES.contains( lastReplyCreatedUserRole )
                         && STAFF_ROLES.contains( loggedUserRole )
         )
@@ -94,7 +100,7 @@ public class StaffInterchangeStrategy implements ReplyStrategy
         )
         {
             reply.setParent( null );
-            reply.setRespondedToUser( replyCreatedUserRoleUser.get().getTicket().getUser() );
+            reply.setRespondedToUser( ticket.getUser() );
 
             return;
         }
