@@ -78,7 +78,7 @@ public class StaffInterchangeStrategy implements ReplyStrategy
                         && STAFF_ROLES.contains( loggedUserRole )
         )
         {
-            reply.setParent( null );
+            reply.setParent( replyCreatedUserRoleUser.get() );
             reply.setRespondedToUser( replyCreatedUserRoleUser.get().getTicket().getUser() );
 
             return;
