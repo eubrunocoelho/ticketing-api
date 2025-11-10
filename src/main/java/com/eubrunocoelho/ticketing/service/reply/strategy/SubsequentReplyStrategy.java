@@ -31,7 +31,5 @@ public class SubsequentReplyStrategy implements ReplyStrategy
 
         reply.setParent( lastReply );
         reply.setRespondedToUser( lastReply.getCreatedUser() );
-
-        return;
     }
 }

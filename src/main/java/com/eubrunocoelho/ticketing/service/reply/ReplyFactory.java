@@ -24,7 +24,6 @@ public class ReplyFactory
     )
     {
         Reply reply = replyMapper.toEntity( replyCreateDto, ticket, loggedUser );
-
         replyConfigurator.configure( reply, ticketId, ticket );
 
         return reply;

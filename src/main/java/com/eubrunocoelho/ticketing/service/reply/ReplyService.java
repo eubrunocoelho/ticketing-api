@@ -53,8 +53,8 @@ public class ReplyService
                         )
                 );
 
-        replyValidationService.validate( ticketId, loggedUser );
-        Reply reply = replyFactory.buildReply( ticketId, dto, loggedUser, ticket );
+        replyValidationService.validate( ticket.getId(), loggedUser );
+        Reply reply = replyFactory.buildReply( ticket.getId(), dto, loggedUser, ticket );
 
         Reply createdReply = replyRepository.save( reply );
 

@@ -15,5 +15,4 @@ public class ReplyValidationService
     {
         validationExecutor.execute( ticketId, loggedUser );
     }
-
 }

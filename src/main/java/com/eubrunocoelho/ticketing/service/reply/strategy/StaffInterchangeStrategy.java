@@ -3,14 +3,13 @@ package com.eubrunocoelho.ticketing.service.reply.strategy;
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
-import com.eubrunocoelho.ticketing.repository.ReplyRepository;
+import com.eubrunocoelho.ticketing.service.reply.strategy.helper.ReplyRoleHelper;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -18,93 +17,57 @@ import java.util.Set;
 public class StaffInterchangeStrategy implements ReplyStrategy
 {
     private final UserPrincipalService userPrincipalService;
-    private final ReplyRepository replyRepository;
-
-    private static final Set<User.Role> STAFF_ROLES = Set.of(
-            User.Role.ROLE_ADMIN,
-            User.Role.ROLE_STAFF
-    );
+    private final ReplyRoleHelper roleHelper;
 
     @Override
     public boolean applies( Long ticketId )
     {
-        // Pega `role` do usuário logado
-        User.Role loggedUserRole = userPrincipalService.getLoggedInUser().getRole();
+        User loggedUser = userPrincipalService.getLoggedInUser();
+        Optional<Reply> lastReply = roleHelper.findLastReply( ticketId );
 
-        // Existe uma resposta
-        boolean existsReply = replyRepository.existsByTicketId( ticketId );
-
-        // Última resposta
-        Optional<Reply> lastReply = replyRepository.findTopByTicketIdOrderByCreatedAtDesc( ticketId );
-
-        // Se existe resposta e a última resposta está presente
-        if ( existsReply && !lastReply.isEmpty() )
-        {
-            // Pega `role` do usuário criador da última resposta
-            User.Role replyCreatedUserRole = lastReply.get().getCreatedUser().getRole();
-
-            // Se a última resposta é de um STAFF e o usuário logado é STAFF
-            if ( STAFF_ROLES.contains( replyCreatedUserRole ) && STAFF_ROLES.contains( loggedUserRole ) )
-            {
-                // Retorna true
-                return true;
-            }
-        }
-
-        // Se não a regra não se aplica
-        return false;
+        return lastReply
+                .filter(
+                        reply ->
+                                roleHelper.isStaff( reply.getCreatedUser().getRole() )
+                                        && roleHelper.isStaff( loggedUser.getRole() )
+                )
+                .isPresent();
     }
 
     @Override
     public void configure( Reply reply, Long ticketId, Ticket ticket )
     {
-        // Pega `role` do usuário logado
-        User.Role loggedUserRole = userPrincipalService.getLoggedInUser().getRole();
-
-        // Última resposta de um usuário ROLE_USER
-        Optional<Reply> replyCreatedUserRoleUser = replyRepository
-                .findTopByTicketIdAndCreatedUserRoleOrderByCreatedAtDesc( ticketId, User.Role.ROLE_USER );
-
-        // Última resposta
-        Optional<Reply> lastReply = replyRepository.findTopByTicketIdOrderByCreatedAtDesc( ticketId );
+        User loggedUser = userPrincipalService.getLoggedInUser();
+        Optional<Reply> lastReply = roleHelper.findLastReply( ticketId );
+        Optional<Reply> lastUserReply = roleHelper.findLastReplyByUserRole( ticketId, User.Role.ROLE_USER );
 
         if ( lastReply.isEmpty() )
         {
-            return;
+            return ;
         }
 
-        User.Role lastReplyCreatedUserRole = lastReply.get().getCreatedUser().getRole();
+        User.Role lastRole = lastReply.get().getCreatedUser().getRole();
 
-        // Se existir uma resposta de um usuário ROLE_USER
-        // E a última resposta é de um usuário STAFF
-        // E o usuário logado é STAFF
         if (
-                !replyCreatedUserRoleUser.isEmpty()
-                        && STAFF_ROLES.contains( lastReplyCreatedUserRole )
-                        && STAFF_ROLES.contains( loggedUserRole )
+                lastUserReply.isPresent()
+                        && roleHelper.isStaff( lastRole )
+                        && roleHelper.isStaff( loggedUser.getRole() )
         )
         {
-            reply.setParent( replyCreatedUserRoleUser.get() );
-            reply.setRespondedToUser( replyCreatedUserRoleUser.get().getTicket().getUser() );
+            reply.setParent( lastUserReply.get() );
+            reply.setRespondedToUser( lastUserReply.get().getTicket().getUser() );
 
-            return;
+            return ;
         }
 
-        // Se não existir uma resposta de um usuário ROLE_USER
-        // E a última resposta é de um usuário STAFF
-        // E o usuário logado é STAFF
         if (
-                replyCreatedUserRoleUser.isEmpty()
-                    && STAFF_ROLES.contains( lastReplyCreatedUserRole )
-                    && STAFF_ROLES.contains( loggedUserRole )
+                lastUserReply.isEmpty()
+                        && roleHelper.isStaff( lastRole )
+                        && roleHelper.isStaff( loggedUser.getRole() )
         )
         {
             reply.setParent( null );
             reply.setRespondedToUser( ticket.getUser() );
-
-            return;
         }
-
-        return;
     }
 }
