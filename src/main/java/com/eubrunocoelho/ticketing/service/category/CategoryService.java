@@ -8,12 +8,16 @@ import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationExceptio
 import com.eubrunocoelho.ticketing.mapper.CategoryMapper;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class CategoryService
 {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final Validator validator;
 
     @Transactional
     public CategoryResponseDto createCategory( CategoryCreateDto categoryCreateDTO )
@@ -69,7 +74,22 @@ public class CategoryService
                         )
                 );
 
-        categoryMapper.updateCategoryFromDto( categoryUpdateDto, category );
+        CategoryUpdateDto categoryUpdateDtoWithId = new CategoryUpdateDto(
+                id,
+                categoryUpdateDto.name(),
+                categoryUpdateDto.description(),
+                categoryUpdateDto.priority()
+        );
+
+        Set<ConstraintViolation<CategoryUpdateDto>> violations = validator
+                .validate( categoryUpdateDtoWithId );
+
+        if ( !violations.isEmpty() )
+        {
+            throw new ConstraintViolationException( violations );
+        }
+
+        categoryMapper.updateCategoryFromDto( categoryUpdateDtoWithId, category );
         Category updatedCategory = categoryRepository.save( category );
 
         return categoryMapper.toDto( updatedCategory );
