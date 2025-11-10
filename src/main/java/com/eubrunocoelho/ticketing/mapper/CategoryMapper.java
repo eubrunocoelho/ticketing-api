@@ -43,4 +43,15 @@ public interface CategoryMapper
     {
         return getEnumValueOrThrow( priority, Category.Priority.class );
     }
+
+    @Named( "mergeIdAndUpdateDto" )
+    default CategoryUpdateDto mergeIdAndUpdateDto( Long id, CategoryUpdateDto updateDto )
+    {
+        return new CategoryUpdateDto(
+                id,
+                updateDto.name(),
+                updateDto.description(),
+                updateDto.priority()
+        );
+    }
 }

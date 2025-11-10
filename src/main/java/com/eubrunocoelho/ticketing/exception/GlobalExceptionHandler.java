@@ -7,6 +7,7 @@ import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationExceptio
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueException;
 import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenMalformedException;
+import jakarta.validation.ConstraintViolation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,6 +67,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         return ResponseEntity.unprocessableEntity().body( errorResponse );
     }
 
+    @ExceptionHandler( jakarta.validation.ConstraintViolationException.class )
+    @ResponseStatus( HttpStatus.UNPROCESSABLE_ENTITY )
+    public ResponseEntity<Object> handleJakartaConstraintViolationException(
+            jakarta.validation.ConstraintViolationException exception,
+            WebRequest request
+    )
+    {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Erro de validação. Verifique o campo \"errors\" para detalhes."
+        );
+
+        for ( ConstraintViolation<?> violation : exception.getConstraintViolations() )
+        {
+            String propertyPath = violation.getPropertyPath().toString();
+            String fieldName = propertyPath.contains( "." )
+                    ? propertyPath.substring( propertyPath.lastIndexOf( "." ) + 1 )
+                    : propertyPath;
+
+            errorResponse.addValidationError( fieldName, violation.getMessage() );
+        }
+
+        return ResponseEntity.unprocessableEntity().body( errorResponse );
+    }
+
     @ExceptionHandler( Exception.class )
     @ResponseStatus( HttpStatus.INTERNAL_SERVER_ERROR )
     public ResponseEntity<Object> handleAllUncaughtException(
@@ -104,34 +130,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         return buildErrorResponse( exception, HttpStatus.UNPROCESSABLE_ENTITY );
     }
 
-    @ExceptionHandler( AuthenticationException.class )
-    @ResponseStatus( HttpStatus.UNAUTHORIZED )
-    public ResponseEntity<Object> handleAuthenticationException(
-            AuthenticationException exception,
-            WebRequest request
-    )
-    {
-        return buildErrorResponse(
-                exception,
-                exception.getMessage(),
-                HttpStatus.UNAUTHORIZED
-        );
-    }
-
-    @ExceptionHandler( ObjectNotFoundException.class )
-    @ResponseStatus( HttpStatus.NOT_FOUND )
-    public ResponseEntity<Object> handleObjectNotFoundException(
-            ObjectNotFoundException exception,
-            WebRequest request
-    )
-    {
-        return buildErrorResponse(
-                exception,
-                exception.getMessage(),
-                HttpStatus.NOT_FOUND
-        );
-    }
-
     @ExceptionHandler( DataBindingViolationException.class )
     @ResponseStatus( HttpStatus.CONFLICT )
     public ResponseEntity<Object> handleDataBindingViolationException(
@@ -146,24 +144,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
-    @ExceptionHandler( InvalidEnumValueException.class )
-    @ResponseStatus( HttpStatus.UNPROCESSABLE_ENTITY )
-    public ResponseEntity<Object> handleInvalidEnumValueException(
-            InvalidEnumValueException exception,
-            WebRequest request
-    )
-    {
-        return buildErrorResponse(
-                exception,
-                exception.getMessage(),
-                HttpStatus.UNPROCESSABLE_ENTITY
-        );
-    }
-
-    @ExceptionHandler( InvalidCredentialsException.class )
+    @ExceptionHandler( AuthenticationException.class )
     @ResponseStatus( HttpStatus.UNAUTHORIZED )
-    public ResponseEntity<Object> handleCredentialsInvalidException(
-            InvalidCredentialsException exception,
+    public ResponseEntity<Object> handleAuthenticationException(
+            AuthenticationException exception,
             WebRequest request
     )
     {
@@ -202,6 +186,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
+    @ExceptionHandler( InvalidCredentialsException.class )
+    @ResponseStatus( HttpStatus.UNAUTHORIZED )
+    public ResponseEntity<Object> handleCredentialsInvalidException(
+            InvalidCredentialsException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNAUTHORIZED
+        );
+    }
+
     @ExceptionHandler( AuthorizationDeniedException.class )
     @ResponseStatus( HttpStatus.FORBIDDEN )
     public ResponseEntity<Object> handleAuthorizationDeniedException(
@@ -215,6 +213,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                 exception,
                 errorMessage,
                 HttpStatus.FORBIDDEN
+        );
+    }
+
+    @ExceptionHandler( ObjectNotFoundException.class )
+    @ResponseStatus( HttpStatus.NOT_FOUND )
+    public ResponseEntity<Object> handleObjectNotFoundException(
+            ObjectNotFoundException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.NOT_FOUND
         );
     }
 
@@ -232,7 +244,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
-    // Inspect
+    @ExceptionHandler( InvalidEnumValueException.class )
+    @ResponseStatus( HttpStatus.UNPROCESSABLE_ENTITY )
+    public ResponseEntity<Object> handleInvalidEnumValueException(
+            InvalidEnumValueException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.UNPROCESSABLE_ENTITY
+        );
+    }
+
     private ResponseEntity<Object> buildErrorResponse(
             Exception exception,
             HttpStatus httpStatus
