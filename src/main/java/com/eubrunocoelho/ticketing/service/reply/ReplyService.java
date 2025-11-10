@@ -31,17 +31,17 @@ public class ReplyService
 {
     private final ApplicationEventPublisher eventPublisher;
     private final TicketRepository ticketRepository;
-    private final UserPrincipalService userPrincipalService;
     private final ReplyRepository replyRepository;
     private final ReplyFactory replyFactory;
     private final ReplyValidationService replyValidationService;
     private final ReplyMapper replyMapper;
     private final ReplySpecificationBuilder replySpecificationBuilder;
+    private final UserPrincipalService userPrincipalService;
 
     @Transactional
     public ReplyResponseDto createReply(
             Long ticketId,
-            ReplyCreateDto dto
+            ReplyCreateDto replyCreateDto
     )
     {
         User loggedUser = userPrincipalService.getLoggedInUser();
@@ -54,8 +54,7 @@ public class ReplyService
                 );
 
         replyValidationService.validate( ticket, loggedUser );
-        Reply reply = replyFactory.buildReply( ticket.getId(), dto, loggedUser, ticket );
-
+        Reply reply = replyFactory.buildReply( replyCreateDto, ticket, loggedUser );
         Reply createdReply = replyRepository.save( reply );
 
         eventPublisher.publishEvent( new ReplyCreatedEvent( this, createdReply ) );

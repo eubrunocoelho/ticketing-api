@@ -4,7 +4,6 @@ import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.service.reply.strategy.helper.ReplyRoleHelper;
-import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,14 +15,12 @@ import java.util.Optional;
 @Order( 2 )
 public class StaffInterchangeStrategy implements ReplyStrategy
 {
-    private final UserPrincipalService userPrincipalService;
     private final ReplyRoleHelper roleHelper;
 
     @Override
-    public boolean applies( Long ticketId )
+    public boolean applies( Ticket ticket, User loggedUser )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-        Optional<Reply> lastReply = roleHelper.findLastReply( ticketId );
+        Optional<Reply> lastReply = roleHelper.findLastReply( ticket.getId() );
 
         return lastReply
                 .filter(
@@ -35,11 +32,10 @@ public class StaffInterchangeStrategy implements ReplyStrategy
     }
 
     @Override
-    public void configure( Reply reply, Long ticketId, Ticket ticket )
+    public void configure( Reply reply, Ticket ticket, User loggedUser )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-        Optional<Reply> lastReply = roleHelper.findLastReply( ticketId );
-        Optional<Reply> lastUserReply = roleHelper.findLastReplyByUserRole( ticketId, User.Role.ROLE_USER );
+        Optional<Reply> lastReply = roleHelper.findLastReply( ticket.getId() );
+        Optional<Reply> lastUserReply = roleHelper.findLastReplyByUserRole( ticket.getId(), User.Role.ROLE_USER );
 
         if ( lastReply.isEmpty() )
         {

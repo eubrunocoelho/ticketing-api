@@ -17,14 +17,13 @@ public class ReplyFactory
     private final ReplyConfigurator replyConfigurator;
 
     public Reply buildReply(
-            Long ticketId,
             ReplyCreateDto replyCreateDto,
-            User loggedUser,
-            Ticket ticket
+            Ticket ticket,
+            User loggedUser
     )
     {
         Reply reply = replyMapper.toEntity( replyCreateDto, ticket, loggedUser );
-        replyConfigurator.configure( reply, ticketId, ticket );
+        replyConfigurator.configure( reply, ticket, loggedUser );
 
         return reply;
     }
