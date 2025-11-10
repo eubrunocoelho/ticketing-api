@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.service.reply.validation;
 
+import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.service.reply.validation.strategy.ReplyValidationExecutor;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,8 @@ public class ReplyValidationService
 {
     private final ReplyValidationExecutor validationExecutor;
 
-    public void validate( Long ticketId, User loggedUser )
+    public void validate( Ticket ticket, User loggedUser )
     {
-        validationExecutor.execute( ticketId, loggedUser );
+        validationExecutor.execute( ticket, loggedUser );
     }
 }

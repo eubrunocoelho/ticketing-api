@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.service.reply.validation.strategy;
 
+import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,10 @@ public class ReplyValidationExecutor
 {
     private final List<ReplyValidationStrategy>  validations;
 
-    public void execute( Long ticketId, User loggedUser )
+    public void execute( Ticket ticket, User loggedUser )
     {
         validations.forEach(
-                validation -> validation.validate( ticketId, loggedUser )
+                validation -> validation.validate( ticket, loggedUser )
         );
     }
 }

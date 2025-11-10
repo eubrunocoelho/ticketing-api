@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.service.reply.validation.strategy;
 
+import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
@@ -17,9 +18,9 @@ public class TicketOwnerCannotFirstReplyValidation implements ReplyValidationStr
     private final ReplyRepository replyRepository;
 
     @Override
-    public void validate( Long ticketId, User loggedUser )
+    public void validate( Ticket ticket, User loggedUser )
     {
-        boolean existsReply = replyRepository.existsByTicketId( ticketId );
+        boolean existsReply = replyRepository.existsByTicketId( ticket.getId() );
 
         if ( existsReply )
         {
@@ -27,11 +28,11 @@ public class TicketOwnerCannotFirstReplyValidation implements ReplyValidationStr
         }
 
         ticketRepository
-                .findById( ticketId )
+                .findById( ticket.getId() )
                 .ifPresent(
-                        ticket ->
+                        currentTicket ->
                         {
-                            boolean isTicketOwner = ticket.getUser().getId().equals( loggedUser.getId() );
+                            boolean isTicketOwner = currentTicket.getUser().getId().equals( loggedUser.getId() );
 
                             if ( isTicketOwner )
                             {

@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.service.reply.validation.strategy;
 
+import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
@@ -15,9 +16,9 @@ public class LastReplyOwnerCannotReplyValidation implements ReplyValidationStrat
     private final ReplyRepository replyRepository;
 
     @Override
-    public void validate( Long ticketId, User loggedUser )
+    public void validate( Ticket ticket, User loggedUser )
     {
-        replyRepository.findTopByTicketIdOrderByCreatedAtDesc( ticketId )
+        replyRepository.findTopByTicketIdOrderByCreatedAtDesc( ticket.getId() )
                 .ifPresent(
                         lastReply ->
                         {
