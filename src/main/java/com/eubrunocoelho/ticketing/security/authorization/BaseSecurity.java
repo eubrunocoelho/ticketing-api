@@ -10,7 +10,7 @@ import java.util.Set;
 public abstract class BaseSecurity
 {
     /**
-     * Responsável por construir respostas {@link UserPrincipalService}
+     * Responsável por usuário principal autenticado {@link UserPrincipalService}
      */
     protected final UserPrincipalService userPrincipalService;
 
