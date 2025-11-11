@@ -11,12 +11,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReplyValidationExecutor
 {
-    private final List<ReplyValidationStrategy>  validations;
+    private final List<ReplyValidationStrategy>  strategies;
 
     public void execute( Ticket ticket, User loggedUser )
     {
-        validations.forEach(
-                validation -> validation.validate( ticket, loggedUser )
-        );
+        strategies
+                .forEach( strategy -> strategy.validate( ticket, loggedUser ) );
     }
 }

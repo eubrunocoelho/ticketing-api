@@ -16,11 +16,14 @@ public class ReplyConfigurator
 
     public void configure( Reply reply, Ticket ticket, User loggedUser )
     {
-        strategies.stream()
+        strategies
+                .stream()
                 .filter( strategy -> strategy.applies( ticket, loggedUser ) )
                 .findFirst()
                 .orElseThrow(
-                        () -> new IllegalStateException( "Estratégia para criação de respostas não aplicável." )
+                        () -> new IllegalStateException(
+                                "Estratégia para criação de respostas não aplicável."
+                        )
                 )
                 .configure( reply, ticket, loggedUser );
     }
