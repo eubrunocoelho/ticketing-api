@@ -37,27 +37,35 @@ public class StaffInterchangeReply implements ReplyStrategy
     public void configure( Reply reply, Ticket ticket, User loggedUser )
     {
         Optional<Reply> lastReply = buildReplyHelper.findLastReply( ticket.getId() );
-        Optional<Reply> lastReplyByUserRole = buildReplyHelper.findLastReplyByUserRole( ticket.getId(), User.Role.ROLE_USER );
 
-        if ( lastReply.isEmpty() )
-        {
-            return ;
-        }
+        lastReply.ifPresentOrElse(
+                lastReplyPresent ->
+                {
+                    Optional<Reply> lastReplyByUserRole = buildReplyHelper.findLastReplyByUserRole(
+                            ticket.getId(),
+                            User.Role.ROLE_USER
+                    );
 
-        User.Role lastReplyUserRole = lastReply.get().getCreatedUser().getRole();
+                    User.Role lastReplyUserRole = lastReplyPresent.getCreatedUser().getRole();
 
-        staffInterchangeConfigurator.configureReplyUserPresentStaffToUser(
-                reply,
-                lastReplyByUserRole.orElse( null ),
-                lastReplyUserRole,
-                loggedUser
-        );
-        staffInterchangeConfigurator.configureReplyUserEmptyStaffToUser(
-                ticket,
-                reply,
-                lastReplyByUserRole.orElse( null ),
-                lastReplyUserRole,
-                loggedUser
+                    staffInterchangeConfigurator.configureReplyUserPresentStaffToUser(
+                            reply,
+                            lastReplyByUserRole.orElse( null ),
+                            lastReplyUserRole,
+                            loggedUser
+                    );
+                    staffInterchangeConfigurator.configureReplyUserEmptyStaffToUser(
+                            ticket,
+                            reply,
+                            lastReplyByUserRole.orElse( null ),
+                            lastReplyUserRole,
+                            loggedUser
+                    );
+                },
+                () ->
+                {
+                    return ;
+                }
         );
     }
 }
