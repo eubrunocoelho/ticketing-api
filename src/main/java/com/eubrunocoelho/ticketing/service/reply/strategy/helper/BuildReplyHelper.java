@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyRoleHelper
+public class BuildReplyHelper
 {
     private final ReplyRepository replyRepository;
 

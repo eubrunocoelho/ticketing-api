@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Order( 1 )
-public class FirstReplyStrategy implements ReplyStrategy
+public class FirstReply implements ReplyStrategy
 {
     private final ReplyRepository replyRepository;
 
