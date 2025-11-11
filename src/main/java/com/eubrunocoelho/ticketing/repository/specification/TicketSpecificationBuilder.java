@@ -64,9 +64,10 @@ public class TicketSpecificationBuilder
 
     private Specification<Ticket> userIs( String userValue )
     {
-        return ( root, query, cb ) -> cb.or(
-                cb.equal( cb.lower( root.get( "user" ).get( "username" ) ), userValue.toLowerCase() ),
-                cb.equal( cb.lower( root.get( "user" ).get( "email" ) ), userValue.toLowerCase() )
-            );
+        return ( root, query, cb ) ->
+                cb.or(
+                        cb.equal( cb.lower( root.get( "user" ).get( "username" ) ), userValue.toLowerCase() ),
+                        cb.equal( cb.lower( root.get( "user" ).get( "email" ) ), userValue.toLowerCase() )
+                );
     }
 }
