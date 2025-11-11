@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Order( 1 )
-public class TicketOwnerCannotFirstReplyValidation implements ReplyValidationStrategy
+public class TicketOwnerCannotFirstReply implements ReplyValidationStrategy
 {
     private final TicketRepository ticketRepository;
     private final ReplyRepository replyRepository;

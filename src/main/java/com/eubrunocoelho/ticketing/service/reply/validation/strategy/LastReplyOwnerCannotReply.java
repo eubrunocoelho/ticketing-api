@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Order( 2 )
-public class LastReplyOwnerCannotReplyValidation implements ReplyValidationStrategy
+public class LastReplyOwnerCannotReply implements ReplyValidationStrategy
 {
     private final ReplyRepository replyRepository;
 

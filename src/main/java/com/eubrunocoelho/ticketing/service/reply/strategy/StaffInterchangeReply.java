@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.service.reply.strategy.helper.BuildReplyHelper;
+import com.eubrunocoelho.ticketing.service.reply.strategy.helper.StaffInterchangeConfigurator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class StaffInterchangeReply implements ReplyStrategy
 {
     private final BuildReplyHelper buildReplyHelper;
+    private final StaffInterchangeConfigurator staffInterchangeConfigurator;
 
     @Override
     public boolean applies( Ticket ticket, User loggedUser )
@@ -35,35 +37,27 @@ public class StaffInterchangeReply implements ReplyStrategy
     public void configure( Reply reply, Ticket ticket, User loggedUser )
     {
         Optional<Reply> lastReply = buildReplyHelper.findLastReply( ticket.getId() );
-        Optional<Reply> lastUserReply = buildReplyHelper.findLastReplyByUserRole( ticket.getId(), User.Role.ROLE_USER );
+        Optional<Reply> lastReplyByUserRole = buildReplyHelper.findLastReplyByUserRole( ticket.getId(), User.Role.ROLE_USER );
 
         if ( lastReply.isEmpty() )
         {
             return ;
         }
 
-        User.Role lastRole = lastReply.get().getCreatedUser().getRole();
+        User.Role lastReplyUserRole = lastReply.get().getCreatedUser().getRole();
 
-        if (
-                lastUserReply.isPresent()
-                        && buildReplyHelper.isStaff( lastRole )
-                        && buildReplyHelper.isStaff( loggedUser.getRole() )
-        )
-        {
-            reply.setParent( lastUserReply.get() );
-            reply.setRespondedToUser( lastUserReply.get().getTicket().getUser() );
-
-            return ;
-        }
-
-        if (
-                lastUserReply.isEmpty()
-                        && buildReplyHelper.isStaff( lastRole )
-                        && buildReplyHelper.isStaff( loggedUser.getRole() )
-        )
-        {
-            reply.setParent( null );
-            reply.setRespondedToUser( ticket.getUser() );
-        }
+        staffInterchangeConfigurator.configureReplyUserPresentStaffToUser(
+                reply,
+                lastReplyByUserRole.orElse( null ),
+                lastReplyUserRole,
+                loggedUser
+        );
+        staffInterchangeConfigurator.configureReplyUserEmptyStaffToUser(
+                ticket,
+                reply,
+                lastReplyByUserRole.orElse( null ),
+                lastReplyUserRole,
+                loggedUser
+        );
     }
 }
