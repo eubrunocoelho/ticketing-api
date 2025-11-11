@@ -1,29 +1,31 @@
 package com.eubrunocoelho.ticketing.security.authorization;
 
-import com.eubrunocoelho.ticketing.entity.Reply;
-import com.eubrunocoelho.ticketing.entity.Ticket;
-import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component( "replySecurity" )
-@RequiredArgsConstructor
-public class ReplySecurity
+public class ReplySecurity extends BaseSecurity
 {
-    private final UserPrincipalService userPrincipalService;
     private final TicketRepository ticketRepository;
     private final ReplyRepository replyRepository;
 
+    public ReplySecurity(
+            UserPrincipalService userPrincipalService,
+            TicketRepository ticketRepository,
+            ReplyRepository replyRepository
+    )
+    {
+        super( userPrincipalService );
+
+        this.ticketRepository = ticketRepository;
+        this.replyRepository = replyRepository;
+    }
+
     public boolean canCreateReply( Long ticketId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -31,18 +33,14 @@ public class ReplySecurity
         return ticketRepository
                 .findById( ticketId )
                 .map(
-                        ticket -> ticket.getUser().getId().equals( loggedUser.getId() )
+                        ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() )
                 )
                 .orElse( false );
     }
 
     public boolean canAccessReply( Long ticketId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -50,18 +48,14 @@ public class ReplySecurity
         return ticketRepository
                 .findById( ticketId )
                 .map(
-                        ticket -> ticket.getUser().getId().equals( loggedUser.getId() )
+                        ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() )
                 )
                 .orElse( false );
     }
 
     public boolean canAccessRepliesByTicket( Long ticketId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -69,64 +63,58 @@ public class ReplySecurity
         return ticketRepository
                 .findById( ticketId )
                 .map(
-                        ticket -> ticket.getUser().getId().equals( loggedUser.getId() )
+                        ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() )
                 )
                 .orElse( false );
     }
 
     public boolean canUpdateReply( Long ticketId, Long replyId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
 
-        Reply reply = replyRepository
-                .findByTicketIdAndId( ticketId, replyId )
-                .orElse( null );
+        return replyRepository
+                .findById( replyId )
+                .map(
+                        reply ->
+                        {
+                            boolean isTicketOwner = ticketRepository
+                                    .findById( ticketId )
+                                    .map( ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() ) )
+                                    .orElse( false );
 
-        if ( reply == null )
-        {
-            return false;
-        }
+                            boolean isReplyOwner = isOwner( getLoggedUser(), reply.getCreatedUser().getId() );
 
-        Ticket ticket = reply.getTicket();
-
-        boolean isTicketOwner = ticket.getUser().getId().equals( loggedUser.getId() );
-        boolean isReplyOwner = reply.getCreatedUser().getId().equals( loggedUser.getId() );
-
-        return isTicketOwner && isReplyOwner;
+                            return isTicketOwner && isReplyOwner;
+                        }
+                )
+                .orElse( false );
     }
 
     public boolean canDeleteReply( Long ticketId, Long replyId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
 
-        Reply reply = replyRepository
-                .findByTicketIdAndId( ticketId, replyId )
-                .orElse( null );
+        return replyRepository
+                .findById( replyId )
+                .map(
+                        reply ->
+                        {
+                            boolean isTicketOwner = ticketRepository
+                                    .findById( ticketId )
+                                    .map( ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() ) )
+                                    .orElse( false );
 
-        if ( reply == null )
-        {
-            return false;
-        }
+                            boolean isReplyOwner = isOwner( getLoggedUser(), reply.getCreatedUser().getId() );
 
-        Ticket ticket = reply.getTicket();
-
-        boolean isTicketOwner = ticket.getUser().getId().equals( loggedUser.getId() );
-        boolean isReplyOwner = reply.getCreatedUser().getId().equals( loggedUser.getId() );
-
-        return isTicketOwner && isReplyOwner;
+                            return isTicketOwner && isReplyOwner;
+                        }
+                )
+                .orElse( false );
     }
 }

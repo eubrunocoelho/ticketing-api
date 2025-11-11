@@ -1,25 +1,27 @@
 package com.eubrunocoelho.ticketing.security.authorization;
 
-import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component( "userSecurity" )
-@RequiredArgsConstructor
-public class UserSecurity
+public class UserSecurity extends BaseSecurity
 {
-    private final UserPrincipalService userPrincipalService;
     private final UserRepository userRepository;
+
+    public UserSecurity(
+            UserPrincipalService userPrincipalService,
+            UserRepository userRepository
+    )
+    {
+        super( userPrincipalService );
+
+        this.userRepository = userRepository;
+    }
 
     public boolean canAccessUser( Long userId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -27,26 +29,19 @@ public class UserSecurity
         return userRepository
                 .findById( userId )
                 .map(
-                        user -> user.getId().equals( loggedUser.getId() )
+                        user -> isOwner( getLoggedUser(), user.getId() )
                 )
                 .orElse( false );
     }
 
     public boolean canAccessAllUsers()
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        return loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF;
+        return isAdminOrStaff( getLoggedUser() );
     }
 
     public boolean canUpdateUser( Long userId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -54,7 +49,7 @@ public class UserSecurity
         return userRepository
                 .findById( userId )
                 .map(
-                        user -> user.getId().equals( loggedUser.getId() )
+                        user -> isOwner( getLoggedUser(), user.getId() )
                 )
                 .orElse( false );
     }

@@ -1,35 +1,32 @@
 package com.eubrunocoelho.ticketing.security.authorization;
 
-import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component( "ticketSecurity" )
-@RequiredArgsConstructor
-public class TicketSecurity
+public class TicketSecurity extends BaseSecurity
 {
-    private final UserPrincipalService userPrincipalService;
     private final TicketRepository ticketRepository;
+
+    public TicketSecurity(
+            UserPrincipalService userPrincipalService,
+            TicketRepository ticketRepository
+    )
+    {
+        super( userPrincipalService );
+
+        this.ticketRepository = ticketRepository;
+    }
 
     public boolean canCreateTicket()
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        return !(
-                loggedUser.getRole() == User.Role.ROLE_ADMIN
-                        || loggedUser.getRole() == User.Role.ROLE_STAFF
-        );
+        return !isAdminOrStaff( getLoggedUser() );
     }
 
     public boolean canAccessTicket( Long ticketId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -37,26 +34,19 @@ public class TicketSecurity
         return ticketRepository
                 .findById( ticketId )
                 .map(
-                        ticket -> ticket.getUser().getId().equals( loggedUser.getId() )
+                        ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() )
                 )
                 .orElse( false );
     }
 
     public boolean canAccessAllTickets()
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        return loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF;
+        return isAdminOrStaff( getLoggedUser() );
     }
 
     public boolean canUpdateTicket( Long ticketId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -64,18 +54,14 @@ public class TicketSecurity
         return ticketRepository
                 .findById( ticketId )
                 .map(
-                        ticket -> ticket.getUser().getId().equals( loggedUser.getId() )
+                        ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() )
                 )
                 .orElse( false );
     }
 
     public boolean canDeleteTicket( Long ticketId )
     {
-        User loggedUser = userPrincipalService.getLoggedInUser();
-
-        if ( loggedUser.getRole() == User.Role.ROLE_ADMIN
-                || loggedUser.getRole() == User.Role.ROLE_STAFF
-        )
+        if ( isAdminOrStaff( getLoggedUser() ) )
         {
             return true;
         }
@@ -83,7 +69,7 @@ public class TicketSecurity
         return ticketRepository
                 .findById( ticketId )
                 .map(
-                        ticket -> ticket.getUser().getId().equals( loggedUser.getId() )
+                        ticket -> isOwner( getLoggedUser(), ticket.getUser().getId() )
                 )
                 .orElse( false );
     }

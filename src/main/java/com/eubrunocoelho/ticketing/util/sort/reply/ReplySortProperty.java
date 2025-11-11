@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 @RequiredArgsConstructor
 public enum ReplySortProperty implements SortableProperty
 {
-
     /**
      * Ordenar por novas respostas
      */
