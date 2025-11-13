@@ -48,13 +48,13 @@ public class StaffInterchangeReply implements ReplyStrategy
 
                     User.Role lastReplyUserRole = lastReplyPresent.getCreatedUser().getRole();
 
-                    staffInterchangeConfigurator.configureReplyUserPresentStaffToUser(
+                    staffInterchangeConfigurator.configureReplyStaffToUser(
                             reply,
                             lastReplyByUserRole.orElse( null ),
                             lastReplyUserRole,
                             loggedUser
                     );
-                    staffInterchangeConfigurator.configureReplyUserEmptyStaffToUser(
+                    staffInterchangeConfigurator.configureReplyStaffToUser(
                             ticket,
                             reply,
                             lastReplyByUserRole.orElse( null ),

@@ -12,7 +12,7 @@ public class StaffInterchangeConfigurator
 {
     private final BuildReplyHelper buildReplyHelper;
 
-    public void configureReplyUserPresentStaffToUser(
+    public void configureReplyStaffToUser(
             Reply reply,
             Reply lastReplyByUserRole,
             User.Role lastReplyUserRole ,
@@ -32,7 +32,7 @@ public class StaffInterchangeConfigurator
         }
     }
 
-    public void configureReplyUserEmptyStaffToUser(
+    public void configureReplyStaffToUser(
             Ticket ticket,
             Reply reply,
             Reply lastReplyByUserRole,
