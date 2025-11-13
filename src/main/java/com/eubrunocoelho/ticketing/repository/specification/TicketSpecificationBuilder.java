@@ -17,7 +17,8 @@ public class TicketSpecificationBuilder
 {
     public Specification<Ticket> build( TicketFilterDto filter )
     {
-        return Stream.of(
+        return Stream
+                .of(
                         createSpecification( filter.status(), this::statusEquals ),
                         createSpecification( filter.search(), this::titleContains ),
                         createSpecification( filter.category(), this::categoryEquals ),

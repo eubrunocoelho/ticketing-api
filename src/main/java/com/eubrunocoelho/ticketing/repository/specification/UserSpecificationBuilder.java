@@ -1,7 +1,7 @@
 package com.eubrunocoelho.ticketing.repository.specification;
 
-import com.eubrunocoelho.ticketing.dto.reply.ReplyFilterDto;
-import com.eubrunocoelho.ticketing.entity.Reply;
+import com.eubrunocoelho.ticketing.dto.user.UserFilterDto;
+import com.eubrunocoelho.ticketing.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -13,13 +13,13 @@ import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
-public class ReplySpecificationBuilder
+public class UserSpecificationBuilder
 {
-    public Specification<Reply> build( ReplyFilterDto filter )
+    public Specification<User> build( UserFilterDto filter )
     {
         return Stream
                 .of(
-                        createSpecification( filter.user(), this::userIs )
+                        createSpecification( filter.role(), this::roleEquals )
                 )
                 .flatMap( Optional::stream )
                 .reduce( Specification::and )
@@ -28,9 +28,9 @@ public class ReplySpecificationBuilder
                 );
     }
 
-    private <V> Optional<Specification<Reply>> createSpecification(
+    private <V> Optional<Specification<User>> createSpecification(
             V value,
-            Function<V, Specification<Reply>> function
+            Function<V, Specification<User>> function
     )
     {
         if ( value instanceof String stringValue )
@@ -43,12 +43,8 @@ public class ReplySpecificationBuilder
         return Optional.ofNullable( value ).map( function );
     }
 
-    private Specification<Reply> userIs( String userValue )
+    private Specification<User> roleEquals( String role )
     {
-        return ( root, query, cb ) ->
-                cb.or (
-                        cb.equal( cb.lower( root.get( "createdUser" ).get( "username" ) ), userValue.toLowerCase() ),
-                        cb.equal( cb.lower( root.get( "createdUser" ).get( "email" ) ), userValue.toLowerCase() )
-                );
+        return ( root, query, cb ) -> cb.equal( root.get( "role" ), role );
     }
 }

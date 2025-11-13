@@ -3,11 +3,17 @@ package com.eubrunocoelho.ticketing.controller.user;
 import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserFilterDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.service.user.UserService;
+import com.eubrunocoelho.ticketing.util.PageableFactory;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
+import com.eubrunocoelho.ticketing.util.sort.user.UserSortResolver;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,15 +33,18 @@ import java.util.List;
 public class UserController extends BaseController
 {
     private final UserService userService;
+    private final UserSortResolver userSortResolver;
 
     public UserController(
             UserService userService,
+            UserSortResolver userSortResolver,
             ResponseBuilder responseBuilder
     )
     {
         super( responseBuilder );
 
         this.userService = userService;
+        this.userSortResolver = userSortResolver;
     }
 
     @PostMapping(
@@ -54,11 +64,21 @@ public class UserController extends BaseController
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @PreAuthorize( "@userSecurity.canAccessAllUsers()" )
-    public ResponseEntity<ResponseDto<List<UserResponseDto>>> findAllUsers()
+    public ResponseEntity<ResponseDto<List<UserResponseDto>>> findAllUsers(
+            UserFilterDto filter,
+            Pageable pageable,
+            @RequestParam( name = "sort", required = false ) String sortParam
+    )
     {
-        List<UserResponseDto> usersResponse = userService.findAll();
+        Sort sort = userSortResolver.resolve( sortParam );
+        Pageable sortedPageable = PageableFactory.build( pageable, sort );
 
-        return okResponse( usersResponse );
+        Page<UserResponseDto> pageableUsersResponse = userService.findAllPaged(
+                filter,
+                sortedPageable
+        );
+
+        return okResponse( pageableUsersResponse );
     }
 
     @GetMapping(

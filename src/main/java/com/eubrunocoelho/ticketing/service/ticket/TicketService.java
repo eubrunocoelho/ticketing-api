@@ -79,9 +79,9 @@ public class TicketService
     {
         Specification<Ticket> specification = ticketSpecificationBuilder.build( filter );
 
-        Page<Ticket> ticketPage = ticketRepository.findAll( specification, pageable );
+        Page<Ticket> ticketPaged = ticketRepository.findAll( specification, pageable );
 
-        return ticketPage.map( ticketMapper::toDto );
+        return ticketPaged.map( ticketMapper::toDto );
     }
 
     @Transactional

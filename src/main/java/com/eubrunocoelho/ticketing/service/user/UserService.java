@@ -1,24 +1,28 @@
 package com.eubrunocoelho.ticketing.service.user;
 
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserFilterDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
+import com.eubrunocoelho.ticketing.repository.specification.UserSpecificationBuilder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService
 {
     private final UserRepository userRepository;
+    private final UserSpecificationBuilder userSpecificationBuilder;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -32,13 +36,13 @@ public class UserService
     }
 
     @Transactional( readOnly = true )
-    public List<UserResponseDto> findAll()
+    public Page<UserResponseDto> findAllPaged( UserFilterDto filter, Pageable pageable )
     {
-        return userRepository
-                .findAll()
-                .stream()
-                .map( userMapper::toDto )
-                .toList();
+        Specification<User> specification = userSpecificationBuilder.build( filter );
+
+        Page<User> userPaged = userRepository.findAll( specification, pageable );
+
+        return userPaged.map( userMapper::toDto );
     }
 
     @Transactional( readOnly = true )
