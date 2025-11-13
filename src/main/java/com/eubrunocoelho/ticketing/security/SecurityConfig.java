@@ -1,8 +1,9 @@
 package com.eubrunocoelho.ticketing.security;
 
-import com.eubrunocoelho.ticketing.security.filter.JwtAuthenticationFilter;
+import com.eubrunocoelho.ticketing.security.jwt.JwtAuthenticationFilter;
+import com.eubrunocoelho.ticketing.security.jwt.JwtAccessDeniedHandler;
+import com.eubrunocoelho.ticketing.security.jwt.JwtAuthEntryPoint;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,68 +29,53 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig
 {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final UserPrincipalService userPrincipalService;
 
     @Bean
     @Order( 1 )
-    public SecurityFilterChain basicAuthSecurityFilterChain( HttpSecurity httpSecurity ) throws Exception
+    public SecurityFilterChain securityFilterChain( HttpSecurity httpSecurity )
+            throws Exception
     {
-        return httpSecurity
-                .csrf( csrf -> csrf.disable() )
-                .authorizeHttpRequests(
-                        request ->
-                        {
-                            request.requestMatchers( "/auth/**" )
-                                    .permitAll();
-                            request.requestMatchers( HttpMethod.POST, "/users" )
-                                    .permitAll();
-                            request.anyRequest()
-                                    .authenticated();
-                        }
+        httpSecurity
+                .csrf(
+                        csrf -> csrf.disable()
                 )
-                .sessionManagement( session -> session.sessionCreationPolicy
-                        ( SessionCreationPolicy.STATELESS )
+                .authorizeHttpRequests(
+                        auth ->
+                                auth
+                                        .requestMatchers( "/auth/**" ).permitAll()
+                                        .requestMatchers( HttpMethod.POST, "/users" ).permitAll()
+                                        .anyRequest().authenticated()
+                )
+                .sessionManagement(
+                        session ->
+                                session
+                                        .sessionCreationPolicy( SessionCreationPolicy.STATELESS )
                 )
                 .exceptionHandling(
-                        ex -> ex
-                                .authenticationEntryPoint(
-                                        ( request, response, authException ) ->
-                                        {
-                                            if ( !response.isCommitted() )
-                                            {
-                                                response.setStatus( HttpServletResponse.SC_UNAUTHORIZED );
-                                            }
-                                        }
-                                )
-                                .accessDeniedHandler(
-                                        ( request, response, accessDeniedException ) ->
-                                        {
-                                            if ( !response.isCommitted() )
-                                            {
-                                                response.setStatus( HttpServletResponse.SC_FORBIDDEN );
-                                            }
-                                        }
-                                )
+                        exception ->
+                                exception
+                                        .authenticationEntryPoint( jwtAuthEntryPoint )
+                                        .accessDeniedHandler( jwtAccessDeniedHandler )
                 )
-                .addFilterBefore( jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class )
-                .build();
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
+        return httpSecurity.build();
     }
 
     @Bean
     public UserDetailsService userDetailsService()
     {
-        UserDetailsService userDetailsService =
-                ( username ->
-                    {
-                        return userPrincipalService.findMatch( username );
-                    }
-                );
-
-        return userDetailsService;
+        return userPrincipalService::findMatch;
     }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder()
+    public PasswordEncoder passwordEncoder()
     {
         return new BCryptPasswordEncoder();
     }

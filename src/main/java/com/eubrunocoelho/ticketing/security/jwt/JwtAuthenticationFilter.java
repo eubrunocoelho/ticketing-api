@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.security.filter;
+package com.eubrunocoelho.ticketing.security.jwt;
 
 import com.eubrunocoelho.ticketing.service.jwt.JwtAuthenticationService;
 import jakarta.servlet.FilterChain;
