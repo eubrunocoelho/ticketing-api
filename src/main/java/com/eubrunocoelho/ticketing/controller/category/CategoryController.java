@@ -75,7 +75,6 @@ public class CategoryController extends BaseController
         return okResponse( categoriesResponse );
     }
 
-    // Refactor
     @PatchMapping(
             value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
