@@ -42,14 +42,6 @@ public class JwtProvider
         return claims.getSubject();
     }
 
-    // Inspect
-    public boolean isTokenExpired( String token )
-    {
-        Claims claims = extractAllClaims( token );
-
-        return claims.getExpiration().before( new Date() );
-    }
-
     private Claims extractAllClaims( String token )
     {
         return Jwts
