@@ -1,12 +1,12 @@
 package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
-import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenExpiredException;
+import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenExpiredException;
 import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueException;
-import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenMalformedException;
+import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenMalformedException;
 import jakarta.validation.ConstraintViolation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.exception.ConstraintViolationException;

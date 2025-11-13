@@ -1,8 +1,8 @@
 package com.eubrunocoelho.ticketing.service.jwt;
 
-import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenExpiredException;
+import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenExpiredException;
 import com.eubrunocoelho.ticketing.security.jwt.JwtProvider;
-import com.eubrunocoelho.ticketing.security.jwt.exception.JwtTokenMalformedException;
+import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenMalformedException;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
-// Inspect
 @Service
 @RequiredArgsConstructor
 public class JwtAuthenticationService

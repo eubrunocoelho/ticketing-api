@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.security.jwt.exception;
+package com.eubrunocoelho.ticketing.exception.jwt;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.naming.AuthenticationException;
 
 @ResponseStatus( HttpStatus.UNAUTHORIZED )
-public class JwtTokenExpiredException extends AuthenticationException
+public class JwtTokenMalformedException extends AuthenticationException
 {
-    public JwtTokenExpiredException( String message )
+    public JwtTokenMalformedException( String message )
     {
-        super( message );
+        super ( message );
     }
 }
