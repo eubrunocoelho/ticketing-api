@@ -1,18 +1,18 @@
 package com.eubrunocoelho.ticketing.security.principal;
 
-import com.eubrunocoelho.ticketing.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 @Getter
-public class AuthenticatedUser extends org.springframework.security.core.userdetails.User
+public class AuthenticatedUser
+        extends org.springframework.security.core.userdetails.User
 {
-    private User user;
+    private com.eubrunocoelho.ticketing.entity.User user;
 
     public AuthenticatedUser(
-            User user,
+            com.eubrunocoelho.ticketing.entity.User user,
             Collection<? extends GrantedAuthority> authorities
     )
     {
@@ -22,7 +22,7 @@ public class AuthenticatedUser extends org.springframework.security.core.userdet
     }
 
     public AuthenticatedUser(
-            User user,
+            com.eubrunocoelho.ticketing.entity.User user,
             boolean enabled,
             boolean accountNonExpired,
             boolean credentialsNonExpired,

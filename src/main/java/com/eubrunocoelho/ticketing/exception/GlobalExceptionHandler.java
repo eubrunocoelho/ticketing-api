@@ -9,7 +9,6 @@ import com.eubrunocoelho.ticketing.exception.validation.InvalidEnumValueExceptio
 import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenMalformedException;
 import jakarta.validation.ConstraintViolation;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -120,10 +119,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
-    @ExceptionHandler( ConstraintViolationException.class )
+    @ExceptionHandler( org.hibernate.exception.ConstraintViolationException.class )
     @ResponseStatus( HttpStatus.UNPROCESSABLE_ENTITY )
-    public ResponseEntity<Object> handleConstraintViolationException(
-            ConstraintViolationException exception,
+    public ResponseEntity<Object> handleHibernateConstraintViolationException(
+            org.hibernate.exception.ConstraintViolationException exception,
             WebRequest request
     )
     {
