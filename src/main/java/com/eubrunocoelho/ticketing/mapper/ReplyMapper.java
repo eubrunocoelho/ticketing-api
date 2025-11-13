@@ -24,10 +24,10 @@ public interface ReplyMapper
     @Mapping( target = "createdUser", source = "createdUser" )
     @Mapping( target = "respondedToUser", ignore = true )
     @Mapping( target = "parent", ignore = true )
-    @Mapping( target = "content", source = "dto.content" )
+    @Mapping( target = "content", source = "replyCreateDto.content" )
     @Mapping( target = "createdAt", ignore = true )
     @Mapping( target = "updatedAt", ignore = true )
-    Reply toEntity( ReplyCreateDto dto, Ticket ticket, User createdUser );
+    Reply toEntity( ReplyCreateDto replyCreateDto, Ticket ticket, User createdUser );
 
     @Named( "replyToDto" )
     @Mapping( target = "ticket", source = "ticket", qualifiedByName = "mapTicketForReply" )

@@ -34,6 +34,13 @@ public interface CategoryMapper
     @Mapping( target = "priority", source = "priority", qualifiedByName = "mapPriority" )
     void updateCategoryFromDto( CategoryUpdateDto categoryUpdateDto, @MappingTarget Category category );
 
+    @Named( "mergeIdAndUpdateDto" )
+    @Mapping( target = "id", source = "id" )
+    @Mapping( target = "name", source = "categoryUpdateDto.name" )
+    @Mapping( target = "description", source = "categoryUpdateDto.description" )
+    @Mapping( target = "priority", source = "categoryUpdateDto.priority" )
+    CategoryUpdateDto mergeIdAndUpdateDto( Long id, CategoryUpdateDto categoryUpdateDto );
+
     @Named( "mapCategoryForTicket" )
     @Mapping( target = "id", expression = "java(null)" )
     CategoryResponseDto mapCategoryForTicket( Category category );
@@ -42,16 +49,5 @@ public interface CategoryMapper
     default Category.Priority mapPriority( String priority )
     {
         return getEnumValueOrThrow( priority, Category.Priority.class );
-    }
-
-    @Named( "mergeIdAndUpdateDto" )
-    default CategoryUpdateDto mergeIdAndUpdateDto( Long id, CategoryUpdateDto updateDto )
-    {
-        return new CategoryUpdateDto(
-                id,
-                updateDto.name(),
-                updateDto.description(),
-                updateDto.priority()
-        );
     }
 }
