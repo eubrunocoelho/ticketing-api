@@ -6,7 +6,6 @@ import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.auth.AuthService;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
-import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +34,7 @@ public class AuthController extends BaseController
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<AuthResponseDto>> authenticate(
-            @RequestBody @Valid SignInRequestDto signInRequestDto
+            @RequestBody SignInRequestDto signInRequestDto
     )
     {
         AuthResponseDto authResponse = authService.authenticate( signInRequestDto );

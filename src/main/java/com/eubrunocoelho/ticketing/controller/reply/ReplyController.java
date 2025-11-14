@@ -10,7 +10,6 @@ import com.eubrunocoelho.ticketing.service.reply.ReplyService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.reply.ReplySortResolver;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,7 +55,7 @@ public class ReplyController extends BaseController
     @PreAuthorize( "@replySecurity.canCreateReply(#ticketId)" )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> createReply(
             @PathVariable Long ticketId,
-            @RequestBody @Valid ReplyCreateDto replyCreateDto
+            @RequestBody ReplyCreateDto replyCreateDto
     )
     {
         ReplyResponseDto createdReplyResponse = replyService.createReply(

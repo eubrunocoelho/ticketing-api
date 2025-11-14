@@ -16,6 +16,7 @@ import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,8 +25,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class ReplyService
 {
@@ -41,7 +44,7 @@ public class ReplyService
     @Transactional
     public ReplyResponseDto createReply(
             Long ticketId,
-            ReplyCreateDto replyCreateDto
+            @Valid ReplyCreateDto replyCreateDto
     )
     {
         User loggedUser = userPrincipalService.getLoggedInUser();
@@ -111,7 +114,7 @@ public class ReplyService
     public ReplyResponseDto updateReply(
             Long ticketId,
             Long replyId,
-            ReplyUpdateDto replyUpdateDto
+            @Valid ReplyUpdateDto replyUpdateDto
     )
     {
         Reply reply = replyRepository

@@ -10,6 +10,7 @@ import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.repository.specification.UserSpecificationBuilder;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +18,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class UserService
 {
@@ -28,7 +31,7 @@ public class UserService
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserResponseDto createUser( UserCreateDto userDTO )
+    public UserResponseDto createUser( @Valid UserCreateDto userDTO )
     {
         User user = userMapper.toEntity( userDTO, passwordEncoder );
         User createdUser = userRepository.save( user );
@@ -72,7 +75,7 @@ public class UserService
     }
 
     @Transactional
-    public UserResponseDto updateUser( Long id, UserUpdateDto userUpdateDto )
+    public UserResponseDto updateUser( Long id, @Valid UserUpdateDto userUpdateDto )
     {
         User user = userRepository
                 .findById( id )
@@ -89,7 +92,7 @@ public class UserService
     }
 
     @Transactional
-    public UserResponseDto updateUserRole( Long id, UserRoleUpdateDto userRoleUpdateDto )
+    public UserResponseDto updateUserRole( Long id, @Valid UserRoleUpdateDto userRoleUpdateDto )
     {
         User user = userRepository
                 .findById( id )

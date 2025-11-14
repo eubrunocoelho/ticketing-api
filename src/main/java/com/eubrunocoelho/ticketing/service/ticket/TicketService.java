@@ -16,6 +16,7 @@ import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -23,10 +24,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class TicketService
 {
@@ -38,7 +41,7 @@ public class TicketService
     private final ReplyRepository replyRepository;
 
     @Transactional
-    public TicketResponseDto createTicket( TicketCreateDto ticketCreateDto )
+    public TicketResponseDto createTicket( @Valid TicketCreateDto ticketCreateDto )
     {
         User loggedUser = userPrincipalService.getLoggedInUser();
         Category category = categoryRepository.findById( ticketCreateDto.category() )
@@ -87,7 +90,7 @@ public class TicketService
     @Transactional
     public TicketResponseDto updateTicket(
             Long id,
-            TicketUpdateDto ticketUpdateDto
+            @Valid TicketUpdateDto ticketUpdateDto
     )
     {
         Ticket ticket = ticketRepository

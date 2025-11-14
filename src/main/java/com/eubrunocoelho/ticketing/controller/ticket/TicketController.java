@@ -10,7 +10,6 @@ import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.ticket.TicketSortResolver;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -54,7 +53,7 @@ public class TicketController extends BaseController
     )
     @PreAuthorize( "@ticketSecurity.canCreateTicket()" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> createTicket(
-            @RequestBody @Valid TicketCreateDto ticketCreateDto
+            @RequestBody TicketCreateDto ticketCreateDto
     )
     {
         TicketResponseDto createdTicketResponse = ticketService.createTicket( ticketCreateDto );
@@ -105,7 +104,7 @@ public class TicketController extends BaseController
     @PreAuthorize( "@ticketSecurity.canUpdateTicket(#id)" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> updateTicket(
             @PathVariable Long id,
-            @RequestBody @Valid TicketUpdateDto ticketUpdateDto
+            @RequestBody TicketUpdateDto ticketUpdateDto
     )
     {
         TicketResponseDto updatedTicketResponse = ticketService.updateTicket( id, ticketUpdateDto );

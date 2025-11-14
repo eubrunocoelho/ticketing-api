@@ -9,13 +9,16 @@ import com.eubrunocoelho.ticketing.security.jwt.JwtProvider;
 import com.eubrunocoelho.ticketing.mapper.AuthMapper;
 import com.eubrunocoelho.ticketing.service.auth.validation.CredentialValidationService;
 import com.eubrunocoelho.ticketing.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class AuthService
 {
@@ -24,7 +27,7 @@ public class AuthService
     private final CredentialValidationService credentialValidationService;
     private final AuthMapper authMapper;
 
-    public AuthResponseDto authenticate( SignInRequestDto signInRequestDto
+    public AuthResponseDto authenticate( @Valid SignInRequestDto signInRequestDto
     )
     {
         User user;

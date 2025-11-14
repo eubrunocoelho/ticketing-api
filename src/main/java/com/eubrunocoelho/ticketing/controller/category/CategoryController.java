@@ -7,7 +7,6 @@ import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.category.CategoryService;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
-import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,7 +43,7 @@ public class CategoryController extends BaseController
     )
     @PreAuthorize( "@categorySecurity.canCreateCategory()" )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> createCategory(
-            @RequestBody @Valid CategoryCreateDto categoryCreateDTO
+            @RequestBody CategoryCreateDto categoryCreateDTO
     )
     {
         CategoryResponseDto createdCategoryResponse = categoryService.createCategory(

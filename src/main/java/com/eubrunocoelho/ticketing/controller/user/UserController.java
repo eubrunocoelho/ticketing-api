@@ -11,7 +11,6 @@ import com.eubrunocoelho.ticketing.service.user.UserService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
 import com.eubrunocoelho.ticketing.util.ResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.user.UserSortResolver;
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -53,7 +52,7 @@ public class UserController extends BaseController
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ResponseDto<UserResponseDto>> create(
-            @RequestBody @Valid UserCreateDto userCreateDto
+            @RequestBody UserCreateDto userCreateDto
     )
     {
         UserResponseDto createdUserResponse = userService.createUser( userCreateDto );
@@ -102,7 +101,7 @@ public class UserController extends BaseController
     @PreAuthorize( "@userSecurity.canUpdateUser(#id)" )
     public ResponseEntity<ResponseDto<UserResponseDto>> updateUser(
             @PathVariable Long id,
-            @RequestBody @Valid UserUpdateDto userUpdateDto
+            @RequestBody UserUpdateDto userUpdateDto
     )
     {
         UserResponseDto updatedUserResponse = userService.updateUser( id, userUpdateDto );
@@ -118,7 +117,7 @@ public class UserController extends BaseController
     @PreAuthorize( "@userSecurity.canUpdateUserRole(#id)" )
     public ResponseEntity<ResponseDto<UserResponseDto>> updateUserRole(
             @PathVariable Long id,
-            @RequestBody @Valid UserRoleUpdateDto userRoleUpdateDto
+            @RequestBody UserRoleUpdateDto userRoleUpdateDto
     )
     {
         UserResponseDto updatedUserRoleResponse = userService.updateUserRole( id, userRoleUpdateDto );
