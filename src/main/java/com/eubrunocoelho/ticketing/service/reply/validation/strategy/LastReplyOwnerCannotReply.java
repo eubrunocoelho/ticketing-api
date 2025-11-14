@@ -23,8 +23,10 @@ public class LastReplyOwnerCannotReply implements ReplyValidationStrategy
                         lastReply ->
                         {
                             boolean isReplyOwner = lastReply.getCreatedUser().getId().equals( loggedUser.getId() );
+                            boolean isReplyCreatedUserIsUser =
+                                    lastReply.getCreatedUser().getRole() == User.Role.ROLE_USER;
 
-                            if ( isReplyOwner )
+                            if ( isReplyOwner && isReplyCreatedUserIsUser )
                             {
                                 throw new SelfReplyNotAllowedException(
                                         "Você não pode responder sua própria resposta."

@@ -1,6 +1,8 @@
 package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
+import com.eubrunocoelho.ticketing.exception.business.TicketClosedReplyNotAllowedException;
+import com.eubrunocoelho.ticketing.exception.business.TicketResolvedReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenExpiredException;
 import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
@@ -29,7 +31,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 {
-    @SuppressWarnings( "unused" )
     @Value( "${server.error.include-stacktrace:NEVER}" )
     private ErrorProperties.IncludeAttribute includeStackTrace;
 
@@ -233,6 +234,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ResponseStatus( HttpStatus.FORBIDDEN )
     public ResponseEntity<Object> handleSelfReplyNotAllowedException(
             SelfReplyNotAllowedException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
+    @ExceptionHandler( TicketClosedReplyNotAllowedException.class )
+    @ResponseStatus( HttpStatus.FORBIDDEN )
+    public ResponseEntity<Object> handleTicketClosedReplyNotAllowedException(
+            TicketClosedReplyNotAllowedException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
+    @ExceptionHandler( TicketResolvedReplyNotAllowedException.class )
+    @ResponseStatus( HttpStatus.FORBIDDEN )
+    public ResponseEntity<Object> handleTicketResolvedReplyNotAllowedException(
+            TicketResolvedReplyNotAllowedException exception,
             WebRequest request
     )
     {
