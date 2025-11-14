@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -123,5 +124,18 @@ public class UserController extends BaseController
         UserResponseDto updatedUserRoleResponse = userService.updateUserRole( id, userRoleUpdateDto );
 
         return okResponse( updatedUserRoleResponse );
+    }
+
+    @DeleteMapping(
+            value = "/{id}"
+    )
+    @PreAuthorize( "@userSecurity.canDeleteUser(#id)" )
+    public ResponseEntity<Void> deleteUser(
+            @PathVariable Long id
+    )
+    {
+        userService.deleteUser( id );
+
+        return noContentResponse();
     }
 }
