@@ -1,15 +1,15 @@
-package com.eubrunocoelho.ticketing.service.reply.validation.delete.strategy.rule;
+package com.eubrunocoelho.ticketing.service.reply.validation.delete.rule;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.exception.business.ReplyAlreadyHasChildException;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
-import com.eubrunocoelho.ticketing.service.reply.validation.delete.strategy.ReplyDeleteValidationStrategy;
+import com.eubrunocoelho.ticketing.service.reply.validation.delete.ReplyDeleteValidationRule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyHasNoChildren implements ReplyDeleteValidationStrategy
+public class ReplyHasNoChildrenRule implements ReplyDeleteValidationRule
 {
     private final ReplyRepository replyRepository;
 

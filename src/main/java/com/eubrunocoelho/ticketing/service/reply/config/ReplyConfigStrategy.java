@@ -1,10 +1,10 @@
-package com.eubrunocoelho.ticketing.service.reply.strategy;
+package com.eubrunocoelho.ticketing.service.reply.config;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 
-public interface ReplyStrategy
+public interface ReplyConfigStrategy
 {
     boolean applies( Ticket ticket, User loggedUser );
 

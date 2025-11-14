@@ -1,10 +1,10 @@
-package com.eubrunocoelho.ticketing.service.reply.validation.create.strategy.rule;
+package com.eubrunocoelho.ticketing.service.reply.validation.create.rule;
 
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.business.TicketResolvedReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
-import com.eubrunocoelho.ticketing.service.reply.validation.create.strategy.ReplyCreateValidationStrategy;
+import com.eubrunocoelho.ticketing.service.reply.validation.create.ReplyCreateValidationRule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Order( 4 )
-public class TicketNotResolved implements ReplyCreateValidationStrategy
+public class TicketNotResolvedRule implements ReplyCreateValidationRule
 {
     private final TicketRepository ticketRepository;
 

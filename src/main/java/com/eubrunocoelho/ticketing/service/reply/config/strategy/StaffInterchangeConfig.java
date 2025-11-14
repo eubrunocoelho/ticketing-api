@@ -1,10 +1,11 @@
-package com.eubrunocoelho.ticketing.service.reply.strategy;
+package com.eubrunocoelho.ticketing.service.reply.config.strategy;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
-import com.eubrunocoelho.ticketing.service.reply.strategy.helper.BuildReplyHelper;
-import com.eubrunocoelho.ticketing.service.reply.strategy.helper.StaffInterchangeConfigurator;
+import com.eubrunocoelho.ticketing.service.reply.config.ReplyConfigStrategy;
+import com.eubrunocoelho.ticketing.service.reply.config.helper.ReplyConfigHelper;
+import com.eubrunocoelho.ticketing.service.reply.config.helper.StaffInterchangeHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,10 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 @Order( 2 )
-public class StaffInterchangeReply implements ReplyStrategy
+public class StaffInterchangeConfig implements ReplyConfigStrategy
 {
-    private final BuildReplyHelper buildReplyHelper;
-    private final StaffInterchangeConfigurator staffInterchangeConfigurator;
+    private final ReplyConfigHelper buildReplyHelper;
+    private final StaffInterchangeHelper staffInterchangeConfigurator;
 
     @Override
     public boolean applies( Ticket ticket, User loggedUser )

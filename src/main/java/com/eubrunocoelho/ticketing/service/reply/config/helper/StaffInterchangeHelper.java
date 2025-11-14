@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.reply.strategy.helper;
+package com.eubrunocoelho.ticketing.service.reply.config.helper;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class StaffInterchangeConfigurator
+public class StaffInterchangeHelper
 {
-    private final BuildReplyHelper buildReplyHelper;
+    private final ReplyConfigHelper buildReplyHelper;
 
     public void configureReplyStaffToUser(
             Reply reply,

@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.reply.validation.delete.strategy;
+package com.eubrunocoelho.ticketing.service.reply.validation.delete;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +8,9 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyDeleteValidationExecutor
+public class ReplyDeleteValidator
 {
-    private final List<ReplyDeleteValidationStrategy> strategies;
+    private final List<ReplyDeleteValidationRule> strategies;
 
     public void execute( Reply reply )
     {

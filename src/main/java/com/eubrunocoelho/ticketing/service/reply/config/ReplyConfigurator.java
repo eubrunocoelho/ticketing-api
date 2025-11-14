@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.reply.strategy;
+package com.eubrunocoelho.ticketing.service.reply.config;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.Ticket;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReplyConfigurator
 {
-    private final List<ReplyStrategy> strategies;
+    private final List<ReplyConfigStrategy> strategies;
 
     public void configure( Reply reply, Ticket ticket, User loggedUser )
     {

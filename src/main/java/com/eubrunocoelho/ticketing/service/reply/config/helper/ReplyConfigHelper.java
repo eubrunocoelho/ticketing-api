@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.reply.strategy.helper;
+package com.eubrunocoelho.ticketing.service.reply.config.helper;
 
 import com.eubrunocoelho.ticketing.entity.Reply;
 import com.eubrunocoelho.ticketing.entity.User;
@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class BuildReplyHelper
+public class ReplyConfigHelper
 {
     private final ReplyRepository replyRepository;
 
