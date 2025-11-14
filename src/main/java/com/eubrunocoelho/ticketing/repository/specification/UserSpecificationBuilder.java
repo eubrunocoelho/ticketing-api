@@ -19,6 +19,7 @@ public class UserSpecificationBuilder
     {
         return Stream
                 .of(
+                        createSpecification( filter.search(), this::userContains ),
                         createSpecification( filter.role(), this::roleEquals )
                 )
                 .flatMap( Optional::stream )
@@ -41,6 +42,15 @@ public class UserSpecificationBuilder
         }
 
         return Optional.ofNullable( value ).map( function );
+    }
+
+    private Specification<User> userContains( String searchTerm )
+    {
+        return ( root, query, cb ) ->
+                cb.or(
+                        cb.like( cb.lower( root.get( "email" ) ), "%" + searchTerm.toLowerCase() + "%" ),
+                        cb.like( cb.lower( root.get( "username" ) ), "%" + searchTerm.toLowerCase() + "%" )
+                );
     }
 
     private Specification<User> roleEquals( String role )
