@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.dto.reply.ReplyFilterDto;
 import com.eubrunocoelho.ticketing.event.reply.ReplyCreatedEvent;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.repository.specification.ReplySpecificationBuilder;
+import com.eubrunocoelho.ticketing.service.reply.validation.delete.ReplyDeleteValidationService;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyCreateDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
@@ -15,7 +16,7 @@ import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
 import com.eubrunocoelho.ticketing.mapper.ReplyMapper;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
-import com.eubrunocoelho.ticketing.service.reply.validation.ReplyValidationService;
+import com.eubrunocoelho.ticketing.service.reply.validation.create.ReplyCreateValidationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -36,7 +37,8 @@ public class ReplyService
     private final TicketRepository ticketRepository;
     private final ReplyRepository replyRepository;
     private final ReplyFactory replyFactory;
-    private final ReplyValidationService replyValidationService;
+    private final ReplyCreateValidationService replyCreateValidationService;
+    private final ReplyDeleteValidationService replyDeleteValidationService;
     private final ReplyMapper replyMapper;
     private final ReplySpecificationBuilder replySpecificationBuilder;
     private final UserPrincipalService userPrincipalService;
@@ -56,7 +58,7 @@ public class ReplyService
                         )
                 );
 
-        replyValidationService.validate( ticket, loggedUser );
+        replyCreateValidationService.validate( ticket, loggedUser );
         Reply reply = replyFactory.buildReply( replyCreateDto, ticket, loggedUser );
         Reply createdReply = replyRepository.save( reply );
 
@@ -150,6 +152,7 @@ public class ReplyService
 
         try
         {
+            replyDeleteValidationService.validate( reply );
             replyRepository.deleteById( reply.getId() );
         }
         catch ( DataIntegrityViolationException ex )

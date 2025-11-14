@@ -1,9 +1,9 @@
-package com.eubrunocoelho.ticketing.service.reply.validation.strategy;
+package com.eubrunocoelho.ticketing.service.reply.validation.create.strategy;
 
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 
-public interface ReplyValidationStrategy
+public interface ReplyCreateValidationStrategy
 {
     void validate( Ticket ticket, User loggedUser );
 }

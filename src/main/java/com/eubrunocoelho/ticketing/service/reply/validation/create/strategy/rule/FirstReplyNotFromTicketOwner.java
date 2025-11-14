@@ -1,10 +1,11 @@
-package com.eubrunocoelho.ticketing.service.reply.validation.strategy;
+package com.eubrunocoelho.ticketing.service.reply.validation.create.strategy.rule;
 
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
+import com.eubrunocoelho.ticketing.service.reply.validation.create.strategy.ReplyCreateValidationStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Order( 1 )
-public class TicketOwnerCannotFirstReply implements ReplyValidationStrategy
+public class FirstReplyNotFromTicketOwner implements ReplyCreateValidationStrategy
 {
     private final TicketRepository ticketRepository;
     private final ReplyRepository replyRepository;

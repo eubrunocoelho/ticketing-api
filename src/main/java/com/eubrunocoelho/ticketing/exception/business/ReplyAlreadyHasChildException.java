@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus( HttpStatus.FORBIDDEN )
-public class SelfReplyNotAllowedException extends RuntimeException
+public class ReplyAlreadyHasChildException extends RuntimeException
 {
-    public SelfReplyNotAllowedException( String message )
+    public ReplyAlreadyHasChildException( String message )
     {
         super( message );
     }

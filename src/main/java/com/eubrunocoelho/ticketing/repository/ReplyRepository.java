@@ -12,6 +12,8 @@ public interface ReplyRepository extends JpaRepository<Reply, Long>, JpaSpecific
 {
     boolean existsByTicketId( Long ticketId );
 
+    boolean existsByParentId( Long replyId );
+
     Optional<Reply> findByTicketIdAndId( Long ticketId, Long id );
 
     Optional<Reply> findTopByTicketIdOrderByCreatedAtDesc( Long ticketId );

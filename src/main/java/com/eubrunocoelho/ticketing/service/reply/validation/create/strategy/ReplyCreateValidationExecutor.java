@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.service.reply.validation.strategy;
+package com.eubrunocoelho.ticketing.service.reply.validation.create.strategy;
 
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
@@ -9,9 +9,9 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ReplyValidationExecutor
+public class ReplyCreateValidationExecutor
 {
-    private final List<ReplyValidationStrategy>  strategies;
+    private final List<ReplyCreateValidationStrategy>  strategies;
 
     public void execute( Ticket ticket, User loggedUser )
     {

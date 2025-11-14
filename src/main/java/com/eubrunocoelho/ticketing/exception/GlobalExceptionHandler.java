@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
+import com.eubrunocoelho.ticketing.exception.business.ReplyAlreadyHasChildException;
 import com.eubrunocoelho.ticketing.exception.business.TicketClosedReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.business.TicketResolvedReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenExpiredException;
@@ -262,6 +263,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ResponseStatus( HttpStatus.FORBIDDEN )
     public ResponseEntity<Object> handleTicketResolvedReplyNotAllowedException(
             TicketResolvedReplyNotAllowedException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
+    @ExceptionHandler( ReplyAlreadyHasChildException.class )
+    @ResponseStatus( HttpStatus.FORBIDDEN )
+    public ResponseEntity<Object> handleReplyAlreadyHasChildException(
+            ReplyAlreadyHasChildException exception,
             WebRequest request
     )
     {

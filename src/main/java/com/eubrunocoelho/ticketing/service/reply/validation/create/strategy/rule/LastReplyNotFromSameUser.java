@@ -1,9 +1,10 @@
-package com.eubrunocoelho.ticketing.service.reply.validation.strategy;
+package com.eubrunocoelho.ticketing.service.reply.validation.create.strategy.rule;
 
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.business.SelfReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
+import com.eubrunocoelho.ticketing.service.reply.validation.create.strategy.ReplyCreateValidationStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Order( 2 )
-public class LastReplyOwnerCannotReply implements ReplyValidationStrategy
+public class LastReplyNotFromSameUser implements ReplyCreateValidationStrategy
 {
     private final ReplyRepository replyRepository;
 
@@ -29,7 +30,7 @@ public class LastReplyOwnerCannotReply implements ReplyValidationStrategy
                             if ( isReplyOwner && isReplyCreatedUserIsUser )
                             {
                                 throw new SelfReplyNotAllowedException(
-                                        "Você não pode responder sua própria resposta."
+                                        "Você não pode responder diretamente sua própria resposta."
                                 );
                             }
                         }
