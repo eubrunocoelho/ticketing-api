@@ -25,6 +25,11 @@ public abstract class BaseSecurity
         return userPrincipalService.getLoggedInUser();
     }
 
+    protected boolean isAdmin( User user )
+    {
+        return user.getRole() == User.Role.ROLE_ADMIN;
+    }
+
     protected boolean isAdminOrStaff( User user )
     {
         return STAFF_ROLES.contains( user.getRole() );

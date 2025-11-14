@@ -3,6 +3,7 @@ package com.eubrunocoelho.ticketing.service.user;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserFilterDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
+import com.eubrunocoelho.ticketing.dto.user.UserRoleUpdateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.mapper.UserMapper;
@@ -85,5 +86,22 @@ public class UserService
         User updatedUser = userRepository.save( user );
 
         return userMapper.toDto( updatedUser );
+    }
+
+    @Transactional
+    public UserResponseDto updateUserRole( Long id, UserRoleUpdateDto userRoleUpdateDto )
+    {
+        User user = userRepository
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Usuário não econtrado. {id}: " + id
+                        )
+                );
+
+        userMapper.updateUserRoleFromDto( userRoleUpdateDto, user );
+        User updatedUserRole = userRepository.save( user );
+
+        return userMapper.toDto( updatedUserRole );
     }
 }

@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.security.authorization;
 
+import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import org.springframework.stereotype.Component;
@@ -52,5 +53,18 @@ public class UserSecurity extends BaseSecurity
                         user -> isOwner( getLoggedUser(), user.getId() )
                 )
                 .orElse( false );
+    }
+
+    public boolean canUpdateUserRole( Long userId )
+    {
+        boolean loggedUserIsAdmin = isAdmin( getLoggedUser() );
+        boolean ownerUserIsNotAdmin = userRepository
+                .findById( userId )
+                .map(
+                        user -> !isAdmin( user )
+                )
+                .orElse( false );
+
+        return loggedUserIsAdmin && ownerUserIsNotAdmin;
     }
 }
