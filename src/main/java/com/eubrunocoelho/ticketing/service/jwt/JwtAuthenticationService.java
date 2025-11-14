@@ -29,7 +29,7 @@ public class JwtAuthenticationService
 
         if ( token == null )
         {
-            return;
+            return ;
         }
 
         try
