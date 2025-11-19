@@ -1,4 +1,4 @@
-package com.eubrunocoelho.ticketing.security.authorization;
+package com.eubrunocoelho.ticketing.security.permission;
 
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public abstract class BaseSecurity
+public abstract class BasePermission
 {
     /**
      * Responsável por usuário principal autenticado {@link User}

@@ -1,17 +1,17 @@
-package com.eubrunocoelho.ticketing.security.authorization;
+package com.eubrunocoelho.ticketing.security.permission;
 
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.repository.TicketRepository;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import org.springframework.stereotype.Component;
 
-@Component( "replySecurity" )
-public class ReplySecurity extends BaseSecurity
+@Component( "replyPermission" )
+public class ReplyPermission extends BasePermission
 {
     private final TicketRepository ticketRepository;
     private final ReplyRepository replyRepository;
 
-    public ReplySecurity(
+    public ReplyPermission(
             UserPrincipalService userPrincipalService,
             TicketRepository ticketRepository,
             ReplyRepository replyRepository

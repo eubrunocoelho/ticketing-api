@@ -52,7 +52,7 @@ public class TicketController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@ticketSecurity.canCreateTicket()" )
+    @PreAuthorize( "@ticketPermission.canCreateTicket()" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> createTicket(
             @RequestBody TicketCreateDto ticketCreateDto
     )
@@ -66,7 +66,7 @@ public class TicketController extends BaseController
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@ticketSecurity.canAccessTicket(#id)" )
+    @PreAuthorize( "@ticketPermission.canAccessTicket(#id)" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> findTicket(
             @PathVariable Long id
     )
@@ -79,7 +79,7 @@ public class TicketController extends BaseController
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@ticketSecurity.canAccessAllTickets()" )
+    @PreAuthorize( "@ticketPermission.canAccessAllTickets()" )
     public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAllTickets(
             TicketFilterDto filter,
             Pageable pageable,
@@ -102,7 +102,7 @@ public class TicketController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@ticketSecurity.canUpdateTicket(#id)" )
+    @PreAuthorize( "@ticketPermission.canUpdateTicket(#id)" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> updateTicket(
             @PathVariable Long id,
             @RequestBody TicketUpdateDto ticketUpdateDto
@@ -118,7 +118,7 @@ public class TicketController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@ticketSecurity.canUpdateTicketStatus(#id)" )
+    @PreAuthorize( "@ticketPermission.canUpdateTicketStatus(#id)" )
     public ResponseEntity<ResponseDto<TicketResponseDto>> updateTicketStatus(
             @PathVariable Long id,
             @RequestBody TicketStatusUpdateDto ticketStatusUpdateDto
@@ -132,7 +132,7 @@ public class TicketController extends BaseController
     @DeleteMapping(
             value = "/{id}"
     )
-    @PreAuthorize( "@ticketSecurity.canDeleteTicket(#id)" )
+    @PreAuthorize( "@ticketPermission.canDeleteTicket(#id)" )
     public ResponseEntity<Void> deleteTicket(
             @PathVariable Long id
     )

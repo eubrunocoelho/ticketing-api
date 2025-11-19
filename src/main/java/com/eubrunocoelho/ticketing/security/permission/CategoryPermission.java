@@ -1,12 +1,12 @@
-package com.eubrunocoelho.ticketing.security.authorization;
+package com.eubrunocoelho.ticketing.security.permission;
 
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import org.springframework.stereotype.Component;
 
-@Component( "categorySecurity" )
-public class CategorySecurity extends BaseSecurity
+@Component( "categoryPermission" )
+public class CategoryPermission extends BasePermission
 {
-    protected CategorySecurity( UserPrincipalService userPrincipalService )
+    protected CategoryPermission( UserPrincipalService userPrincipalService )
     {
         super( userPrincipalService );
     }

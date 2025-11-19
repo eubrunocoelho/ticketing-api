@@ -1,16 +1,15 @@
-package com.eubrunocoelho.ticketing.security.authorization;
+package com.eubrunocoelho.ticketing.security.permission;
 
-import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import org.springframework.stereotype.Component;
 
-@Component( "userSecurity" )
-public class UserSecurity extends BaseSecurity
+@Component( "userPermission" )
+public class UserPermission extends BasePermission
 {
     private final UserRepository userRepository;
 
-    public UserSecurity(
+    public UserPermission(
             UserPrincipalService userPrincipalService,
             UserRepository userRepository
     )

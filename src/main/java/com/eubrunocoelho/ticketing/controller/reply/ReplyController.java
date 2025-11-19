@@ -52,7 +52,7 @@ public class ReplyController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@replySecurity.canCreateReply(#ticketId)" )
+    @PreAuthorize( "@replyPermission.canCreateReply(#ticketId)" )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> createReply(
             @PathVariable Long ticketId,
             @RequestBody ReplyCreateDto replyCreateDto
@@ -70,7 +70,7 @@ public class ReplyController extends BaseController
             value = "/{ticketId}/reply/{replyId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@replySecurity.canAccessReply(#ticketId)" )
+    @PreAuthorize( "@replyPermission.canAccessReply(#ticketId)" )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> findReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId
@@ -88,7 +88,7 @@ public class ReplyController extends BaseController
             value = "/{ticketId}/reply",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@replySecurity.canAccessRepliesByTicket(#ticketId)" )
+    @PreAuthorize( "@replyPermission.canAccessRepliesByTicket(#ticketId)" )
     public ResponseEntity<ResponseDto<List<ReplyResponseDto>>> findAllRepliesByTicket(
             @PathVariable Long ticketId,
             ReplyFilterDto filter,
@@ -111,7 +111,7 @@ public class ReplyController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@replySecurity.canUpdateReply(#ticketId, #replyId)" )
+    @PreAuthorize( "@replyPermission.canUpdateReply(#ticketId, #replyId)" )
     public ResponseEntity<ResponseDto<ReplyResponseDto>> updateReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId,
@@ -130,7 +130,7 @@ public class ReplyController extends BaseController
     @DeleteMapping(
             value = "/{ticketId}/reply/{replyId}"
     )
-    @PreAuthorize( "@replySecurity.canDeleteReply(#ticketId, #replyId)" )
+    @PreAuthorize( "@replyPermission.canDeleteReply(#ticketId, #replyId)" )
     public ResponseEntity<Void> deleteReply(
             @PathVariable Long ticketId,
             @PathVariable Long replyId

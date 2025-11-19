@@ -41,7 +41,7 @@ public class CategoryController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@categorySecurity.canCreateCategory()" )
+    @PreAuthorize( "@categoryPermission.canCreateCategory()" )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> createCategory(
             @RequestBody CategoryCreateDto categoryCreateDTO
     )
@@ -79,7 +79,7 @@ public class CategoryController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@categorySecurity.canUpdateCategory()" )
+    @PreAuthorize( "@categoryPermission.canUpdateCategory()" )
     public ResponseEntity<ResponseDto<CategoryResponseDto>> updateCategory(
             @PathVariable Long id,
             @RequestBody CategoryUpdateDto categoryUpdateDto
@@ -96,7 +96,7 @@ public class CategoryController extends BaseController
     @DeleteMapping(
             value = "/{id}"
     )
-    @PreAuthorize( "@categorySecurity.canDeleteCategory()" )
+    @PreAuthorize( "@categoryPermission.canDeleteCategory()" )
     public ResponseEntity<Void> deleteCategory(
             @PathVariable Long id
     )

@@ -64,7 +64,7 @@ public class UserController extends BaseController
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@userSecurity.canAccessAllUsers()" )
+    @PreAuthorize( "@userPermission.canAccessAllUsers()" )
     public ResponseEntity<ResponseDto<List<UserResponseDto>>> findAllUsers(
             UserFilterDto filter,
             Pageable pageable,
@@ -86,7 +86,7 @@ public class UserController extends BaseController
             value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@userSecurity.canAccessUser(#id)" )
+    @PreAuthorize( "@userPermission.canAccessUser(#id)" )
     public ResponseEntity<ResponseDto<UserResponseDto>> findUser( @PathVariable Long id )
     {
         UserResponseDto userResponse = userService.findById( id );
@@ -99,7 +99,7 @@ public class UserController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@userSecurity.canUpdateUser(#id)" )
+    @PreAuthorize( "@userPermission.canUpdateUser(#id)" )
     public ResponseEntity<ResponseDto<UserResponseDto>> updateUser(
             @PathVariable Long id,
             @RequestBody UserUpdateDto userUpdateDto
@@ -115,7 +115,7 @@ public class UserController extends BaseController
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @PreAuthorize( "@userSecurity.canUpdateUserRole(#id)" )
+    @PreAuthorize( "@userPermission.canUpdateUserRole(#id)" )
     public ResponseEntity<ResponseDto<UserResponseDto>> updateUserRole(
             @PathVariable Long id,
             @RequestBody UserRoleUpdateDto userRoleUpdateDto
@@ -129,7 +129,7 @@ public class UserController extends BaseController
     @DeleteMapping(
             value = "/{id}"
     )
-    @PreAuthorize( "@userSecurity.canDeleteUser(#id)" )
+    @PreAuthorize( "@userPermission.canDeleteUser(#id)" )
     public ResponseEntity<Void> deleteUser(
             @PathVariable Long id
     )
