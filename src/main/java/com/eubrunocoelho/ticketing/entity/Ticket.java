@@ -17,6 +17,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,6 +36,7 @@ import java.util.List;
 @Builder
 @Table( name = "tickets" )
 @EntityListeners( AuditingEntityListener.class )
+@EqualsAndHashCode( onlyExplicitlyIncluded = true )
 public class Ticket
 {
     public enum Status
@@ -67,6 +69,7 @@ public class Ticket
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id", nullable = false )
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne( optional = false, fetch = FetchType.LAZY )

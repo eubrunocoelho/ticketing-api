@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,11 +31,13 @@ import java.time.LocalDateTime;
 @Builder
 @Table( name = "replies" )
 @EntityListeners( AuditingEntityListener.class )
+@EqualsAndHashCode( onlyExplicitlyIncluded = true )
 public class Reply
 {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id", nullable = false )
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne( fetch = FetchType.LAZY, optional = false )

@@ -11,6 +11,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table( name = "users" )
 @EntityListeners( AuditingEntityListener.class )
+@EqualsAndHashCode( onlyExplicitlyIncluded = true )
 public class User
 {
     public enum Role
@@ -54,6 +56,7 @@ public class User
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id", nullable = false )
+    @EqualsAndHashCode.Include
     Long id;
 
     @Column( name = "email", nullable = false, unique = true )
