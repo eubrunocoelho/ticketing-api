@@ -5,6 +5,7 @@ import com.eubrunocoelho.ticketing.entity.Ticket;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.repository.ReplyRepository;
 import com.eubrunocoelho.ticketing.service.reply.config.ReplyConfigStrategy;
+import com.eubrunocoelho.ticketing.service.reply.config.helper.ReplyConfigHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -15,11 +16,12 @@ import org.springframework.stereotype.Component;
 public class SubsequentReplyConfig implements ReplyConfigStrategy
 {
     private final ReplyRepository replyRepository;
+    private final ReplyConfigHelper replyConfigHelper;
 
     @Override
     public boolean applies( Ticket ticket, User loggedUser )
     {
-        return replyRepository.existsByTicketId( ticket.getId() );
+        return replyConfigHelper.existsReply( ticket.getId() );
     }
 
     @Override

@@ -11,11 +11,11 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryUpdateValidationService
+public class CategoryValidationService
 {
     private final Validator validator;
 
-    public void validate( CategoryUpdateDto categoryUpdateDto )
+    public void updateValidate( CategoryUpdateDto categoryUpdateDto )
     {
         Set<ConstraintViolation<CategoryUpdateDto>> violations = validator
                 .validate( categoryUpdateDto );

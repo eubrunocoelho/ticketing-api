@@ -55,6 +55,7 @@ public class StaffInterchangeConfig implements ReplyConfigStrategy
                             lastReplyUserRole,
                             loggedUser
                     );
+
                     staffInterchangeConfigurator.configureReplyStaffToUser(
                             ticket,
                             reply,

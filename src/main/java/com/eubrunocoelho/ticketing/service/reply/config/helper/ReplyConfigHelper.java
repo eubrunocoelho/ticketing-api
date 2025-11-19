@@ -28,14 +28,14 @@ public class ReplyConfigHelper
         return replyRepository.findTopByTicketIdOrderByCreatedAtDesc( ticketId );
     }
 
-    public boolean existsReply( Long ticketId )
-    {
-        return replyRepository.existsByTicketId( ticketId );
-    }
-
     public Optional<Reply> findLastReplyByUserRole( Long ticketId, User.Role role )
     {
         return replyRepository
                 .findTopByTicketIdAndCreatedUserRoleOrderByCreatedAtDesc( ticketId, role );
+    }
+
+    public boolean existsReply( Long ticketId )
+    {
+        return replyRepository.existsByTicketId( ticketId );
     }
 }

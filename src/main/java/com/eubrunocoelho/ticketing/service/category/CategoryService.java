@@ -8,7 +8,7 @@ import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationExceptio
 import com.eubrunocoelho.ticketing.mapper.CategoryMapper;
 import com.eubrunocoelho.ticketing.repository.CategoryRepository;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
-import com.eubrunocoelho.ticketing.service.category.validation.CategoryUpdateValidationService;
+import com.eubrunocoelho.ticketing.service.category.validation.CategoryValidationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,7 +25,7 @@ public class CategoryService
 {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-    private final CategoryUpdateValidationService categoryUpdateValidationService;
+    private final CategoryValidationService categoryValidationService;
 
     @Transactional
     public CategoryResponseDto createCategory( @Valid CategoryCreateDto categoryCreateDTO )
@@ -79,7 +79,7 @@ public class CategoryService
                 categoryUpdateDto
         );
 
-        categoryUpdateValidationService.validate( categoryUpdateDtoWithId );
+        categoryValidationService.updateValidate( categoryUpdateDtoWithId );
 
         categoryMapper.updateCategoryFromDto( categoryUpdateDtoWithId, category );
         Category updatedCategory = categoryRepository.save( category );
