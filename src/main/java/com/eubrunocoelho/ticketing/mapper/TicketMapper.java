@@ -3,6 +3,7 @@ package com.eubrunocoelho.ticketing.mapper;
 import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
+import com.eubrunocoelho.ticketing.dto.ticket.TicketStatusUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.replies.TicketRepliesResponseDto;
 import com.eubrunocoelho.ticketing.entity.Category;
@@ -49,6 +50,14 @@ public interface TicketMapper
     @Mapping( target = "id", ignore = true )
     @Mapping( target = "category", ignore = true )
     void updateTicketFromDto( TicketUpdateDto ticketUpdateDto, @MappingTarget Ticket ticket, Category category );
+
+    @Named( "updateTicketStatusFromDto" )
+    @Mapping( target = "id", ignore = true )
+    @Mapping( target = "category", ignore = true )
+    void updateTicketStatusFromDto(
+            TicketStatusUpdateDto ticketStatusUpdateDto,
+            @MappingTarget Ticket ticket
+    );
 
     @Named( "mapTicketForReply" )
     @Mapping( target = "user", source = "user" )

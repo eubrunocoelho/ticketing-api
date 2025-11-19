@@ -5,6 +5,7 @@ import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
+import com.eubrunocoelho.ticketing.dto.ticket.TicketStatusUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
@@ -110,6 +111,22 @@ public class TicketController extends BaseController
         TicketResponseDto updatedTicketResponse = ticketService.updateTicket( id, ticketUpdateDto );
 
         return okResponse( updatedTicketResponse );
+    }
+
+    @PatchMapping(
+            value = "/{id}/status",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PreAuthorize( "@ticketSecurity.canUpdateTicketStatus(#id)" )
+    public ResponseEntity<ResponseDto<TicketResponseDto>> updateTicketStatus(
+            @PathVariable Long id,
+            @RequestBody TicketStatusUpdateDto ticketStatusUpdateDto
+    )
+    {
+        TicketResponseDto updatedTicketStatusResponse = ticketService.updateTicketStatus( id, ticketStatusUpdateDto );
+
+        return okResponse( updatedTicketStatusResponse );
     }
 
     @DeleteMapping(

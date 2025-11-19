@@ -59,6 +59,11 @@ public class TicketSecurity extends BaseSecurity
                 .orElse( false );
     }
 
+    public boolean canUpdateTicketStatus( Long ticketId )
+    {
+        return isAdminOrStaff( getLoggedUser() );
+    }
+
     public boolean canDeleteTicket( Long ticketId )
     {
         if ( isAdminOrStaff( getLoggedUser() ) )

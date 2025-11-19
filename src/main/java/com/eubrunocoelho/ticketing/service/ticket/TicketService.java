@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.service.ticket;
 
 import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
+import com.eubrunocoelho.ticketing.dto.ticket.TicketStatusUpdateDto;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.repository.specification.TicketSpecificationBuilder;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
@@ -120,9 +121,26 @@ public class TicketService
             ticket.setCategory( category );
         }
 
-        Ticket updateTicket = ticketRepository.save( ticket );
+        Ticket updatedTicket = ticketRepository.save( ticket );
 
-        return ticketMapper.toDto( updateTicket );
+        return ticketMapper.toDto( updatedTicket );
+    }
+
+    @Transactional
+    public TicketResponseDto updateTicketStatus( Long id, @Valid TicketStatusUpdateDto ticketStatusUpdateDto )
+    {
+        Ticket ticket = ticketRepository
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Ticket não encontrado. {id}: " + id
+                        )
+                );
+
+        ticketMapper.updateTicketStatusFromDto( ticketStatusUpdateDto, ticket );
+        Ticket updatedTicketStatus = ticketRepository.save( ticket );
+
+        return ticketMapper.toDto( updatedTicketStatus );
     }
 
     @Transactional
