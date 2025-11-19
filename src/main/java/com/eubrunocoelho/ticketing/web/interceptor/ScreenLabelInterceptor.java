@@ -1,13 +1,14 @@
 package com.eubrunocoelho.ticketing.web.interceptor;
 
+import com.eubrunocoelho.ticketing.context.ScreenLabelRequestContext;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
-import com.eubrunocoelho.ticketing.util.ScreenLabelContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class ScreenLabelInterceptor implements HandlerInterceptor
 {
-
     private static final Logger LOGGER =
             LoggerFactory.getLogger( ScreenLabelInterceptor.class );
 
@@ -27,6 +27,7 @@ public class ScreenLabelInterceptor implements HandlerInterceptor
 
     @Override
     public boolean preHandle(
+            @NonNull
             HttpServletRequest request,
 
             @NonNull
@@ -36,41 +37,12 @@ public class ScreenLabelInterceptor implements HandlerInterceptor
             Object handler
     )
     {
-        String requestInfo = String.format(
-                "[%s]|%s",
-                request.getMethod(),
-                request.getRequestURI()
-        );
-
-        String userInfo = "";
-
-        try
-        {
-            User loggedUser = userPrincipalService.getLoggedInUser();
-
-            if ( loggedUser != null )
-            {
-                userInfo = String.format(
-                        "%s|%s",
-                        loggedUser.getUsername(),
-                        loggedUser.getRole().name()
-                );
-            }
-        }
-        catch ( Exception ex )
-        {
-            ignore();
-        }
-
-        String screenLabel = String.format(
-                SCREEN_LABEL_FORMAT,
-                requestInfo,
-                userInfo
-        );
+        String screenLabel = buildScreenLabel( request );
 
         LOGGER.info( screenLabel );
 
-        ScreenLabelContext.setLabel( screenLabel );
+        ScreenLabelRequestContext.setScreenLabel( screenLabel );
+        MDC.put( "screenLabel", screenLabel );
 
         return true;
     }
@@ -87,12 +59,45 @@ public class ScreenLabelInterceptor implements HandlerInterceptor
             Object handler,
 
             Exception ex
-    ) throws Exception
+    )
     {
-        ScreenLabelContext.clear();
+        ScreenLabelRequestContext.clear();
+        MDC.remove( "screenLabel" );
     }
 
-    public void ignore()
+    private String buildScreenLabel( HttpServletRequest request )
     {
+        String requestInfo = String.format(
+                "[%s]|%s",
+                request.getMethod(),
+                request.getRequestURI()
+        );
+
+        String userInfo = buildUserInfo();
+
+        return String.format( SCREEN_LABEL_FORMAT, requestInfo, userInfo );
+    }
+
+    private String buildUserInfo()
+    {
+        try
+        {
+            User user = userPrincipalService.getLoggedInUser();
+
+            if ( user != null )
+            {
+                return "%s|%s"
+                        .formatted(
+                                user.getUsername(),
+                                user.getRole().name()
+                        );
+            }
+        }
+        catch ( Exception ignored )
+        {
+
+        }
+
+        return "";
     }
 }

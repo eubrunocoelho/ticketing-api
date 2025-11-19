@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.util;
 
+import com.eubrunocoelho.ticketing.context.ScreenLabelRequestContext;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.meta.MetaResponseDto;
 import com.eubrunocoelho.ticketing.mapper.MetaMapper;
@@ -17,14 +18,14 @@ public class ResponseBuilder
 
     public <T> ResponseDto<T> buildSingle( T data )
     {
-        String screenLabel = ScreenLabelContext.getLabel();
+        String screenLabel = ScreenLabelRequestContext.getScreenLabel();
 
         return new ResponseDto<>( screenLabel, data, null );
     }
 
     public <T> ResponseDto<List<T>> buildPaged( Page<T> page )
     {
-        String screenLabel = ScreenLabelContext.getLabel();
+        String screenLabel = ScreenLabelRequestContext.getScreenLabel();
 
         MetaResponseDto meta = metaMapper.toDto( page );
 
