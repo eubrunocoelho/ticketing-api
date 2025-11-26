@@ -73,9 +73,9 @@ public class TicketService
         List<Reply> replies = replyRepository
                 .findByTicketIdOrderByCreatedAtDesc( ticket.getId() );
 
-        ticket.setReplies( replies );
-
-        return ticketMapper.toDtoWithReplies( ticket );
+        return ( replies.isEmpty() )
+                ? ticketMapper.toDto( ticket )
+                : ticketMapper.toDtoWithReplies( ticket );
     }
 
     @Transactional( readOnly = true )

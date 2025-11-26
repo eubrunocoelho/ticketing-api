@@ -17,6 +17,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.List;
+
 @Mapper(
         config = CentralMapperConfig.class,
         uses = {UserMapper.class, CategoryMapper.class}
@@ -38,12 +40,8 @@ public interface TicketMapper
 
     @Named( "ticketToDtoWithReplies" )
     @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
+    @Mapping( target = "replies", source = "ticket.replies", qualifiedByName = "mapTicketRepliesForTicket" )
     TicketResponseDto toDtoWithReplies( Ticket ticket );
-
-    @Named( "ticketRepliesToDto" )
-    @Mapping( target = "createdUser", source = "createdUser", qualifiedByName = "mapUserForReply" )
-    @Mapping( target = "respondedToUser", source = "respondedToUser", qualifiedByName = "mapUserForReply" )
-    TicketRepliesResponseDto toTicketRepliesDto( Reply reply );
 
     @Named( "updateTicketFromDto" )
     @BeanMapping( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
@@ -64,6 +62,11 @@ public interface TicketMapper
     @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
     @Mapping( target = "replies", expression = "java(null)" )
     TicketResponseDto mapTicketForReply( Ticket ticket );
+
+    @Named( "mapTicketRepliesForTicket" )
+    @Mapping( target = "createdUser", source = "reply.createdUser", qualifiedByName = "mapUserForReply" )
+    @Mapping( target = "respondedToUser", source = "reply.respondedToUser", qualifiedByName = "mapUserForReply" )
+    TicketRepliesResponseDto mapTicketRepliesForTicket( Reply reply );
 
     default Ticket.Status defaultStatus()
     {
