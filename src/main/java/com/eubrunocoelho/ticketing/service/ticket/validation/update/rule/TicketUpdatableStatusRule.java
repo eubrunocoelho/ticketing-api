@@ -27,7 +27,7 @@ public class TicketUpdatableStatusRule implements TicketUpdateValidationRule
                 .ifPresent(
                         currentTicket ->
                         {
-                            Ticket.Status ticketStatus = ticket.getStatus();
+                            Ticket.Status ticketStatus = currentTicket.getStatus();
 
                             if ( UNEDITABLE_STATUSES.contains( ticketStatus ) )
                             {
