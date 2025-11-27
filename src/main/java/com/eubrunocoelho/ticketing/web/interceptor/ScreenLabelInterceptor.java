@@ -95,7 +95,6 @@ public class ScreenLabelInterceptor implements HandlerInterceptor
         }
         catch ( Exception ignored )
         {
-
         }
 
         return "";

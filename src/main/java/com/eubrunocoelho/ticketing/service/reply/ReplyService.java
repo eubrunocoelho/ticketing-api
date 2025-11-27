@@ -57,6 +57,7 @@ public class ReplyService
                 );
 
         replyValidationService.createValidate( ticket, loggedUser );
+
         Reply reply = replyFactory.buildReply( replyCreateDto, ticket, loggedUser );
         Reply createdReply = replyRepository.save( reply );
 
@@ -153,6 +154,7 @@ public class ReplyService
         try
         {
             replyValidationService.deleteValidate( reply );
+
             replyRepository.deleteById( reply.getId() );
         }
         catch ( DataIntegrityViolationException ex )
