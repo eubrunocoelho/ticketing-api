@@ -18,6 +18,7 @@ public class TicketUpdatableStatusRule implements TicketUpdateValidationRule
     private static final Set<Ticket.Status> UNEDITABLE_STATUSES = Set
             .of( Ticket.Status.IN_PROGRESS, Ticket.Status.RESOLVED, Ticket.Status.CLOSED );
 
+    @SuppressWarnings( "LineLength" )
     @Override
     public void validate( Ticket ticket )
     {
@@ -31,7 +32,7 @@ public class TicketUpdatableStatusRule implements TicketUpdateValidationRule
                             if ( UNEDITABLE_STATUSES.contains( ticketStatus ) )
                             {
                                 throw new TicketUpdateNotAllowedForStatusException(
-                                        "Você não pode editar um ticket que esteja em progresso, resolvido ou fechado."
+                                        "Você não pode atualizar um ticket que esteja em progresso, resolvido ou fechado."
                                 );
                             }
                         }

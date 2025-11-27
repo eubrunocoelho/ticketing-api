@@ -128,6 +128,8 @@ public class ReplyService
                         )
                 );
 
+        replyValidationService.updateValidate( reply );
+
         replyMapper.updateReplyFromDto( replyUpdateDto, reply );
         Reply updatedReply = replyRepository.save( reply );
 
