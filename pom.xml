@@ -129,6 +129,12 @@
 			<artifactId>jackson-datatype-hibernate6</artifactId>
 			<version>2.19.2</version>
 		</dependency>
+
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -174,15 +180,6 @@
                     <failsOnError>false</failsOnError>
                     <linkXRef>false</linkXRef>
                 </configuration>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>check-style</id>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
             </plugin>
 		</plugins>
 	</build>
