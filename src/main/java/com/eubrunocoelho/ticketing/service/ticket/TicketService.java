@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketStatusUpdateDto;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
 import com.eubrunocoelho.ticketing.repository.specification.TicketSpecificationBuilder;
+import com.eubrunocoelho.ticketing.service.ticket.validation.TicketValidationService;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
@@ -37,6 +38,7 @@ public class TicketService
     private final UserPrincipalService userPrincipalService;
     private final TicketRepository ticketRepository;
     private final TicketSpecificationBuilder ticketSpecificationBuilder;
+    private final TicketValidationService ticketValidationService;
     private final TicketMapper ticketMapper;
     private final CategoryRepository categoryRepository;
     private final ReplyRepository replyRepository;
@@ -101,6 +103,8 @@ public class TicketService
                                 "Ticket não encontrado. {id}: " + id
                         )
                 );
+
+        ticketValidationService.updateValidate( ticket );
 
         Category category = null;
 

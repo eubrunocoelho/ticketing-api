@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.exception;
 
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
 import com.eubrunocoelho.ticketing.exception.business.ReplyAlreadyHasChildException;
+import com.eubrunocoelho.ticketing.exception.business.TicketUpdateNotAllowedForStatusException;
 import com.eubrunocoelho.ticketing.exception.business.TicketClosedReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.business.TicketResolvedReplyNotAllowedException;
 import com.eubrunocoelho.ticketing.exception.jwt.JwtTokenExpiredException;
@@ -231,20 +232,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
-    @ExceptionHandler( SelfReplyNotAllowedException.class )
-    @ResponseStatus( HttpStatus.FORBIDDEN )
-    public ResponseEntity<Object> handleSelfReplyNotAllowedException(
-            SelfReplyNotAllowedException exception,
-            WebRequest request
-    )
-    {
-        return buildErrorResponse(
-                exception,
-                exception.getMessage(),
-                HttpStatus.FORBIDDEN
-        );
-    }
-
     @ExceptionHandler( TicketClosedReplyNotAllowedException.class )
     @ResponseStatus( HttpStatus.FORBIDDEN )
     public ResponseEntity<Object> handleTicketClosedReplyNotAllowedException(
@@ -273,10 +260,38 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
+    @ExceptionHandler( TicketUpdateNotAllowedForStatusException.class )
+    @ResponseStatus( HttpStatus.FORBIDDEN )
+    public ResponseEntity<Object> handleTicketUpdateNotAllowedForStatusException(
+            TicketUpdateNotAllowedForStatusException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
     @ExceptionHandler( ReplyAlreadyHasChildException.class )
     @ResponseStatus( HttpStatus.FORBIDDEN )
     public ResponseEntity<Object> handleReplyAlreadyHasChildException(
             ReplyAlreadyHasChildException exception,
+            WebRequest request
+    )
+    {
+        return buildErrorResponse(
+                exception,
+                exception.getMessage(),
+                HttpStatus.FORBIDDEN
+        );
+    }
+
+    @ExceptionHandler( SelfReplyNotAllowedException.class )
+    @ResponseStatus( HttpStatus.FORBIDDEN )
+    public ResponseEntity<Object> handleSelfReplyNotAllowedException(
+            SelfReplyNotAllowedException exception,
             WebRequest request
     )
     {
