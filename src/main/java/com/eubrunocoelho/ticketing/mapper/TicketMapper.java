@@ -33,15 +33,16 @@ public interface TicketMapper
     Ticket toEntity( TicketCreateDto dto, User user, Category category );
 
     @Named( "ticketToDto" )
-    @Mapping( target = "user", source = "user", qualifiedByName = "userToDto" )
+    @Mapping( target = "user", source = "user", qualifiedByName = "mapUserForTicket" )
     @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
     @Mapping( target = "replies", expression = "java(null)" )
     TicketResponseDto toDto( Ticket ticket );
 
     @Named( "ticketToDtoWithReplies" )
-    @Mapping( target = "category", source = "ticket.category", qualifiedByName = "mapCategoryForTicket" )
+    @Mapping( target = "id", source = "ticket.id" )
+    @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
     @Mapping( target = "replies", source = "replies", qualifiedByName = "mapTicketRepliesForTicket" )
-    TicketResponseDto toDtoWithReplies( Ticket ticket, List<Reply> replies );
+    TicketResponseDto toDtoWithReplies( Ticket ticket, Category category , List<Reply> replies );
 
     @Named( "updateTicketFromDto" )
     @BeanMapping( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
@@ -58,7 +59,7 @@ public interface TicketMapper
     );
 
     @Named( "mapTicketForReply" )
-    @Mapping( target = "user", source = "user" )
+    @Mapping( target = "user", source = "user", qualifiedByName = "mapUserForTicket" )
     @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
     @Mapping( target = "replies", expression = "java(null)" )
     TicketResponseDto mapTicketForReply( Ticket ticket );

@@ -51,9 +51,16 @@ public interface UserMapper
         return encoder.encode( password );
     }
 
+    @Named( "mapUserForTicket" )
+    @Mapping( target = "createdAt", expression = "java(null)" )
+    @Mapping( target = "updatedAt", expression = "java(null)" )
+    UserResponseDto mapUserForTicket( User user );
+
     @Named( "mapUserForReply" )
     @Mapping( target = "id", expression = "java(null)" )
     @Mapping( target = "role", expression = "java(null)" )
+    @Mapping( target = "createdAt", expression = "java(null)" )
+    @Mapping( target = "updatedAt", expression = "java(null)" )
     UserResponseDto mapUserForReply( User user );
 
     default User.Role defaultRole()

@@ -1,5 +1,7 @@
 package com.eubrunocoelho.ticketing.dto.user;
 
+import java.time.LocalDateTime;
+
 public record UserResponseDto(
         Long id,
 
@@ -7,7 +9,11 @@ public record UserResponseDto(
 
         String email,
 
-        String role
+        String role,
+
+        LocalDateTime createdAt,
+
+        LocalDateTime updatedAt
 )
 {
 }

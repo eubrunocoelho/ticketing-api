@@ -77,7 +77,7 @@ public class TicketService
 
         return ( replies.isEmpty() )
                 ? ticketMapper.toDto( ticket )
-                : ticketMapper.toDtoWithReplies( ticket, replies );
+                : ticketMapper.toDtoWithReplies( ticket, ticket.getCategory(), replies );
     }
 
     @Transactional( readOnly = true )
