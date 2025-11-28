@@ -11,11 +11,13 @@ import com.eubrunocoelho.ticketing.service.auth.validation.CredentialValidationS
 import com.eubrunocoelho.ticketing.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Validated
@@ -26,6 +28,9 @@ public class AuthService
     private final JwtProvider jwtProvider;
     private final CredentialValidationService credentialValidationService;
     private final AuthMapper authMapper;
+
+    @Value( "${com.eubrunocoelho.ticketing.jwt.expiration_days}" )
+    private Long jwtExpirationDays;
 
     public AuthResponseDto authenticate( @Valid SignInRequestDto signInRequestDto
     )
@@ -48,7 +53,6 @@ public class AuthService
         return authMapper.toDto( user, authToken );
     }
 
-    // Add constant for expireInterval
     public String generateAuthToken( User user )
     {
         Map<String, String> claims = new HashMap<>();
@@ -57,7 +61,7 @@ public class AuthService
         return jwtProvider.generateToken(
                 claims,
                 user.getUsername(),
-                1000 * 60 * 60 * 24
+                TimeUnit.DAYS.toMillis( jwtExpirationDays )
         );
     }
 }
