@@ -44,6 +44,16 @@ public class TicketPermission extends BasePermission
         return isAdminOrStaff( getLoggedUser() );
     }
 
+    public boolean canAccessAllTicketsByUser( Long userId )
+    {
+        if ( isAdminOrStaff( getLoggedUser() ) )
+        {
+            return true;
+        }
+
+        return isOwner( getLoggedUser(), userId );
+    }
+
     public boolean canUpdateTicket( Long ticketId )
     {
         if ( isAdminOrStaff( getLoggedUser() ) )

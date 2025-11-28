@@ -1,8 +1,10 @@
 package com.eubrunocoelho.ticketing.service.ticket;
 
+import com.eubrunocoelho.ticketing.dto.ticket.TicketByUserFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketStatusUpdateDto;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
+import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.repository.specification.TicketSpecificationBuilder;
 import com.eubrunocoelho.ticketing.service.ticket.validation.TicketValidationService;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
@@ -40,6 +42,7 @@ public class TicketService
     private final TicketSpecificationBuilder ticketSpecificationBuilder;
     private final TicketValidationService ticketValidationService;
     private final TicketMapper ticketMapper;
+    private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final ReplyRepository replyRepository;
 
@@ -88,6 +91,34 @@ public class TicketService
         Page<Ticket> ticketPaged = ticketRepository.findAll( specification, pageable );
 
         return ticketPaged.map( ticketMapper::toDto );
+    }
+
+    @Transactional( readOnly = true )
+    public Page<TicketResponseDto> findAllByUserIdPaged(
+            Long userId,
+            TicketByUserFilterDto filter,
+            Pageable pageable
+    )
+    {
+        User user = userRepository
+                .findById( userId )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Usuário não encontrado. {id}:" + userId
+                        )
+                );
+
+        Specification<Ticket> ticketSpecification =
+                ( root, query, cb ) -> cb.equal(
+                        root.get( "user" ).get( "id" ),
+                        user.getId()
+                );
+
+        Specification<Ticket> filterSpecification = ticketSpecificationBuilder.build( filter );
+        Specification<Ticket> finalSpecification = ticketSpecification.and( filterSpecification );
+
+        return ticketRepository.findAll( finalSpecification, pageable )
+                .map( ticketMapper::toDto );
     }
 
     @Transactional

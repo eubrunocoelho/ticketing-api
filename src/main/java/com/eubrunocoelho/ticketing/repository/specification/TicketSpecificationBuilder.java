@@ -1,5 +1,6 @@
 package com.eubrunocoelho.ticketing.repository.specification;
 
+import com.eubrunocoelho.ticketing.dto.ticket.TicketByUserFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
 import com.eubrunocoelho.ticketing.entity.Ticket;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,18 @@ public class TicketSpecificationBuilder
                 .orElse(
                         ( root, query, cb ) -> cb.conjunction()
                 );
+    }
+
+    public Specification<Ticket> build( TicketByUserFilterDto filter )
+    {
+        return build(
+                new TicketFilterDto(
+                        filter.status(),
+                        filter.search(),
+                        filter.category(),
+                        null
+                )
+        );
     }
 
     private <V> Optional<Specification<Ticket>> createSpecification(

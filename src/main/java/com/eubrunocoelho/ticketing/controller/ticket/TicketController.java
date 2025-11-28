@@ -2,6 +2,7 @@ package com.eubrunocoelho.ticketing.controller.ticket;
 
 import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
+import com.eubrunocoelho.ticketing.dto.ticket.TicketByUserFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketCreateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketFilterDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketResponseDto;
@@ -92,6 +93,28 @@ public class TicketController extends BaseController
         Page<TicketResponseDto> pageableTicketsResponse = ticketService.findAllPaged(
                 filter,
                 sortedPageable
+        );
+
+        return okResponse( pageableTicketsResponse );
+    }
+
+    @GetMapping(
+            value = "/user/{userId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PreAuthorize( "@ticketPermission.canAccessAllTicketsByUser(#userId)" )
+    public ResponseEntity<ResponseDto<List<TicketResponseDto>>> findAllTicketsByUser(
+            @PathVariable Long userId,
+            TicketByUserFilterDto filter,
+            Pageable pageable,
+            @RequestParam( name = "sort", required = false ) String sortParam
+    )
+    {
+        Sort sort = ticketSortResolver.resolve( sortParam );
+        Pageable sortedPageable = PageableFactory.build( pageable, sort );
+
+        Page<TicketResponseDto> pageableTicketsResponse = ticketService.findAllByUserIdPaged(
+                userId, filter, sortedPageable
         );
 
         return okResponse( pageableTicketsResponse );
