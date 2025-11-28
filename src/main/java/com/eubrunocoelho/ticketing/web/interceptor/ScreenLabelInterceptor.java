@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,7 +22,10 @@ public class ScreenLabelInterceptor implements HandlerInterceptor
             LoggerFactory.getLogger( ScreenLabelInterceptor.class );
 
     private static final String SCREEN_LABEL_FORMAT =
-            "Ticketing API - [%s] [%s]";
+            "[%s] - [%s] [%s]";
+
+    @Value( "${spring.application.name}" )
+    private String appName;
 
     private final UserPrincipalService userPrincipalService;
 
@@ -75,7 +79,7 @@ public class ScreenLabelInterceptor implements HandlerInterceptor
 
         String userInfo = buildUserInfo();
 
-        return String.format( SCREEN_LABEL_FORMAT, requestInfo, userInfo );
+        return String.format( SCREEN_LABEL_FORMAT, appName, requestInfo, userInfo );
     }
 
     private String buildUserInfo()

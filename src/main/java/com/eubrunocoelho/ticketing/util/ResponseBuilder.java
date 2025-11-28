@@ -5,6 +5,7 @@ import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.dto.meta.MetaResponseDto;
 import com.eubrunocoelho.ticketing.mapper.MetaMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +17,26 @@ public class ResponseBuilder
 {
     private final MetaMapper metaMapper;
 
+    @Value( "${com.eubrunocoelho.ticketing.logger.print_logger}" )
+    private boolean printLogger;
+
+    private String resolveScreenLabel()
+    {
+        return ( printLogger )
+                ? ScreenLabelRequestContext.getScreenLabel()
+                : null;
+    }
+
     public <T> ResponseDto<T> buildSingle( T data )
     {
-        String screenLabel = ScreenLabelRequestContext.getScreenLabel();
+        String screenLabel = resolveScreenLabel();
 
         return new ResponseDto<>( screenLabel, data, null );
     }
 
     public <T> ResponseDto<List<T>> buildPaged( Page<T> page )
     {
-        String screenLabel = ScreenLabelRequestContext.getScreenLabel();
+        String screenLabel = resolveScreenLabel();
 
         MetaResponseDto meta = metaMapper.toDto( page );
 
