@@ -1,12 +1,12 @@
 package com.eubrunocoelho.ticketing.service.user;
 
 import com.eubrunocoelho.ticketing.entity.User;
+import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
 import com.eubrunocoelho.ticketing.repository.UserRepository;
 import com.eubrunocoelho.ticketing.security.principal.AuthenticatedUser;
 import com.eubrunocoelho.ticketing.service.user.commom.GetAuthenticatedUserUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +24,7 @@ public class UserPrincipalService
     {
         User user = userRepository.findByUsernameOrEmail( usernameOrEmail, usernameOrEmail )
                 .orElseThrow( () ->
-                        new UsernameNotFoundException(
-                                "Usuário não encontrado. {username/email}: " + usernameOrEmail
-                        )
+                        new InvalidCredentialsException( "Credenciais inválidas." )
                 );
 
         GrantedAuthority authority = () -> user.getRole().name();
