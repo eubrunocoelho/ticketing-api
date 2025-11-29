@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.config.CentralMapperConfig;
 import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserRoleUpdateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserStatusUpdateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import org.mapstruct.Context;
@@ -43,6 +44,13 @@ public interface UserMapper
     @Mapping( target = "id", ignore = true )
     void updateUserRoleFromDto(
             UserRoleUpdateDto userRoleUpdateDto,
+            @MappingTarget User user
+    );
+
+    @Named( "updateUserStatusFromDto" )
+    @Mapping( target = "id", ignore = true )
+    void updateUserStatusFromDto(
+            UserStatusUpdateDto userStatusUpdateDto,
             @MappingTarget User user
     );
 

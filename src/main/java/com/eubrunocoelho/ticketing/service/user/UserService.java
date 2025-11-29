@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserFilterDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserRoleUpdateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserStatusUpdateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.entity.DataBindingViolationException;
@@ -108,6 +109,23 @@ public class UserService
         User updatedUserRole = userRepository.save( user );
 
         return userMapper.toDto( updatedUserRole );
+    }
+
+    @Transactional
+    public UserResponseDto updateUserStatus( Long id, @Valid UserStatusUpdateDto userStatusUpdateDto )
+    {
+        User user = userRepository
+                .findById( id )
+                .orElseThrow( () ->
+                        new ObjectNotFoundException(
+                                "Usuário não econtrado. {id}: " + id
+                        )
+                );
+
+        userMapper.updateUserStatusFromDto( userStatusUpdateDto, user );
+        User updatedUserStatus = userRepository.save( user );
+
+        return userMapper.toDto( updatedUserStatus );
     }
 
     @Transactional

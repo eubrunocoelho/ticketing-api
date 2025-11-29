@@ -67,6 +67,19 @@ public class UserPermission extends BasePermission
         return loggedUserIsAdmin && ownerUserIsNotAdmin;
     }
 
+    public boolean canUpdateUserStatus( Long userId )
+    {
+        boolean loggedUserIsAdmin = isAdmin( getLoggedUser() );
+        boolean ownerUserIsNotAdmin = userRepository
+                .findById( userId )
+                .map(
+                        user -> !isAdmin( user )
+                )
+                .orElse( false );
+
+        return loggedUserIsAdmin && ownerUserIsNotAdmin;
+    }
+
     public boolean canDeleteUser( Long userId )
     {
         boolean loggedUserIsAdmin = isAdmin( getLoggedUser() );

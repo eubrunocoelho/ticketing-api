@@ -6,6 +6,7 @@ import com.eubrunocoelho.ticketing.dto.user.UserCreateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserFilterDto;
 import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.dto.user.UserRoleUpdateDto;
+import com.eubrunocoelho.ticketing.dto.user.UserStatusUpdateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.service.user.UserService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
@@ -124,6 +125,22 @@ public class UserController extends BaseController
         UserResponseDto updatedUserRoleResponse = userService.updateUserRole( id, userRoleUpdateDto );
 
         return okResponse( updatedUserRoleResponse );
+    }
+
+    @PatchMapping(
+            value = "/{id}/status",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @PreAuthorize( "@userPermission.canUpdateUserStatus(#id)" )
+    public ResponseEntity<ResponseDto<UserResponseDto>> updateUserStatus(
+            @PathVariable Long id,
+            @RequestBody UserStatusUpdateDto userStatusUpdateDto
+    )
+    {
+        UserResponseDto updatedUserStatusResponse = userService.updateUserStatus( id, userStatusUpdateDto );
+
+        return okResponse( updatedUserStatusResponse );
     }
 
     @DeleteMapping(
