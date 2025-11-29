@@ -47,6 +47,14 @@ public class SecurityConfig
                 .authorizeHttpRequests(
                         auth ->
                                 auth
+                                        // Swagger / Springdoc
+                                        .requestMatchers(
+                                                "/swagger-ui/**",
+                                                "/swagger-ui.html",
+                                                "/v3/api-docs/**",
+                                                "/v3/api-docs",
+                                                "/webjars/**"
+                                        ).permitAll()
                                         .requestMatchers( HttpMethod.POST, "/auth" ).permitAll()
                                         .requestMatchers( HttpMethod.POST, "/users" ).permitAll()
                                         .anyRequest().authenticated()

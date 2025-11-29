@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ResponseBuilder
+public class ApiResponseBuilder
 {
     private final MetaMapper metaMapper;
 

@@ -6,7 +6,7 @@ import com.eubrunocoelho.ticketing.dto.category.CategoryResponseDto;
 import com.eubrunocoelho.ticketing.dto.category.CategoryUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
 import com.eubrunocoelho.ticketing.service.category.CategoryService;
-import com.eubrunocoelho.ticketing.util.ResponseBuilder;
+import com.eubrunocoelho.ticketing.util.ApiResponseBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +29,10 @@ public class CategoryController extends BaseController
 
     public CategoryController(
             CategoryService categoryService,
-            ResponseBuilder responseBuilder
+            ApiResponseBuilder apiResponseBuilder
     )
     {
-        super( responseBuilder );
+        super( apiResponseBuilder );
 
         this.categoryService = categoryService;
     }

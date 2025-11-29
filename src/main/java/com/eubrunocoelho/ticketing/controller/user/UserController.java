@@ -10,7 +10,7 @@ import com.eubrunocoelho.ticketing.dto.user.UserStatusUpdateDto;
 import com.eubrunocoelho.ticketing.dto.user.UserUpdateDto;
 import com.eubrunocoelho.ticketing.service.user.UserService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
-import com.eubrunocoelho.ticketing.util.ResponseBuilder;
+import com.eubrunocoelho.ticketing.util.ApiResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.user.UserSortResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +40,7 @@ public class UserController extends BaseController
     public UserController(
             UserService userService,
             UserSortResolver userSortResolver,
-            ResponseBuilder responseBuilder
+            ApiResponseBuilder responseBuilder
     )
     {
         super( responseBuilder );

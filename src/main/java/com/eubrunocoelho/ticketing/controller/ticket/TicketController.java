@@ -10,7 +10,7 @@ import com.eubrunocoelho.ticketing.dto.ticket.TicketStatusUpdateDto;
 import com.eubrunocoelho.ticketing.dto.ticket.TicketUpdateDto;
 import com.eubrunocoelho.ticketing.service.ticket.TicketService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
-import com.eubrunocoelho.ticketing.util.ResponseBuilder;
+import com.eubrunocoelho.ticketing.util.ApiResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.ticket.TicketSortResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,10 +40,10 @@ public class TicketController extends BaseController
     public TicketController(
             TicketService ticketService,
             TicketSortResolver ticketSortResolver,
-            ResponseBuilder responseBuilder
+            ApiResponseBuilder apiResponseBuilder
     )
     {
-        super( responseBuilder );
+        super( apiResponseBuilder );
 
         this.ticketService = ticketService;
         this.ticketSortResolver = ticketSortResolver;

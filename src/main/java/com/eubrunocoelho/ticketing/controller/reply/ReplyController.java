@@ -8,7 +8,7 @@ import com.eubrunocoelho.ticketing.dto.reply.ReplyResponseDto;
 import com.eubrunocoelho.ticketing.dto.reply.ReplyUpdateDto;
 import com.eubrunocoelho.ticketing.service.reply.ReplyService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
-import com.eubrunocoelho.ticketing.util.ResponseBuilder;
+import com.eubrunocoelho.ticketing.util.ApiResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.reply.ReplySortResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,10 +38,10 @@ public class ReplyController extends BaseController
     public ReplyController(
             ReplyService replyService,
             ReplySortResolver replySortResolver,
-            ResponseBuilder responseBuilder
+            ApiResponseBuilder apiResponseBuilder
     )
     {
-        super( responseBuilder );
+        super( apiResponseBuilder );
 
         this.replyService = replyService;
         this.replySortResolver = replySortResolver;
