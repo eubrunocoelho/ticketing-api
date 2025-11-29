@@ -40,9 +40,13 @@ public interface TicketMapper
 
     @Named( "ticketToDtoWithReplies" )
     @Mapping( target = "id", source = "ticket.id" )
+    @Mapping( target = "user", source = "user", qualifiedByName = "mapUserForTicket" )
     @Mapping( target = "category", source = "category", qualifiedByName = "mapCategoryForTicket" )
     @Mapping( target = "replies", source = "replies", qualifiedByName = "mapTicketRepliesForTicket" )
-    TicketResponseDto toDtoWithReplies( Ticket ticket, Category category , List<Reply> replies );
+    @Mapping( target = "status", source = "ticket.status" )
+    @Mapping( target = "createdAt", source = "ticket.createdAt" )
+    @Mapping( target = "updatedAt", source = "ticket.updatedAt" )
+    TicketResponseDto toDtoWithReplies( Ticket ticket, User user, Category category, List<Reply> replies );
 
     @Named( "updateTicketFromDto" )
     @BeanMapping( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )

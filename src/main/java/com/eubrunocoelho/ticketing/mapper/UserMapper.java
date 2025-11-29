@@ -22,6 +22,7 @@ public interface UserMapper
     @Mapping( target = "id", ignore = true )
     @Mapping( target = "password", source = "password", qualifiedByName = "encodePassword" )
     @Mapping( target = "role", expression = "java(defaultRole())" )
+    @Mapping( target = "status", expression = "java(defaultStatus())" )
     @Mapping( target = "createdAt", ignore = true )
     @Mapping( target = "updatedAt", ignore = true )
     User toEntity( UserCreateDto dto, @Context PasswordEncoder encoder );
@@ -59,6 +60,7 @@ public interface UserMapper
     @Named( "mapUserForReply" )
     @Mapping( target = "id", expression = "java(null)" )
     @Mapping( target = "role", expression = "java(null)" )
+    @Mapping( target = "status", expression = "java(null)" )
     @Mapping( target = "createdAt", expression = "java(null)" )
     @Mapping( target = "updatedAt", expression = "java(null)" )
     UserResponseDto mapUserForReply( User user );
@@ -66,5 +68,10 @@ public interface UserMapper
     default User.Role defaultRole()
     {
         return User.Role.ROLE_USER;
+    }
+
+    default User.Status defaultStatus()
+    {
+        return User.Status.ACTIVE;
     }
 }

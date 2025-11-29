@@ -11,6 +11,8 @@ public record UserResponseDto(
 
         String role,
 
+        String status,
+
         LocalDateTime createdAt,
 
         LocalDateTime updatedAt
