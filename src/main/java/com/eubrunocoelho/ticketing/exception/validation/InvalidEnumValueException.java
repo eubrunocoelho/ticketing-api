@@ -12,7 +12,9 @@ public class InvalidEnumValueException extends RuntimeException
     )
     {
         super(
-                "Valor \"" + value + "\" inválido para o tipo \"Enum\":"
+                "Valor \""
+                        + value
+                        + "\" inválido para o tipo \"Enum\":"
                         + enumType.getSimpleName()
                         + "."
         );

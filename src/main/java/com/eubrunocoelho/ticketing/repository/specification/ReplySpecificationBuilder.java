@@ -46,7 +46,7 @@ public class ReplySpecificationBuilder
     private Specification<Reply> userIs( String userValue )
     {
         return ( root, query, cb ) ->
-                cb.or (
+                cb.or(
                         cb.equal( cb.lower( root.get( "createdUser" ).get( "username" ) ), userValue.toLowerCase() ),
                         cb.equal( cb.lower( root.get( "createdUser" ).get( "email" ) ), userValue.toLowerCase() )
                 );

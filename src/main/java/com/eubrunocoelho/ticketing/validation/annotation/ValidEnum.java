@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention( RetentionPolicy.RUNTIME )
 public @interface ValidEnum
 {
-    String message() default "Valor inválido.";
+    String message() default "Valor para Enum inválido.";
 
     Class<?>[] groups() default {};
 
