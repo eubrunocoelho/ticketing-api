@@ -53,6 +53,21 @@ public class User
         ROLE_USER
     }
 
+    public enum Status
+    {
+        /**
+         * Usuário ativo
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        ACTIVE,
+
+        /**
+         * Usuário inativo
+         */
+        @SuppressWarnings( "checkstyle:UnusedVariable" )
+        INACTIVE
+    }
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "id", nullable = false )
@@ -71,6 +86,10 @@ public class User
     @Enumerated( EnumType.STRING )
     @Column( name = "role", nullable = false )
     Role role;
+
+    @Enumerated( EnumType.STRING )
+    @Column( name = "status", nullable = false )
+    Status status;
 
     @CreatedDate
     @Column( name = "created_at", nullable = false, updatable = false )

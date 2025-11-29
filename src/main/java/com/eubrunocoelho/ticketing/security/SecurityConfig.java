@@ -1,6 +1,7 @@
 package com.eubrunocoelho.ticketing.security;
 
-import com.eubrunocoelho.ticketing.security.jwt.JwtAuthenticationFilter;
+import com.eubrunocoelho.ticketing.security.filter.InactiveUserFilter;
+import com.eubrunocoelho.ticketing.security.filter.JwtAuthenticationFilter;
 import com.eubrunocoelho.ticketing.security.jwt.JwtAccessDeniedHandler;
 import com.eubrunocoelho.ticketing.security.jwt.JwtAuthEntryPoint;
 import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
@@ -28,9 +29,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig
 {
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final InactiveUserFilter inactiveUserFilter;
     private final UserPrincipalService userPrincipalService;
 
     @Bean
@@ -63,6 +65,10 @@ public class SecurityConfig
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterAfter(
+                        inactiveUserFilter,
+                        JwtAuthenticationFilter.class
                 );
 
         return httpSecurity.build();

@@ -190,7 +190,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler( InvalidCredentialsException.class )
     @ResponseStatus( HttpStatus.UNAUTHORIZED )
-    public ResponseEntity<Object> handleCredentialsInvalidException(
+    public ResponseEntity<Object> handleInvalidCredentialsException(
             InvalidCredentialsException exception,
             WebRequest request
     )
