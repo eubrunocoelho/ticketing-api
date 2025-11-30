@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin( "*" )
 @RestController
 @RequestMapping( "/auth" )
-@Tag( name = "Autenticação" )
+@Tag( name = "Autenticação de usuário." )
 public class AuthController extends BaseController
 {
     private final AuthService authService;
@@ -38,13 +38,21 @@ public class AuthController extends BaseController
         this.authService = authService;
     }
 
-    @Operation( summary = "Autenticação de usuário", description = "Responsável pela autenticação de usuário" )
+    @Operation(
+            summary = "Autenticar usuário.",
+            description = "Responsável por processar as credenciais e gerar o token de autenticação de usuário."
+    )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Usuário autenticado.",
                             content = @Content( schema = @Schema( implementation = AuthResponseDto.class ) )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Erro de validação.",
+                            content = @Content( schema = @Schema() )
                     ),
                     @ApiResponse(
                             responseCode = "401",

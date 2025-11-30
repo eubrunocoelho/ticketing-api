@@ -10,12 +10,19 @@ import com.eubrunocoelho.ticketing.service.reply.ReplyService;
 import com.eubrunocoelho.ticketing.util.PageableFactory;
 import com.eubrunocoelho.ticketing.util.ApiResponseBuilder;
 import com.eubrunocoelho.ticketing.util.sort.reply.ReplySortResolver;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,8 +35,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin( "*" )
 @RestController
 @RequestMapping( "/tickets" )
+@Tag( name = "Gerenciador de respostas dos tickets." )
 public class ReplyController extends BaseController
 {
     private final ReplyService replyService;
@@ -47,6 +56,39 @@ public class ReplyController extends BaseController
         this.replySortResolver = replySortResolver;
     }
 
+    @Operation(
+            summary = "Cadastrar resposta.",
+            description = "Responsável por cadastrar resposta de determinado ticket."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Resposta do ticket cadastrada.",
+                            content = @Content( schema = @Schema( implementation = ReplyResponseDto.class ) )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Não autorizado",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Não autorizado",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Ticket não encontrado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Erro de validação.",
+                            content = @Content( schema = @Schema() )
+                    )
+            }
+    )
     @PostMapping(
             value = "/{ticketId}/reply",
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -66,6 +108,34 @@ public class ReplyController extends BaseController
         return createdResponse( createdReplyResponse, createdReplyResponse.id() );
     }
 
+    @Operation(
+            summary = "Encontrar determinada resposta de um ticket específico.",
+            description = "Responsável por encontrar determinada resposta de um ticket específico."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Dados da resposta.",
+                            content = @Content( schema = @Schema( implementation = ReplyResponseDto.class ) )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Reposta ou ticket não encontrados.",
+                            content = @Content( schema = @Schema() )
+                    )
+            }
+    )
     @GetMapping(
             value = "/{ticketId}/reply/{replyId}",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -84,6 +154,34 @@ public class ReplyController extends BaseController
         return okResponse( replyResponse );
     }
 
+    @Operation(
+            summary = "Encontrar todas as resposta de um ticket.",
+            description = "Responsável por encontrar e listar todas as resposta de um ticket específico."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Lista de respostas.",
+                            content = @Content( schema = @Schema( implementation = ReplyResponseDto.class ) )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Resposta ou ticket não encontrados.",
+                            content = @Content( schema = @Schema() )
+                    )
+            }
+    )
     @GetMapping(
             value = "/{ticketId}/reply",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -106,6 +204,39 @@ public class ReplyController extends BaseController
         return okResponse( pageableRepliesResponse );
     }
 
+    @Operation(
+            summary = "Atualizar resposta de um ticket.",
+            description = "Responsável por atualizar determinada resposta de um ticket específico."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Resposta atualizada.",
+                            content = @Content( schema = @Schema( implementation = ReplyResponseDto.class ) )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Resposta ou ticket não encontrados.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Erro de validação.",
+                            content = @Content( schema = @Schema() )
+                    )
+            }
+    )
     @PatchMapping(
             value = "/{ticketId}/reply/{replyId}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -127,6 +258,39 @@ public class ReplyController extends BaseController
         return okResponse( updatedReplyResponse );
     }
 
+    @Operation(
+            summary = "Deletar resposta de um ticket.",
+            description = "Responsável por deletar determinada resposta de um ticket específico."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "Resposta deletada.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "403",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Resposta ou ticket não encontrados.",
+                            content = @Content( schema = @Schema() )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Conflito no banco de dados.",
+                            content = @Content( schema = @Schema() )
+                    )
+            }
+    )
     @DeleteMapping(
             value = "/{ticketId}/reply/{replyId}"
     )
