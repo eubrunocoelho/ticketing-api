@@ -306,3 +306,110 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 | Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
 |-----------|-----------|---------------|---------------|---------------|
 | `userId`      | `integer` | Path          | Sim           | ID do usuário. |
+
+## Gerenciamento de Respostas dos Tickets
+
+### GET `tickets/{ticketId}/reply`
+
+| Componente    | Valor                         |
+|---------------|-------------------------------|
+| Método HTTP   | GET                           |
+| Path          | `tickets/{ticketId}/reply`    |
+| Autenticação  | JWT Bearer Token              |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket referente as respostas recuperadas.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `ticketId`      | `integer` | Path          | Sim           | ID do ticket das respostas recuperadas. |
+
+### POST `tickets/{ticketId}/reply`
+
+| Componente    | Valor                         |
+|---------------|-------------------------------|
+| Método HTTP   | POST                          |
+| Path          | `/tickets/{ticketId}/reply`   |
+| Autenticação  | JWT Bearer Token              |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket para cadastrar respostas.
+- Regras de Negócio:
+    - O usuário proprietário não pode responder diretamente seu próprio ticket.
+    - O usuário proprietário não pode responder diretamente sua própria resposta.
+    - Para respostas subsequentes o usuário autenticado deve ser o proprietário do ticket a ser respondido.
+    - Não é possível responder um ticket com `status` definido como `RESOLVED` ou `CLOSED`.
+
+#### Parâmetros da Rota
+
+| Nome       | Tipo      | Localização   | Obrigatório   | Descrição     |
+|------------|-----------|---------------|---------------|---------------|
+| `ticketId` | `integer` | Path          | Sim           | ID do ticket a ser respondido. |
+
+### GET `tickets/{ticketId}/reply/{replyId}`
+
+| Componente    | Valor                         |
+|---------------|-------------------------------|
+| Método HTTP   | GET                           |
+| Path          | `tickets/{ticketId}/reply/{replyId}`    |
+| Autenticação  | JWT Bearer Token              |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket referente a resposta recuperada.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `ticketId`      | `integer` | Path          | Sim           | ID do ticket. |
+| `replyId`      | `integer` | Path          | Sim           | ID da resposta. |
+
+### DELETE `tickets/{ticketId}/reply/{replyId}`
+
+| Componente    | Valor                         |
+|---------------|-------------------------------|
+| Método HTTP   | DELETE                        |
+| Path          | `tickets/{ticketId}/reply/{replyId}`    |
+| Autenticação  | JWT Bearer Token              |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket e da resposta a ser deletada.
+- Regra de negócio: Uma resposta já respondida não pode ser deletada.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `ticketId`      | `integer` | Path          | Sim           | ID do ticket. |
+| `replyId`      | `integer` | Path          | Sim           | ID da resposta. |
+
+### PATH `tickets/{ticketId}/reply/{replyId}`
+
+| Componente    | Valor                         |
+|---------------|-------------------------------|
+| Método HTTP   | Path                        |
+| Path          | `tickets/{ticketId}/reply`    |
+| Autenticação  | JWT Bearer Token              |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket e da resposta a ser atualizada.
+- Regra de negócio: Uma resposta já respondida não pode ser atualizada.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `ticketId`      | `integer` | Path          | Sim           | ID do ticket. |
+| `replyId`      | `integer` | Path          | Sim           | ID da resposta. |
