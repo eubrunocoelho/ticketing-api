@@ -57,8 +57,7 @@ public class ReplyController extends BaseController
     }
 
     @Operation(
-            summary = "Cadastrar resposta.",
-            description = "Responsável por cadastrar resposta de determinado ticket."
+            summary = "Cadastrar resposta."
     )
     @ApiResponses(
             value = {
@@ -109,8 +108,7 @@ public class ReplyController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar determinada resposta de um ticket específico.",
-            description = "Responsável por encontrar determinada resposta de um ticket específico."
+            summary = "Encontrar resposta de um ticket."
     )
     @ApiResponses(
             value = {
@@ -155,8 +153,7 @@ public class ReplyController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar todas as resposta de um ticket.",
-            description = "Responsável por encontrar e listar todas as resposta de um ticket específico."
+            summary = "Encontrar todas as resposta de um ticket."
     )
     @ApiResponses(
             value = {
@@ -205,8 +202,7 @@ public class ReplyController extends BaseController
     }
 
     @Operation(
-            summary = "Atualizar resposta de um ticket.",
-            description = "Responsável por atualizar determinada resposta de um ticket específico."
+            summary = "Atualizar resposta de um ticket."
     )
     @ApiResponses(
             value = {
@@ -259,8 +255,7 @@ public class ReplyController extends BaseController
     }
 
     @Operation(
-            summary = "Deletar resposta de um ticket.",
-            description = "Responsável por deletar determinada resposta de um ticket específico."
+            summary = "Deletar resposta de um ticket."
     )
     @ApiResponses(
             value = {

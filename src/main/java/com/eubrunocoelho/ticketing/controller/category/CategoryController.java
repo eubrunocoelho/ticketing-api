@@ -47,8 +47,7 @@ public class CategoryController extends BaseController
     }
 
     @Operation(
-            summary = "Cadastrar categoria.",
-            description = "Responsável por cadastrar categoria."
+            summary = "Cadastrar categoria."
     )
     @ApiResponses(
             value = {
@@ -86,8 +85,7 @@ public class CategoryController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar determinada categoria.",
-            description = "Responsável por encontrar determinada categoria."
+            summary = "Encontrar categoria."
     )
     @ApiResponses(
             value = {
@@ -125,8 +123,7 @@ public class CategoryController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar todas as categorias.",
-            description = "Responsável por encontrar e listar todas as categorias."
+            summary = "Encontrar todas as categorias."
     )
     @ApiResponses(
             value = {
@@ -158,8 +155,7 @@ public class CategoryController extends BaseController
     }
 
     @Operation(
-            summary = "Atualizar categoria.",
-            description = "Responsável por atualizar dados de uma determinada categoria."
+            summary = "Atualizar categoria."
     )
     @ApiResponses(
             value = {
@@ -205,8 +201,7 @@ public class CategoryController extends BaseController
     }
 
     @Operation(
-            summary = "Deletar categoria.",
-            description = "Responsável por deletar uma determinada categoria."
+            summary = "Deletar categoria."
     )
     @ApiResponses(
             value = {

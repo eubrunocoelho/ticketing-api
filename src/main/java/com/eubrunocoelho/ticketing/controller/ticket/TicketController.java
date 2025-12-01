@@ -60,8 +60,7 @@ public class TicketController extends BaseController
 
 
     @Operation(
-            summary = "Cadastrar ticket.",
-            description = "Responsável por cadastrar um ticket."
+            summary = "Cadastrar ticket."
     )
     @ApiResponses(
             value = {
@@ -102,8 +101,7 @@ public class TicketController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar ticket.",
-            description = "Responsável por encontrar um determinado ticket."
+            summary = "Encontrar ticket."
     )
     @ApiResponses(
             value = {
@@ -139,8 +137,7 @@ public class TicketController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar todos os tickets.",
-            description = "Responsável por encontrar e listar todos os tickets."
+            summary = "Encontrar todos os tickets."
     )
     @ApiResponses(
             value = {
@@ -183,8 +180,7 @@ public class TicketController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar todos os tickets de um usuário específico.",
-            description = "Responsável por encontrar e listar todos os tickets de um usuário específico."
+            summary = "Encontrar todos os tickets de um usuário."
     )
     @ApiResponses(
             value = {
@@ -228,8 +224,7 @@ public class TicketController extends BaseController
     }
 
     @Operation(
-            summary = "Atualizar ticket.",
-            description = "Responsável por atualizar dados de um determinado ticket."
+            summary = "Atualizar ticket."
     )
     @ApiResponses(
             value = {
@@ -277,8 +272,7 @@ public class TicketController extends BaseController
     }
 
     @Operation(
-            summary = "Atualizar status do ticket.",
-            description = "Responsável por atualizar o status de um determinado ticket."
+            summary = "Atualizar status do ticket."
     )
     @ApiResponses(
             value = {
@@ -326,8 +320,7 @@ public class TicketController extends BaseController
     }
 
     @Operation(
-            summary = "Deletar ticket.",
-            description = "Responsável por deletar determinado ticket."
+            summary = "Deletar ticket."
     )
     @ApiResponses(
             value = {

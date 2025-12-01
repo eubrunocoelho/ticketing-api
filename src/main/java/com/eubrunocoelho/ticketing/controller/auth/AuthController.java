@@ -41,8 +41,7 @@ public class AuthController extends BaseController
     }
 
     @Operation(
-            summary = "Autenticar usuário.",
-            description = "Responsável por processar as credenciais e gerar o token de autenticação de usuário."
+            summary = "Autenticar usuário."
     )
     @ApiResponses(
             value = {
@@ -77,15 +76,14 @@ public class AuthController extends BaseController
     }
 
     @Operation(
-            summary = "Usuário autenticado.",
-            description = "Responsável por exibir dados do usuário autenticado."
+            summary = "Usuário autenticado."
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Dados do usuário autenticado.",
-                            content = @Content( schema = @Schema( implementation = AuthResponseDto.class ) )
+                            content = @Content( schema = @Schema( implementation = UserResponseDto.class ) )
                     ),
                     @ApiResponse(
                             responseCode = "401",

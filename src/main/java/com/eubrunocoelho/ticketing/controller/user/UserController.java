@@ -90,8 +90,7 @@ public class UserController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar usuário.",
-            description = "Responsável por encontrar um determinado usuário."
+            summary = "Encontrar usuário."
     )
     @ApiResponses(
             value = {
@@ -130,8 +129,7 @@ public class UserController extends BaseController
     }
 
     @Operation(
-            summary = "Encontrar todos os usuários.",
-            description = "Responsável por encontrar todos os usuários."
+            summary = "Encontrar todos os usuários."
     )
     @ApiResponses(
             value = {
@@ -174,8 +172,7 @@ public class UserController extends BaseController
     }
 
     @Operation(
-            summary = "Atualizar usuário.",
-            description = "Responsável por atualizar dados de um determinado usuário."
+            summary = "Atualizar usuário."
     )
     @ApiResponses(
             value = {
@@ -223,8 +220,7 @@ public class UserController extends BaseController
     }
 
     @Operation(
-            summary = "Atualizar cargo do usuário.",
-            description = "Responsável por atualizar o cargo de um determinado usuário."
+            summary = "Atualizar cargo do usuário."
     )
     @ApiResponses(
             value = {
@@ -272,8 +268,7 @@ public class UserController extends BaseController
     }
 
     @Operation(
-            summary = "Atualizar status do usuário.",
-            description = "Responsável por atualizar o status de um determinado usuário."
+            summary = "Atualizar status do usuário."
     )
     @ApiResponses(
             value = {
@@ -321,8 +316,7 @@ public class UserController extends BaseController
     }
 
     @Operation(
-            summary = "Deletar usuário.",
-            description = "Responsável por deletar um determinado usuário."
+            summary = "Deletar usuário."
     )
     @ApiResponses(
             value = {
