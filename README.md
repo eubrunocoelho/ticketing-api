@@ -1,0 +1,173 @@
+# Ticketing API
+
+Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida com **Java**, **Spring Boot**, **Spring Security** e **Autenticação JWT**. Oferece **controle de acesso baseado em função (RBAC)**, gestão completa de ciclo de vida dos tickets e documentação API de ponta.
+
+## Autenticação e Segurança
+
+- Autenticação Stateless (JWT).
+- Controle de Acesso Baseado em Função (RBAC) com sistema de permissões hierárquico (ROLE_USER, ROLE_STAFF, ROLE_ADMIN).
+- Criptografia de senhas usando BCrypt.
+- Controle de expiração de token para mitigar riscos de segurança.
+- Proteção e segurança de endpoints usando Spring Security.
+
+## Gestão Inteligente de Usuários
+
+- Registro e autenticação segura de usuários.
+- Funcionalidade de consulta de usuários com recursos de ordenação e filtragem de dados.
+- Usuários inativos são impedidos de acessar aos endpoints privados da API.
+- Gestão abrangente de dados, segurança e senhas do usuário.
+
+## Gerenciamento de Categorias
+
+- Controle de segurança para todas as operações de categorias.
+
+## Gestão de Ciclo de Vida do Ticket
+
+- Controle de segurança para todas as operações de tickets.
+- Tickets podem ser destinados a uma categoria ou setor responsável específico.
+- Consultas otimizadas com recursos de ordenação e filtragem de dados.
+- Ciclo de vida do ticket baseados em status (OPEN, IN_PROGRESS, RESOLVED, CLOSED).
+- Atribuição e rastramento de usuários.
+- Estrutura de dados robusta para mapear a relação entre usuários e tickets.
+
+## Gerenciamento Integrado de Respostas
+
+- Controle de segurança para todas as operações de respostas.
+- Atribuição e rastreamento de usuários, tickets e respostas associadas.
+- Consulta de respostas com recursos de ordenação e filtragem de dados.
+- Mapeamento de relacionamento entre usuários, resposta e tickets.
+
+## Rotas
+
+### Rotas de Gerenciamento de Usuários (`/users`)
+
+### GET `/users`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | GET               |
+| Path          | `/users`          |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `search`  | `string`  | Query         | Não           | Filtragem de pesquisa pelo `username` ou `email` do usuário. |
+| `role`    | `string`  | Query         | Não           | Filtragem pela função do usuário. (`ROLE_USER`, `ROLE_STAFF` ou `ROLE_ADMIN`) |
+| `status`  | `string`  | Query         | Não           | Filtragem pelo status do usuário. (`ACTIVE`, `INACTIVE`) |
+| `sort`    | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`) |
+| `page`    | `integer` | Query         | Não           | Número da página. |
+
+### POST `/users`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | POST              |
+| Path          | `/users`          |
+
+#### Restrições
+
+- Campos obrigatórios: `email`, `username`, `password`.
+
+### GET `users/{id}`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | GET               |
+| Path          | `/users/{id}`     |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ter o `ID` igual ao `{id}`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser recuperado |
+
+### DELETE `users/{id}`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | DELETE            |
+| Path          | `/users/{id}`     |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_ADMIN`.
+- Regra de negócio: O usuário a ser deletado não pode ter a função `ROLE_ADMIN`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser deletado |
+
+### PATCH `users/{id}`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | PATCH             |
+| Path          | `/users/{id}`     |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ter o `ID` igual ao `{id}`.
+- Campos obrigatórios: `password`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado |
+
+### PATCH `users/{id}/status`
+
+| Componente    | Valor                 |
+|---------------|-----------------------|
+| Método HTTP   | PATCH                 |
+| Path          | `/users/{id}/status`  |
+| Autenticação  | JWT Bearer Token      |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_ADMIN`.
+- Regra de negócio: O usuário a ser atualizado não pode ter a função `ROLE_ADMIN`.
+- Campos obrigatórios: `status`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado |
+
+### PATCH `users/{id}/role`
+
+| Componente    | Valor                 |
+|---------------|-----------------------|
+| Método HTTP   | PATCH                 |
+| Path          | `/users/{id}/role`    |
+| Autenticação  | JWT Bearer Token      |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_ADMIN`.
+- Regra de negócio: O usuário a ser atualizado não pode ter a função `ROLE_ADMIN`.
+- Campos obrigatórios: `role`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado. |
