@@ -39,7 +39,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 ## Rotas
 
-### Rotas de Gerenciamento de Usuários (`/users`)
+## Rotas de Gerenciamento de Usuários (`/users`)
 
 ### GET `/users`
 
@@ -91,7 +91,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 | Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
 |-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser recuperado |
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser recuperado. |
 
 ### DELETE `users/{id}`
 
@@ -110,7 +110,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 | Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
 |-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser deletado |
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser deletado. |
 
 ### PATCH `users/{id}`
 
@@ -130,7 +130,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 | Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
 |-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado |
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado. |
 
 ### PATCH `users/{id}/status`
 
@@ -150,7 +150,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 | Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
 |-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado |
+| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado. |
 
 ### PATCH `users/{id}/role`
 
@@ -171,3 +171,138 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 | Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
 |-----------|-----------|---------------|---------------|---------------|
 | `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado. |
+
+## Gerenciamento de Tickets (`/tickets`)
+
+### GET `/tickets`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | GET               |
+| Path          | `/tickets`        |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `search`  | `string`  | Query         | Não           | Filtragem de pesquisa pelo `title` do ticket. |
+| `status`  | `string`  | Query         | Não           | Filtragem pelo status do ticket. (`OPEN`, `IN_PROGRESS`, `RESOLVED` ou `CLOSED`). |
+| `category` | `integer`  | Query         | Não           | Filtragem pelo `ID` de category. |
+| `user`    | `string`  | Query         | Não           | Filtragem pelo `username` ou `email` do usuário. |
+| `sort`    | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`, `LAST_UPDATE` ou `NAME`). |
+| `page`    | `integer` | Query         | Não           | Número da página. |
+
+
+### POST `/tickets`
+
+| Componente    | Valor                 |
+|---------------|-----------------------|
+| Método HTTP   | POST                  |
+| Path          | `/tickets`            |
+| Autenticação  | JWT Bearer Token      |
+
+#### Restrições
+
+- Campos obrigatórios: `email`, `username`, `password`.
+- Regra de negócio: Usuários com função de `ROLE_STAFF` ou `ROLE_ADMIN` não podem criar tickets.
+
+### GET `tickets/{id}`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | GET               |
+| Path          | `/tickets/{id}`   |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket a ser recuperado.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do ticket a ser recuperado. |
+
+### DELETE `tickets/{id}`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | DELETE            |
+| Path          | `/tickets/{id}`   |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket a ser deletado.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do ticket a ser deletado. |
+
+### PATCH `tickets/{id}`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | PATCH             |
+| Path          | `/tickets/{id}`   |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ser o proprietário do ticket a ser atualizado.
+- Regra de Negócio: Tickets com o status definido como `IN_PROGRESS`, `RESOLVED` ou `CLOSED` não podem ser atualizados.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do ticket a ser atualizado. |
+
+### PATCH `tickets/{id}/status`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | PATCH             |
+| Path          | `/tickets/{id}/status`   |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Campos Obrigatórios: `status`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID do ticket a ser atualizado. |
+
+### GET `tickets/user/{userId}`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | PATCH             |
+| Path          | `/tickets/user/{userId}`   |
+| Autenticação  | JWT Bearer Token  |
+
+#### Restrições:
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propetário: O usuário autenticado deve ter o ID igual ao `{userId}`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `userId`      | `integer` | Path          | Sim           | ID do usuário. |
