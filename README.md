@@ -413,3 +413,88 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 |-----------|-----------|---------------|---------------|---------------|
 | `ticketId`      | `integer` | Path          | Sim           | ID do ticket. |
 | `replyId`      | `integer` | Path          | Sim           | ID da resposta. |
+
+## Gerenciamento de Categorias (`/categories`)
+
+### GET `/categories`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | GET               |
+| Path          | `/categories`     |
+| Autenticação  | JWT Bearer Token  |
+
+### POST `/categories`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | POST              |
+| Path          | `/categories`     |
+| Autenticação  | JWT Bearer Token  |
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+
+### GET `/categories/{id}`
+
+| Componente    | Valor                 |
+|---------------|-----------------------|
+| Método HTTP   | GET                   |
+| Path          | `/categories/{id}`    |
+| Autenticação  | JWT Bearer Token      |
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID da categoria. |
+
+### DELETE `/categories/{id}`
+
+| Componente    | Valor                 |
+|---------------|-----------------------|
+| Método HTTP   | DELETE                   |
+| Path          | `/categories/{id}`    |
+| Autenticação  | JWT Bearer Token      |
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID da categoria. |
+
+### PATCH `/categories/{id}`
+
+| Componente    | Valor                 |
+|---------------|-----------------------|
+| Método HTTP   | PATCH                 |
+| Path          | `/categories/{id}`    |
+| Autenticação  | JWT Bearer Token      |
+
+- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+
+#### Parâmetros da Rota
+
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
+|-----------|-----------|---------------|---------------|---------------|
+| `id`      | `integer` | Path          | Sim           | ID da categoria. |
+
+## Autenticação de Usuários (`/auth`)
+
+### GET `/auth`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | GET               |
+| Path          | `/auth`           |
+| Autenticação  | JWT Bearer Token  |
+
+
+### GET `/auth/user`
+
+| Componente    | Valor             |
+|---------------|-------------------|
+| Método HTTP   | GET               |
+| Path          | `/auth/user`      |
+| Autenticação  | JWT Bearer Token  |
