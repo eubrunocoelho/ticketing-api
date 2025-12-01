@@ -4,6 +4,7 @@ import com.eubrunocoelho.ticketing.controller.BaseController;
 import com.eubrunocoelho.ticketing.dto.auth.SignInRequestDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
 import com.eubrunocoelho.ticketing.dto.ResponseDto;
+import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.service.auth.AuthService;
 import com.eubrunocoelho.ticketing.util.ApiResponseBuilder;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,5 +74,34 @@ public class AuthController extends BaseController
         AuthResponseDto authResponse = authService.authenticate( signInRequestDto );
 
         return okResponse( authResponse );
+    }
+
+    @Operation(
+            summary = "Usuário autenticado.",
+            description = "Responsável por exibir dados do usuário autenticado."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Dados do usuário autenticado.",
+                            content = @Content( schema = @Schema( implementation = AuthResponseDto.class ) )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Não autorizado.",
+                            content = @Content( schema = @Schema() )
+                    )
+            }
+    )
+    @GetMapping(
+            value = "/user",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ResponseDto<UserResponseDto>> authenticatedUser()
+    {
+        UserResponseDto userResponse = authService.authenticatedUser();
+
+        return okResponse( userResponse );
     }
 }

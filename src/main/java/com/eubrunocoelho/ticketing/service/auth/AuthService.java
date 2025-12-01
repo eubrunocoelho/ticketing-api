@@ -2,12 +2,15 @@ package com.eubrunocoelho.ticketing.service.auth;
 
 import com.eubrunocoelho.ticketing.dto.auth.SignInRequestDto;
 import com.eubrunocoelho.ticketing.dto.auth.AuthResponseDto;
+import com.eubrunocoelho.ticketing.dto.user.UserResponseDto;
 import com.eubrunocoelho.ticketing.entity.User;
 import com.eubrunocoelho.ticketing.exception.auth.InvalidCredentialsException;
 import com.eubrunocoelho.ticketing.exception.entity.ObjectNotFoundException;
+import com.eubrunocoelho.ticketing.mapper.UserMapper;
 import com.eubrunocoelho.ticketing.security.jwt.JwtProvider;
 import com.eubrunocoelho.ticketing.mapper.AuthMapper;
 import com.eubrunocoelho.ticketing.service.auth.validation.CredentialValidationService;
+import com.eubrunocoelho.ticketing.service.user.UserPrincipalService;
 import com.eubrunocoelho.ticketing.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +28,11 @@ import java.util.concurrent.TimeUnit;
 public class AuthService
 {
     private final UserService userService;
+    private final UserPrincipalService userPrincipalService;
     private final JwtProvider jwtProvider;
     private final CredentialValidationService credentialValidationService;
     private final AuthMapper authMapper;
+    private final UserMapper userMapper;
 
     @Value( "${com.eubrunocoelho.ticketing.jwt.expiration_days}" )
     private Long jwtExpirationDays;
@@ -51,6 +56,13 @@ public class AuthService
         String authToken = generateAuthToken( user );
 
         return authMapper.toDto( user, authToken );
+    }
+
+    public UserResponseDto authenticatedUser()
+    {
+        User authenticatedUser = userPrincipalService.getLoggedInUser();
+
+        return userMapper.toDto( authenticatedUser );
     }
 
     public String generateAuthToken( User user )

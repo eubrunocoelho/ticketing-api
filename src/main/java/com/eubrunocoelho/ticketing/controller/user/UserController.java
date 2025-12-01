@@ -49,10 +49,10 @@ public class UserController extends BaseController
     public UserController(
             UserService userService,
             UserSortResolver userSortResolver,
-            ApiResponseBuilder responseBuilder
+            ApiResponseBuilder apiResponseBuilder
     )
     {
-        super( responseBuilder );
+        super( apiResponseBuilder );
 
         this.userService = userService;
         this.userSortResolver = userSortResolver;
