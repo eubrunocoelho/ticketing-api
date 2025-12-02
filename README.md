@@ -4,40 +4,45 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 ## Autenticação e Segurança
 
-- Autenticação Stateless (JWT).
-- Controle de Acesso Baseado em Função (RBAC) com sistema de permissões hierárquico (ROLE_USER, ROLE_STAFF, ROLE_ADMIN).
-- Criptografia de senhas usando BCrypt.
-- Controle de expiração de token para mitigar riscos de segurança.
-- Proteção e segurança de endpoints usando Spring Security.
+- Autenticação *JWT* Stateless
+- Controle de Acesso Baseado em Função (*RBAC*)
+- Criptografia de senhas (*BCrypt*) e proteção de endpoints via *Spring Security*
 
-## Gestão Inteligente de Usuários
+## Gerenciamento de Usuários
 
-- Registro e autenticação segura de usuários.
-- Funcionalidade de consulta de usuários com recursos de ordenação e filtragem de dados.
-- Usuários inativos são impedidos de acessar aos endpoints privados da API.
-- Gestão abrangente de dados, segurança e senhas do usuário.
+- Registro e Autenticação Segura
+- Gestão de Dados
+- Controle Administrativo
+    - Consulta Avançada
+    - Funções Exclusivas
+    - Restrições de Segurança
+
+## Gerenciamento de Tickets
+
+- Clico de Vida Completo do Ticket
+- Criação Restrita
+- Consultas Otimizadas
+- Controle de Modificação
+- Gerenciamento de Status
+
+## Respostas Integradas
+
+- Comunicação *Staff-User*
+- Restrições de Respostas
+- Integridade dos Dados
 
 ## Gerenciamento de Categorias
 
-- Controle de segurança para todas as operações de categorias.
+- Acesso Público
+- Gestão Exclusiva
 
-## Gestão de Ciclo de Vida do Ticket
+## Documentação da API
 
-- Controle de segurança para todas as operações de tickets.
-- Tickets podem ser destinados a uma categoria ou setor responsável específico.
-- Consultas otimizadas com recursos de ordenação e filtragem de dados.
-- Ciclo de vida do ticket baseados em status (OPEN, IN_PROGRESS, RESOLVED, CLOSED).
-- Atribuição e rastramento de usuários.
-- Estrutura de dados robusta para mapear a relação entre usuários e tickets.
+- Interface Interativa do *Swagger*
+- *OpenAPI 3.0*
+- Documentação completa de *endpoints*
 
-## Gerenciamento Integrado de Respostas
-
-- Controle de segurança para todas as operações de respostas.
-- Atribuição e rastreamento de usuários, tickets e respostas associadas.
-- Consulta de respostas com recursos de ordenação e filtragem de dados.
-- Mapeamento de relacionamento entre usuários, resposta e tickets.
-
-## Rotas
+# Rotas
 
 ## Rotas de Gerenciamento de Usuários (`/users`)
 
