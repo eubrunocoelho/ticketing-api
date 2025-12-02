@@ -44,196 +44,202 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 ### GET `/users`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | GET               |
 | Path          | `/users`          |
 | Autenticação  | JWT Bearer Token  |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `search`  | `string`  | Query         | Não           | Filtragem de pesquisa pelo `username` ou `email` do usuário. |
-| `role`    | `string`  | Query         | Não           | Filtragem pela função do usuário. (`ROLE_USER`, `ROLE_STAFF` ou `ROLE_ADMIN`) |
-| `status`  | `string`  | Query         | Não           | Filtragem pelo status do usuário. (`ACTIVE`, `INACTIVE`) |
-| `sort`    | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`) |
-| `page`    | `integer` | Query         | Não           | Número da página. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                                                                                 |
+|:----------|:----------|:--------------|:--------------|:------------------------------------------------------------------------------------------|
+| `search`  | `string`  | Query         | Não           | Filtragem de pesquisa pelo valor parcial ou completo de `username` ou `email` do usuário. |
+| `role`    | `string`  | Query         | Não           | Filtragem de dados pela função do usuário. (`ROLE_USER`, `ROLE_STAFF`, `ROLE_ADMIN`).     |
+| `status`  | `string`  | Query         | Não           | Filtragem de dados pelo status do usuário. (`ACTIVE`, `INACTIVE`).                        |
+| `sort`    | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`).                                                |
+| `page`    | `integer` | Query         | Não           | Número referente à página.                                                                |
 
 ### POST `/users`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | POST              |
 | Path          | `/users`          |
 
 #### Restrições
 
-- Campos obrigatórios: `email`, `username`, `password`.
+- Campos Obrigatórios: `username`, `email`, `password`.
+- Regras de Negócio:
+    - Valores únicos para `username` e `email`.
 
 ### GET `users/{id}`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | GET               |
 | Path          | `/users/{id}`     |
 | Autenticação  | JWT Bearer Token  |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ter o `ID` igual ao `{id}`.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ter o `ID` igual ao `{id}`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser recuperado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do usuário a ser recuperado. |
 
 ### DELETE `users/{id}`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | DELETE            |
 | Path          | `/users/{id}`     |
 | Autenticação  | JWT Bearer Token  |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_ADMIN`.
-- Regra de negócio: O usuário a ser deletado não pode ter a função `ROLE_ADMIN`.
+- Administradores: Somente usuários com a função de `ROLE_ADMIN`.
+- Regras de Negócio:
+    - O usuário a ser deletado não pode ter a função de `ROLE_ADMIN`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser deletado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do usuário a ser deletado.   |
 
 ### PATCH `users/{id}`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | PATCH             |
 | Path          | `/users/{id}`     |
 | Autenticação  | JWT Bearer Token  |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ter o `ID` igual ao `{id}`.
-- Campos obrigatórios: `password`.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ter o `ID` igual ao `{id}`.
+- Campos Obrigatórios: `password`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do usuário a ser atualizado. |
 
 ### PATCH `users/{id}/status`
 
 | Componente    | Valor                 |
-|---------------|-----------------------|
+|:--------------|:----------------------|
 | Método HTTP   | PATCH                 |
 | Path          | `/users/{id}/status`  |
 | Autenticação  | JWT Bearer Token      |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_ADMIN`.
-- Regra de negócio: O usuário a ser atualizado não pode ter a função `ROLE_ADMIN`.
-- Campos obrigatórios: `status`.
+- Administradores: Somente usuários com a função de `ROLE_ADMIN`.
+- Campos Obrigatórios: `status`.
+- Regras de Negócio:
+    - O usuário a ser atualizado não pode ter a função de `ROLE_ADMIN`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do usuário a ser atualizado. |
 
 ### PATCH `users/{id}/role`
 
 | Componente    | Valor                 |
-|---------------|-----------------------|
+|:--------------|:----------------------|
 | Método HTTP   | PATCH                 |
 | Path          | `/users/{id}/role`    |
 | Autenticação  | JWT Bearer Token      |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_ADMIN`.
-- Regra de negócio: O usuário a ser atualizado não pode ter a função `ROLE_ADMIN`.
-- Campos obrigatórios: `role`.
+- Administradores: Somente usuários com a função de `ROLE_ADMIN`.
+- Campos Obrigatórios: `role`.
+- Regras de negócio:
+    - O usuário a ser atualizado não pode ter a função de `ROLE_ADMIN`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do usuário a ser atualizado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do usuário a ser atualizado. |
 
 ## Gerenciamento de Tickets (`/tickets`)
 
 ### GET `/tickets`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | GET               |
 | Path          | `/tickets`        |
 | Autenticação  | JWT Bearer Token  |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `search`  | `string`  | Query         | Não           | Filtragem de pesquisa pelo `title` do ticket. |
-| `status`  | `string`  | Query         | Não           | Filtragem pelo status do ticket. (`OPEN`, `IN_PROGRESS`, `RESOLVED` ou `CLOSED`). |
-| `category` | `integer`  | Query         | Não           | Filtragem pelo `ID` de category. |
-| `user`    | `string`  | Query         | Não           | Filtragem pelo `username` ou `email` do usuário. |
-| `sort`    | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`, `LAST_UPDATE` ou `NAME`). |
-| `page`    | `integer` | Query         | Não           | Número da página. |
+| Nome          | Tipo      | Localização   | Obrigatório   | Descrição                                                                                     |
+|:--------------|:----------|:--------------|:--------------|:----------------------------------------------------------------------------------------------|
+| `search`      | `string`  | Query         | Não           | Filtragem de pesquisa pelo valor parcial de `title` do ticket.                                |
+| `status`      | `string`  | Query         | Não           | Filtragem de dados pelo `status` do ticket. (`OPEN`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`).    |
+| `category`    | `integer` | Query         | Não           | Filtragem de dados pelo `ID` de `category`.                                                   |
+| `user`        | `string`  | Query         | Não           | Filtragem de dados pelo `username` ou `email` do usuário proprietário do ticket.              |
+| `sort`        | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`, `LAST_UPDATE`, `NAME`).                             |
+| `page`        | `integer` | Query         | Não           | Número referente à página.                                                                    |
 
 
 ### POST `/tickets`
 
-| Componente    | Valor                 |
-|---------------|-----------------------|
-| Método HTTP   | POST                  |
-| Path          | `/tickets`            |
-| Autenticação  | JWT Bearer Token      |
+| Componente    | Valor             |
+|:--------------|:------------------|
+| Método HTTP   | POST              |
+| Path          | `/tickets`        |
+| Autenticação  | JWT Bearer Token  |
 
 #### Restrições
 
-- Campos obrigatórios: `email`, `username`, `password`.
-- Regra de negócio: Usuários com função de `ROLE_STAFF` ou `ROLE_ADMIN` não podem criar tickets.
+- Campos Obrigatórios: `email`, `username`, `password`.
+- Regras de Negócio:
+    - Usuários com função de `ROLE_STAFF` ou `ROLE_ADMIN` não podem criar tickets.
 
 ### GET `tickets/{id}`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | GET               |
 | Path          | `/tickets/{id}`   |
 | Autenticação  | JWT Bearer Token  |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket a ser recuperado.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ser o proprietário do ticket a ser recuperado.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do ticket a ser recuperado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do ticket a ser recuperado.  |
 
 ### DELETE `tickets/{id}`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | DELETE            |
 | Path          | `/tickets/{id}`   |
 | Autenticação  | JWT Bearer Token  |
@@ -241,105 +247,116 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 #### Restrições:
 
 - Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket a ser deletado.
+- Proprietário: O usuário autenticado deve ser o proprietário do ticket a ser deletado.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do ticket a ser deletado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do ticket a ser deletado.    |
 
 ### PATCH `tickets/{id}`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | PATCH             |
 | Path          | `/tickets/{id}`   |
 | Autenticação  | JWT Bearer Token  |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket a ser atualizado.
-- Regra de Negócio: Tickets com o status definido como `IN_PROGRESS`, `RESOLVED` ou `CLOSED` não podem ser atualizados.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Propietário: O usuário autenticado deve ser o proprietário do ticket a ser atualizado.
+- Campos Opcionais: `category`, `title`, `content`.
+- Regras de Negócio:
+    - Tickets com o `status` definido como `IN_PROGRESS`, `RESOLVED` ou `CLOSED` não podem ser atualizados.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do ticket a ser atualizado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do ticket a ser atualizado.  |
 
 ### PATCH `tickets/{id}/status`
 
-| Componente    | Valor             |
-|---------------|-------------------|
-| Método HTTP   | PATCH             |
-| Path          | `/tickets/{id}/status`   |
-| Autenticação  | JWT Bearer Token  |
+| Componente    | Valor                     |
+|:--------------|:--------------------------|
+| Método HTTP   | PATCH                     |
+| Path          | `/tickets/{id}/status`    |
+| Autenticação  | JWT Bearer Token          |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
 - Campos Obrigatórios: `status`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID do ticket a ser atualizado. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição                         |
+|:----------|:----------|:--------------|:--------------|:----------------------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` do ticket a ser atualizado.  |
 
 ### GET `tickets/user/{userId}`
 
-| Componente    | Valor             |
-|---------------|-------------------|
-| Método HTTP   | PATCH             |
-| Path          | `/tickets/user/{userId}`   |
-| Autenticação  | JWT Bearer Token  |
+| Componente    | Valor                     |
+|:--------------|:--------------------------|
+| Método HTTP   | PATCH                     |
+| Path          | `/tickets/user/{userId}`  |
+| Autenticação  | JWT Bearer Token          |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ter o ID igual ao `{userId}`.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ter o `ID` igual ao `{userId}`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `userId`      | `integer` | Path          | Sim           | ID do usuário. |
+| Nome          | Tipo      | Localização   | Obrigatório   | Descrição                                                             |
+|:--------------|:----------|:--------------|:--------------|:----------------------------------------------------------------------|
+| `userId`      | `integer` | Path          | Sim           | `ID` do usuário.                                                      |
+| `search`      | `string`  | Query         | Não           | Filtragem de pesquisa pelo valor parcial de `title` do ticket.        |
+| `status`      | `string`  | Query         | Não           | Filtragem de dados pelo status do usuário. (`ACTIVE`, `INACTIVE`).    |
+| `category`    | `integer` | Query         | Não           | Filtragem de dados pelo `ID` de `category`.                           |
+| `sort`        | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`, `LAST_UPDATE`, `NAME`).     |
+| `page`        | `integer` | Query         | Não           | Número referente à página.                                            |
 
 ## Gerenciamento de Respostas dos Tickets
 
 ### GET `tickets/{ticketId}/reply`
 
 | Componente    | Valor                         |
-|---------------|-------------------------------|
+|:--------------|:------------------------------|
 | Método HTTP   | GET                           |
 | Path          | `tickets/{ticketId}/reply`    |
 | Autenticação  | JWT Bearer Token              |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket referente as respostas recuperadas.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ser o proprietário do ticket referente as respostas recuperadas.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `ticketId`      | `integer` | Path          | Sim           | ID do ticket das respostas recuperadas. |
+| Nome          | Tipo      | Localização   | Obrigatório   | Descrição                                                                             |
+|:--------------|:----------|:--------------|:--------------|:--------------------------------------------------------------------------------------|
+| `ticketId`    | `integer` | Path          | Sim           | `ID` do ticket.                                                                       |
+| `user`        | `string`  | Query         | Não           | Filtragem de dados pelo `username` ou `email` do usuário proprietário das resposta.   |
+| `sort`        | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `LAST_UPDATE`).                                      |
+| `page`        | `integer` | Query         | Não           | Número referente à página.                                                            |
 
 ### POST `tickets/{ticketId}/reply`
 
 | Componente    | Valor                         |
-|---------------|-------------------------------|
+|:--------------|:------------------------------|
 | Método HTTP   | POST                          |
 | Path          | `/tickets/{ticketId}/reply`   |
 | Autenticação  | JWT Bearer Token              |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket para cadastrar respostas.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ser o proprietário do ticket para cadastrar respostas.
+- Campos Obrigatórios: `content`. 
 - Regras de Negócio:
     - O usuário proprietário não pode responder diretamente seu próprio ticket.
     - O usuário proprietário não pode responder diretamente sua própria resposta.
@@ -348,78 +365,80 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 #### Parâmetros da Rota
 
-| Nome       | Tipo      | Localização   | Obrigatório   | Descrição     |
-|------------|-----------|---------------|---------------|---------------|
-| `ticketId` | `integer` | Path          | Sim           | ID do ticket a ser respondido. |
+| Nome       | Tipo      | Localização   | Obrigatório   | Descrição                                            |
+|:-----------|:----------|:--------------|:--------------|:-----------------------------------------------------|
+| `ticketId` | `integer` | Path          | Sim           | `ID` do ticket em que sera cadastrada a resposta.    |
 
 ### GET `tickets/{ticketId}/reply/{replyId}`
 
-| Componente    | Valor                         |
-|---------------|-------------------------------|
-| Método HTTP   | GET                           |
-| Path          | `tickets/{ticketId}/reply/{replyId}`    |
-| Autenticação  | JWT Bearer Token              |
+| Componente    | Valor                                 |
+|:--------------|:--------------------------------------|
+| Método HTTP   | GET                                   |
+| Path          | `tickets/{ticketId}/reply/{replyId}`  |
+| Autenticação  | JWT Bearer Token                      |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket referente a resposta recuperada.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ser o proprietário do ticket referente a resposta recuperada.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `ticketId`      | `integer` | Path          | Sim           | ID do ticket. |
-| `replyId`      | `integer` | Path          | Sim           | ID da resposta. |
+| Nome          | Tipo      | Localização   | Obrigatório   | Descrição         |
+|:--------------|:----------|:--------------|:--------------|:------------------|
+| `ticketId`    | `integer` | Path          | Sim           | `ID` do ticket.   |
+| `replyId`     | `integer` | Path          | Sim           | `ID` da resposta. |
 
 ### DELETE `tickets/{ticketId}/reply/{replyId}`
 
-| Componente    | Valor                         |
-|---------------|-------------------------------|
-| Método HTTP   | DELETE                        |
-| Path          | `tickets/{ticketId}/reply/{replyId}`    |
-| Autenticação  | JWT Bearer Token              |
+| Componente    | Valor                                 |
+|:--------------|:--------------------------------------|
+| Método HTTP   | DELETE                                |
+| Path          | `tickets/{ticketId}/reply/{replyId}`  |
+| Autenticação  | JWT Bearer Token                      |
 
 #### Restrições:
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket e da resposta a ser deletada.
-- Regra de negócio: Uma resposta já respondida não pode ser deletada.
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Proprietário: O usuário autenticado deve ser o proprietário do ticket referente a resposta a ser deletada.
+- Regras de Negócio:
+    - Uma resposta que já foi respondida não pode ser deletada.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `ticketId`      | `integer` | Path          | Sim           | ID do ticket. |
-| `replyId`      | `integer` | Path          | Sim           | ID da resposta. |
+| Nome          | Tipo      | Localização   | Obrigatório   | Descrição         |
+|:--------------|:----------|:--------------|:--------------|:------------------|
+| `ticketId`    | `integer` | Path          | Sim           | `ID` do ticket.   |
+| `replyId`     | `integer` | Path          | Sim           | `ID` da resposta. |
 
 ### PATH `tickets/{ticketId}/reply/{replyId}`
 
 | Componente    | Valor                         |
-|---------------|-------------------------------|
-| Método HTTP   | Path                        |
+|:--------------|:------------------------------|
+| Método HTTP   | Path                          |
 | Path          | `tickets/{ticketId}/reply`    |
 | Autenticação  | JWT Bearer Token              |
 
 #### Restrições:
 
 - Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
-- Propetário: O usuário autenticado deve ser o proprietário do ticket e da resposta a ser atualizada.
-- Regra de negócio: Uma resposta já respondida não pode ser atualizada.
+- Proprietário: O usuário autenticado deve ser o proprietário do ticket e da resposta a ser atualizada.
+- Campos Obrigatórios: `content`.
+- Regra de Negócio: Uma resposta já respondida não pode ser atualizada.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `ticketId`      | `integer` | Path          | Sim           | ID do ticket. |
-| `replyId`      | `integer` | Path          | Sim           | ID da resposta. |
+| Nome          | Tipo      | Localização   | Obrigatório   | Descrição         |
+|:--------------|:----------|:--------------|:--------------|:------------------|
+| `ticketId`    | `integer` | Path          | Sim           | `ID` do ticket.   |
+| `replyId`     | `integer` | Path          | Sim           | `ID` da resposta. |
 
 ## Gerenciamento de Categorias (`/categories`)
 
 ### GET `/categories`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | GET               |
 | Path          | `/categories`     |
 | Autenticação  | JWT Bearer Token  |
@@ -427,74 +446,93 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 ### POST `/categories`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | POST              |
 | Path          | `/categories`     |
 | Autenticação  | JWT Bearer Token  |
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+#### Restrições:
+
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Campos Obrigatórios: `name`, `priority`.
+- Campos Opcionais: `description`.
+- Regras de Negócio:
+    - Valores únicos para `name`.
 
 ### GET `/categories/{id}`
 
 | Componente    | Valor                 |
-|---------------|-----------------------|
+|:--------------|:----------------------|
 | Método HTTP   | GET                   |
 | Path          | `/categories/{id}`    |
 | Autenticação  | JWT Bearer Token      |
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID da categoria. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição             |
+|:----------|:----------|:--------------|:--------------|:----------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` da categoria.    |
 
 ### DELETE `/categories/{id}`
 
 | Componente    | Valor                 |
-|---------------|-----------------------|
-| Método HTTP   | DELETE                   |
+|:--------------|:----------------------|
+| Método HTTP   | DELETE                |
 | Path          | `/categories/{id}`    |
 | Autenticação  | JWT Bearer Token      |
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+#### Restrições:
+
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID da categoria. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição             |
+|:----------|:----------|:--------------|:--------------|:----------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` da categoria.    |
 
 ### PATCH `/categories/{id}`
 
 | Componente    | Valor                 |
-|---------------|-----------------------|
+|:--------------|:----------------------|
 | Método HTTP   | PATCH                 |
 | Path          | `/categories/{id}`    |
 | Autenticação  | JWT Bearer Token      |
 
-- Administradores: Somente usuários com a função `ROLE_STAFF` ou `ROLE_ADMIN`.
+#### Restrições:
+
+- Administradores: Somente usuários com a função de `ROLE_STAFF` ou `ROLE_ADMIN`.
+- Campos Opcionais: `name`, `description`, `priority`.
+- Regras de Negócio:
+    - Valores únicos para `name`.
 
 #### Parâmetros da Rota
 
-| Nome      | Tipo      | Localização   | Obrigatório   | Descrição     |
-|-----------|-----------|---------------|---------------|---------------|
-| `id`      | `integer` | Path          | Sim           | ID da categoria. |
+| Nome      | Tipo      | Localização   | Obrigatório   | Descrição             |
+|:----------|:----------|:--------------|:--------------|:----------------------|
+| `id`      | `integer` | Path          | Sim           | `ID` da categoria.    |
 
 ## Autenticação de Usuários (`/auth`)
 
-### GET `/auth`
+### POST `/auth`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | GET               |
 | Path          | `/auth`           |
-| Autenticação  | JWT Bearer Token  |
+
+#### Restrições
+
+- Campos Obrigatórios: `username`, `password`.
+- Regras de Negócio:
+    - O valor para `username` pode ser o `username` ou `email` do usuário.
+    - As credenciais de usuário devem ser válidas.
 
 
 ### GET `/auth/user`
 
 | Componente    | Valor             |
-|---------------|-------------------|
+|:--------------|:------------------|
 | Método HTTP   | GET               |
 | Path          | `/auth/user`      |
 | Autenticação  | JWT Bearer Token  |
