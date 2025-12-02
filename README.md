@@ -541,3 +541,38 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 | Método HTTP   | GET               |
 | Path          | `/auth/user`      |
 | Autenticação  | JWT Bearer Token  |
+
+# Tecnologias
+
+Tecnologias utilizadas no projeto:
+
+## Construção da API
+
+- Java
+- Spring Boot
+- Spring Boot Starter Web
+- Spring Security
+- Spring Boot Validation
+- BCrypt
+- JJWT
+- Lombok
+- MapStruct
+
+## Banco de Dados
+
+- Spring Data JPA
+- Hibernate
+- MySQL
+
+## Documentação
+
+- Springdoc-OpenAPI UI
+
+## IDE, Versionamento, Estilo de Código
+
+- IntelliJ IDEA Community
+- Insomnia
+- Postman
+- Git
+- GitHub
+- CheckStyle
