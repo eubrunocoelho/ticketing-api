@@ -576,3 +576,26 @@ Tecnologias utilizadas no projeto:
 - Git
 - GitHub
 - CheckStyle
+
+# Configuração e Instalação
+
+## Requisitos
+
+- Apache Maven 3.9.11 *(Versão recomendada)*
+- JDK 17.0.12 *(Versão recomendada)*
+- MySQL > 8.0 *(Versão recomendad)*
+
+## Instalação
+
+```
+# 1. Executar as queries em listadas em:
+# ./src/main/resources/schemas.sql
+
+# 2. Renomear arquivo .env.example para .env
+
+# 3. Preencher as variáveis de ambiente presentes em .env
+
+# 4. Executar os seguintes comandos:
+nvm clean install
+nvm spring-boot:run
+```
