@@ -341,7 +341,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 |:--------------|:----------|:--------------|:--------------|:--------------------------------------------------------------------------------------|
 | `ticketId`    | `integer` | Path          | Sim           | `ID` do ticket.                                                                       |
 | `user`        | `string`  | Query         | Não           | Filtragem de dados pelo `username` ou `email` do usuário proprietário das resposta.   |
-| `sort`        | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `LAST_UPDATE`).                                      |
+| `sort`        | `string`  | Query         | Não           | Ordenação de resultados. (`NEW`, `OLDER`, `LAST_UPDATE`).                             |
 | `page`        | `integer` | Query         | Não           | Número referente à página.                                                            |
 
 ### POST `tickets/{ticketId}/reply`
