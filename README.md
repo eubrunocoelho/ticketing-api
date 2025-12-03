@@ -42,7 +42,14 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 - *OpenAPI 3.0*
 - Documentação completa de *endpoints*
 
-# Rotas
+```
+# Swagger URLs
+http://localhost:8080/swagger-ui/index.html
+http://localhost:8080/swagger-ui.html
+http://localhost:8080/v3/api-docs
+```
+
+# Rotas/API Endpoints
 
 ## Rotas de Gerenciamento de Usuários (`/users`)
 
@@ -596,6 +603,12 @@ Tecnologias utilizadas no projeto.
 # 3. Preencher as variáveis de ambiente presentes em .env
 
 # 4. Executar os seguintes comandos:
-mvn clean install
-mvn spring-boot:run
+nvm clean install
+nvm spring-boot:run
+
+# 5. Criar um usuário pela rota: [POST] /users
+# 6. Executar a seguinte consulta para definir o usuário como administrador:
+UPDATE users
+SET role = 'ROLE_ADMIN'
+WHERE username = '<username>';
 ```
