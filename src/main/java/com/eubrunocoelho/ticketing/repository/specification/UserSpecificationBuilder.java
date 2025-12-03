@@ -20,7 +20,8 @@ public class UserSpecificationBuilder
         return Stream
                 .of(
                         createSpecification( filter.search(), this::userContains ),
-                        createSpecification( filter.role(), this::roleEquals )
+                        createSpecification( filter.role(), this::roleEquals ),
+                        createSpecification( filter.status(), this::statusEquals )
                 )
                 .flatMap( Optional::stream )
                 .reduce( Specification::and )
@@ -56,5 +57,10 @@ public class UserSpecificationBuilder
     private Specification<User> roleEquals( String role )
     {
         return ( root, query, cb ) -> cb.equal( root.get( "role" ), role );
+    }
+
+    private Specification<User> statusEquals( String status )
+    {
+        return ( root, query, cb ) -> cb.equal( root.get( "status" ), status );
     }
 }
