@@ -325,7 +325,7 @@ http://localhost:8080/v3/api-docs
 
 | Componente    | Valor                     |
 |:--------------|:--------------------------|
-| Método HTTP   | PATCH                     |
+| Método HTTP   | GET                       |
 | Path          | `/tickets/user/{userId}`  |
 | Autenticação  | JWT Bearer Token          |
 
@@ -440,7 +440,7 @@ http://localhost:8080/v3/api-docs
 
 | Componente    | Valor                         |
 |:--------------|:------------------------------|
-| Método HTTP   | Path                          |
+| Método HTTP   | PATH                          |
 | Path          | `tickets/{ticketId}/reply`    |
 | Autenticação  | JWT Bearer Token              |
 
