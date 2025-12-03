@@ -6,7 +6,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 - Autenticação *JWT* Stateless
 - Controle de Acesso Baseado em Função (*RBAC*)
-- Criptografia de senhas (*BCrypt*) e proteção de endpoints via *Spring Security*
+- Criptografia de senhas (*BCrypt*) e proteção de *endpoints* via *Spring Security*
 
 ## Gerenciamento de Usuários
 
