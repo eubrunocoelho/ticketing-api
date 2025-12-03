@@ -620,8 +620,8 @@ Tecnologias utilizadas no projeto.
 # 3. Preencher as variáveis de ambiente presentes em .env
 
 # 4. Executar os seguintes comandos:
-nvm clean install
-nvm spring-boot:run
+mvn clean install
+mvn spring-boot:run
 
 # 5. Criar um usuário pela rota: [POST] /users
 # 6. Executar a seguinte consulta para definir o usuário como administrador:
