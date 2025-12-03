@@ -173,7 +173,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 - Administradores: Somente usuários com a função de `ROLE_ADMIN`.
 - Campos Obrigatórios: `role`.
-- Regras de negócio:
+- Regras de Negócio:
     - O usuário a ser atualizado não pode ter a função de `ROLE_ADMIN`.
 
 #### Parâmetros da Rota
@@ -544,7 +544,7 @@ Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida c
 
 # Tecnologias
 
-Tecnologias utilizadas no projeto:
+Tecnologias utilizadas no projeto.
 
 ## Construção da API
 
@@ -583,7 +583,7 @@ Tecnologias utilizadas no projeto:
 
 - Apache Maven 3.9.11 *(Versão recomendada)*
 - JDK 17.0.12 *(Versão recomendada)*
-- MySQL > 8.0 *(Versão recomendad)*
+- MySQL > 8.0 *(Versão recomenda)*
 
 ## Instalação
 
