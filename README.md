@@ -2,6 +2,17 @@
 
 Uma **API RESTful** robusta para um sistema de gestão de ticket, desenvolvida com **Java**, **Spring Boot**, **Spring Security** e **Autenticação JWT**. Oferece **controle de acesso baseado em função (RBAC)**, gestão completa de ciclo de vida dos tickets e documentação API de ponta.
 
+# Sumário
+
+- [Resumo](#resumo_da_api)
+- [Rotas/API Endpoints](#rotas_api_endpoints)
+- [Tecnologias](#tecnologias)
+- [Configuração e Instalação](#configuracao_e_instalacao)
+
+<span id="resumo_da_api"></span>
+
+# Resumo da API
+
 ## Autenticação e Segurança
 
 - Autenticação *JWT* Stateless
@@ -48,6 +59,8 @@ http://localhost:8080/swagger-ui/index.html
 http://localhost:8080/swagger-ui.html
 http://localhost:8080/v3/api-docs
 ```
+
+<span id="rotas_api_endpoints"></span>
 
 # Rotas/API Endpoints
 
@@ -549,6 +562,8 @@ http://localhost:8080/v3/api-docs
 | Path          | `/auth/user`      |
 | Autenticação  | JWT Bearer Token  |
 
+<span id="tecnologias"></span>
+
 # Tecnologias
 
 Tecnologias utilizadas no projeto.
@@ -584,6 +599,8 @@ Tecnologias utilizadas no projeto.
 - GitHub
 - CheckStyle
 
+<span id="configuracao_e_instalacao"></span>
+
 # Configuração e Instalação
 
 ## Requisitos
@@ -595,7 +612,7 @@ Tecnologias utilizadas no projeto.
 ## Instalação
 
 ```
-# 1. Executar as queries em listadas em:
+# 1. Executar as consultas listadas em:
 # ./src/main/resources/schemas.sql
 
 # 2. Renomear arquivo .env.example para .env
@@ -612,3 +629,7 @@ UPDATE users
 SET role = 'ROLE_ADMIN'
 WHERE username = '<username>';
 ```
+
+---
+
+Desenvolvido com 🤍 e ☕ por [@eubrunocoelho](https://github.com/eubrunocoelho).
