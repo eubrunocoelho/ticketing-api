@@ -543,7 +543,7 @@ http://localhost:8080/v3/api-docs
 
 | Componente    | Valor             |
 |:--------------|:------------------|
-| Método HTTP   | GET               |
+| Método HTTP   | POST              |
 | Path          | `/auth`           |
 
 #### Restrições
