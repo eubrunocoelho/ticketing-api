@@ -64,7 +64,7 @@ http://localhost:8080/v3/api-docs
 
 # Rotas/API Endpoints
 
-## Rotas de Gerenciamento de Usuários (`/users`)
+## Gerenciamento de Usuários (`/users`)
 
 ### GET `/users`
 
